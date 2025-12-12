@@ -8,4 +8,4 @@ const app = createApp(App)
 UseGlassUi(app)
 
 app.use(router)
-ap.mount('#app')
+app.mount('#app')

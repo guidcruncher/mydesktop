@@ -24,7 +24,7 @@ const getMeshBackgroundCSS = () => {
 }
 
 const applyBodyStyles = (el, binding) => {
-  const bodyStyle = el.style
+  const bodyStyle = document.body.style
 
   bodyStyle.backgroundImage = getMeshBackgroundCSS()
 
