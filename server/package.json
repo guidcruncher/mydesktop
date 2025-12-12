@@ -1,0 +1,22 @@
+{
+  "name": "mydesktop-server",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "cd .. && npm run dev",
+    "dev-server": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint . --fix --cache",
+    "format": "prettier --write src/"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "fastify": "^5.6.2",
+    "fastify-cors": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.2.2"
+  }
+}
