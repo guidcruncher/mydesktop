@@ -1,0 +1,16 @@
+.mesh-gradient {
+  backgroundsize: 200% 200%;
+  backgroundrepeat: no-repeat;
+  animation: moveMesh 30s infinite alternate;
+  minheight: 100vh;
+  margin: 0;
+
+  @keyframes moveMesh {
+    0% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 100% 100%;
+    }
+  }
+}

@@ -1,0 +1,83 @@
+// --- Core Theming: General UI & Aero/Glass Effects (Windows 11) ---
+:root {
+  /* UI Palette (Fluent Base) */
+  --ui-background: #f3f3f3; /* App background */
+  --ui-card-bg: #ffffff; /* Primary surface/Card background */
+  --ui-text-primary: #000000;
+  --ui-text-secondary: #605e5c;
+  --ui-text-tertiary: #a19f9d;
+  --ui-separator: #e1e1e1;
+  --ui-field-bg: #ffffff;
+
+  /* General Backgrounds/Text */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f3f3;
+  --text-primary: #000000;
+  --text-secondary: #605e5c;
+  --text-tertiary: #a19f9d;
+
+  /* Borders & Dividers */
+  --border-color: #e1e1e1;
+  --divider-color: #e1e1e1;
+
+  /* Accents & States */
+  --accent-color: #0078d4;
+  --accent-hover: #0063b1;
+  --badge-bg: rgba(0, 120, 212, 0.1);
+  --badge-text: #0078d4;
+
+  /* Shadows */
+  --shadow-default: 0 0 5px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+  --shadow-hover: 0 0 10px rgba(0, 0, 0, 0.15); /* Slightly darker */
+
+  /* Glass/Aero Effects (Acrylic) */
+  --color-glass-rgb: 255, 255, 255;
+  --glass-bg: rgba(255, 255, 255, 0.85); /* More opaque acrylic */
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --glass-highlight: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+  --glass-bg-opacity: 0.15;
+  --glass-border-opacity: 0.08;
+  --blur-radius-base: 24px;
+  --theming-transition:
+    background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.dark-mode {
+  /* UI Palette (Fluent Base) */
+  --ui-background: #202020; /* App background */
+  --ui-card-bg: #2d2d2d; /* Primary surface/Card background */
+  --ui-text-primary: #ffffff;
+  --ui-text-secondary: #979695;
+  --ui-text-tertiary: #605e5c;
+  --ui-separator: #484848;
+  --ui-field-bg: #1c1c1c;
+
+  /* General Backgrounds/Text */
+  --bg-primary: #2d2d2d;
+  --bg-secondary: #202020;
+  --text-primary: #ffffff;
+  --text-secondary: #979695;
+  --text-tertiary: #605e5c;
+
+  /* Borders & Dividers */
+  --border-color: #484848;
+  --divider-color: #484848;
+
+  /* Accents & States */
+  --accent-color: #4fc2ff;
+  --accent-hover: #00a9e0;
+  --badge-bg: rgba(79, 194, 255, 0.2);
+  --badge-text: #4fc2ff;
+
+  /* Shadows */
+  --shadow-default: 0 0 5px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 0 10px rgba(0, 0, 0, 0.6);
+
+  /* Glass/Aero Effects (Dark Acrylic) */
+  --color-glass-rgb: 0, 0, 0;
+  --glass-bg: rgba(30, 30, 30, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}

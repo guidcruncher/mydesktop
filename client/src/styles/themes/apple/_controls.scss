@@ -1,0 +1,92 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  padding: var(--spacing-s) var(--spacing-l);
+  font-family: var(--font-family);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  user-select: none;
+  transition: var(--theming-transition);
+
+  border-radius: var(--radius-small); /* Uses 8px radius from the UIKit variables */
+
+  /* --- icon (Default) --- */
+  &.icon {
+    color: var(--system-blue);
+    background: none;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05); /* subtle border */
+  }
+
+  /* --- Primary (Accent) --- */
+  &.primary {
+    color: var(--btn-primary-color);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.1) inset,
+      var(--shadow-default);
+    background: linear-gradient(
+      180deg,
+      var(--btn-primary-bg-start) 0%,
+      var(--btn-primary-bg-end) 100%
+    );
+
+    &:hover {
+      filter: brightness(1.1);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        var(--shadow-hover);
+    }
+  }
+
+  /* --- Secondary (Default) --- */
+  &.secondary {
+    color: var(--btn-secondary-color);
+    background-color: var(--btn-secondary-bg);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05); /* subtle border */
+
+    &:hover {
+      background-color: var(--btn-secondary-bg-hover);
+    }
+  }
+
+  /* --- Destructive --- */
+  &.destructive {
+    /* Uses system red for background */
+    color: var(--system-white);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.1) inset,
+      var(--shadow-default);
+    background: linear-gradient(180deg, var(--system-red) 0%, var(--system-red-dark) 100%);
+
+    &:hover {
+      filter: brightness(1.1);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        var(--shadow-hover);
+    }
+  }
+
+  /* --- Active/Pressed State (Shared) --- */
+  &:active {
+    filter: brightness(0.9);
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+
+  /* --- Disabled State (Shared) --- */
+  &:disabled {
+    pointer-events: none;
+    cursor: default;
+    color: var(--system-gray2);
+    background-color: var(--system-gray4);
+    box-shadow: none;
+    filter: none;
+    transform: none;
+  }
+}

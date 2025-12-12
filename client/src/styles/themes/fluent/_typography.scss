@@ -1,0 +1,55 @@
+// --- 1. Imports ---
+@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css';
+
+// --- 2. Base Typography/Sizing Variables ---
+:root {
+  /* Spacing & Sizing */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-s: 12px;
+  --spacing-m: 16px;
+  --spacing-l: 20px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+
+  --radius-small: 4px; /* Win11 uses sharper 4px radius generally */
+  --radius-medium: 8px;
+  --radius-large: 12px;
+}
+
+$font-family:
+  'Segoe UI Variable',
+  'Segoe UI',
+  system-ui,
+  -apple-system,
+  BlinkMacSystemFont,
+  Roboto,
+  'Helvetica Neue',
+  Arial,
+  sans-serif;
+
+@supports (font-variation-settings: normal) {
+  /* Segoe UI Variable is often not variable on web, so we simplify the check */
+  $font-family:
+    'Segoe UI Variable',
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+}
+
+:root {
+  --font-family: #{$font-family};
+
+  font-family: var(--font-family);
+  font-feature-settings: normal; /* Fluent design generally doesn't rely on specific features */
+}
+
+html,
+body {
+  color: var(--ui-text-primary);
+}

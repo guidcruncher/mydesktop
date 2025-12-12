@@ -1,0 +1,70 @@
+@use '../../_mixins' as *;
+
+// =========================================================
+// 1. SCSS System Color Variable Definitions (Theme  Maps)
+// =========================================================
+
+// Windows 11 (Fluent) System Colors
+$system-colors: (
+  system-white: (
+    light: #ffffff,
+    dark: #1c1c1e,
+  ),
+  // Dark mode white is often dark background
+  system-black: (
+      light: #000000,
+      dark: #ffffff,
+    ),
+  // Dark mode black is often white text
+  system-blue: (
+      light: #0078d4,
+      dark: #4fc2ff,
+    ),
+  system-green: (
+    light: #107c10,
+    dark: #069006,
+  ),
+  system-red: (
+    light: #d13438,
+    dark: #d13438,
+  ),
+  system-orange: (
+    light: #ff8c00,
+    dark: #ff8c00,
+  ),
+  system-gray: (
+    light: #605e5c,
+    dark: #b3b0ad,
+  ),
+  system-gray2: (
+    light: #8a8886,
+    dark: #8a8886,
+  ),
+  system-gray3: (
+    light: #c8c6c4,
+    dark: #605e5c,
+  ),
+  system-gray4: (
+    light: #e1e1e1,
+    dark: #484848,
+  ),
+  system-gray5: (
+    light: #f3f3f3,
+    dark: #333333,
+  ),
+  system-gray6: (
+    light: #fafafa,
+    dark: #2d2d2d,
+  ),
+);
+
+:root {
+  @include generate-system-vars($system-colors, 'light');
+  --system-color-red-darken: darken($system-red, 8%);
+}
+
+// Dark Mode
+.dark-mode {
+  @include generate-system-vars($system-colors, 'dark');
+  --system-color-red-darken: darken($system-red, 8%);
+}

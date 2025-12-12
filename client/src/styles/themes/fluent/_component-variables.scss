@@ -1,0 +1,224 @@
+// --- Component-Specific Variables (Windows 11) ---
+:root {
+  /* Widget/Card Defaults */
+  --bg-widget: #ffffff;
+  --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --border-color-widget: 1px solid #e1e1e1;
+
+  /* Modal/Overlay */
+  --modal-overlay-bg: rgba(0, 0, 0, 0.5);
+  --modal-container-bg: #ffffff;
+  --modal-shadow: rgba(0, 0, 0, 0.4);
+  --modal-header-bg-start: #ffffff;
+  --modal-header-bg-end: #f3f3f3;
+  --modal-header-border: #e1e1e1;
+  --modal-title-color: #000000;
+  --modal-body-color: #000000;
+  --modal-body-secondary: #605e5c;
+  --modal-footer-bg: #f3f3f3;
+  --modal-footer-border: #e1e1e1;
+
+  /* Buttons */
+  --btn-primary-bg-start: #0078d4;
+  --btn-primary-bg-end: #00589b;
+  --btn-primary-color: #ffffff;
+  --btn-primary-shadow: rgba(0, 120, 212, 0.3);
+  --btn-secondary-bg: #eaeaea;
+  --btn-secondary-bg-hover: #d8d8d8;
+  --btn-secondary-color: #000000;
+
+  /* Standard Controls (Form fields, etc.) */
+  --control-bg: #ffffff;
+  --control-border: #8a8886;
+  --control-border-width: 1px;
+  --control-border-active: #0078d4; /* Accent for focus */
+  --primary-text: #000000;
+  --icon-color: #605e5c;
+
+  /* List/Table Controls */
+  --list-bg: #ffffff;
+  --list-border: #e1e1e1;
+  --list-hover-bg: #f3f3f3;
+  --list-separator: #e1e1e1;
+  --selected-bg: #eaeaea;
+  --selected-text: #000000;
+  --selected-hover-bg: #d8d8d8;
+
+  /* Window Controls (Simplified for Windows theme) */
+  --control-close-start: #d13438; /* Red close button */
+  --control-close-end: #c5292e;
+  --control-close-icon: #ffffff;
+  --control-minimize-start: #ffffff; /* Neutral minimize */
+  --control-minimize-end: #fafafa;
+  --control-minimize-icon: #000000;
+  --control-maximize-start: #ffffff; /* Neutral maximize */
+  --control-maximize-end: #fafafa;
+  --control-maximize-icon: #000000;
+
+  /* Popover/Tooltip */
+  --popover-bg: #ffffff;
+  --popover-text: #000000;
+  --popover-border: #e1e1e1;
+
+  /* Notification */
+  --notify-bg-color: #ffffff;
+  --notify-text-color-primary: #000000;
+  --notify-text-color-secondary: #605e5c;
+  --notify-border-color: #e1e1e1;
+  --notify-close-btn-color: #605e5c;
+
+  /* Panel */
+  --panel-bg: #ffffff;
+  --panel-radius: 4px;
+  --panel-color: #000000;
+
+  /* Stepper (Number Input) */
+  --stepper-primary: #0078d4;
+  --stepper-bg: #ffffff;
+  --stepper-border-color: #e1e1e1;
+  --stepper-text-color: #000000;
+  --stepper-icon-color: var(--stepper-primary);
+  --stepper-disabled-icon: #c8c6c4;
+
+  /* Map/GIS */
+  --map-bg-primary: #ffffff;
+  --map-bg-secondary: #f3f3f3;
+  --map-bg-tertiary: #e1e1e1;
+  --map-text-primary: #000000;
+  --map-text-secondary: #605e5c;
+  --map-accent-color: #0078d4;
+  --map-accent-destructive: #d13438;
+  --map-control-bg: #ffffff;
+  --map-control-border: #e1e1e1;
+  --map-control-divider: #e1e1e1;
+  --map-control-hover: #f3f3f3;
+  --map-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.1);
+  --map-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --map-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+  /* Segmented Control (Tabs/Pills) */
+  --segment-background: #e1e1e1;
+  --segment-text: #605e5c;
+  --segment-selected-background: #ffffff;
+  --segment-selected-text: #000000;
+  --segment-selected-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  /* Clock */
+  --clock-face-color: var(--system-white);
+  --clock-border-color: #e1e1e1;
+  --clock-hand-hour: var(--system-black);
+  --clock-hand-minute: var(--system-black);
+  --clock-hand-second: var(--system-red);
+}
+
+.dark-mode {
+  /* Widget/Card Defaults */
+  --bg-widget: #2d2d2d;
+  --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --border-color-widget: 1px solid #484848;
+
+  /* Modal/Overlay */
+  --modal-overlay-bg: rgba(0, 0, 0, 0.8);
+  --modal-container-bg: #2d2d2d;
+  --modal-shadow: rgba(0, 0, 0, 0.8);
+  --modal-header-bg-start: #2d2d2d;
+  --modal-header-bg-end: #333333;
+  --modal-header-border: #484848;
+  --modal-title-color: #ffffff;
+  --modal-body-color: #ffffff;
+  --modal-body-secondary: #979695;
+  --modal-footer-bg: #333333;
+  --modal-footer-border: #484848;
+
+  /* Buttons */
+  --btn-primary-bg-start: #4fc2ff;
+  --btn-primary-bg-end: #0084b7;
+  --btn-primary-color: #ffffff;
+  --btn-primary-shadow: rgba(79, 194, 255, 0.3);
+  --btn-secondary-bg: #333333;
+  --btn-secondary-bg-hover: #484848;
+  --btn-secondary-color: #ffffff;
+
+  /* Standard Controls (Form fields, etc.) */
+  --control-bg: #1c1c1c;
+  --control-border: #605e5c;
+  --control-border-active: #4fc2ff; /* Accent for focus */
+  --primary-text: #ffffff;
+  --icon-color: #979695;
+
+  /* List/Table Controls */
+  --list-bg: #2d2d2d;
+  --list-border: #484848;
+  --list-hover-bg: #333333;
+  --list-separator: #484848;
+  --selected-bg: #484848;
+  --selected-text: #ffffff;
+  --selected-hover-bg: #605e5c;
+
+  /* Window Controls (Simplified for Windows theme) */
+  --control-close-start: #d13438;
+  --control-close-end: #c5292e;
+  --control-close-icon: #ffffff;
+  --control-minimize-start: #2d2d2d;
+  --control-minimize-end: #333333;
+  --control-minimize-icon: #ffffff;
+  --control-maximize-start: #2d2d2d;
+  --control-maximize-end: #333333;
+  --control-maximize-icon: #ffffff;
+
+  /* Popover/Tooltip */
+  --popover-bg: #2d2d2d;
+  --popover-text: #ffffff;
+  --popover-border: #484848;
+
+  /* Notification */
+  --notify-bg-color: #2d2d2d;
+  --notify-text-color-primary: #ffffff;
+  --notify-text-color-secondary: #979695;
+  --notify-border-color: #484848;
+  --notify-close-btn-color: #979695;
+
+  /* Panel */
+  --panel-bg: #2d2d2d;
+  --panel-color: #ffffff;
+
+  /* Stepper (Number Input) */
+  --stepper-primary: #4fc2ff;
+  --stepper-bg: #2d2d2d;
+  --stepper-border-color: #484848;
+  --stepper-text-color: #ffffff;
+  --stepper-icon-color: var(--stepper-primary);
+  --stepper-disabled-icon: #605e5c;
+
+  /* Map/GIS */
+  --map-bg-primary: #2d2d2d;
+  --map-bg-secondary: #202020;
+  --map-bg-tertiary: #333333;
+  --map-text-primary: #ffffff;
+  --map-text-secondary: #979695;
+  --map-accent-color: #4fc2ff;
+  --map-accent-destructive: #d13438;
+  --map-control-bg: #2d2d2d;
+  --map-control-border: #484848;
+  --map-control-divider: #484848;
+  --map-control-hover: #333333;
+  --map-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.3);
+  --map-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --map-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.6);
+
+  /* Segmented Control (Tabs/Pills) */
+  --segment-background: #484848;
+  --segment-text: #979695;
+  --segment-selected-background: #2d2d2d;
+  --segment-selected-text: #ffffff;
+  --segment-selected-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  /* Clock */
+  --clock-face-color: #2d2d2d;
+  --clock-border-color: #484848;
+  --clock-hand-hour: var(--system-white);
+  --clock-hand-minute: var(--system-white);
+  --clock-hand-second: var(--system-red);
+}

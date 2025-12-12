@@ -1,0 +1,40 @@
+@use 'sass:math';
+@use 'sass:map';
+
+@mixin apply-liquid-glass(
+  $material-opacity: var(--glass-bg-opacity),
+  $border-opacity: var(--glass-border-opacity),
+  $blur: var(--blur-radius-base)
+) {
+  // Use a calc to ensure the variable is treated as a CSS custom property
+  $dynamic-blur: var(--blur, $blur);
+
+  background-color: rgba(var(--glass-bg), $material-opacity);
+  backdrop-filter: blur($dynamic-blur) saturate(180%);
+  -webkit-backdrop-filter: blur($dynamic-blur) saturate(180%);
+  border: 1px solid rgba(var(--glass-border), $border-opacity);
+  box-shadow: 0 4px 15px var(--glass-shadow);
+  transition: var(--theming-transition);
+}
+
+/**
+ * Converts a theme map into CSS Custom Properties (variables).
+ *
+ * @param {String} $mode - The color mode to extract ('light' or 'dark').
+ */
+@mixin generate-system-vars($map, $mode) {
+  @each $var-name, $color-modes in $map {
+    $color-value: map.get($color-modes, $mode);
+    // Only output if a value exists for the specified mode
+    @if $color-value {
+      --#{$var-name}: #{$color-value};
+    }
+  }
+
+  @each $var-name, $color-modes in $map {
+    $color-value: map.get($color-modes, $mode);
+    @if $color-value {
+      #{"$#{$var-name}"}: $color-value;
+    }
+  }
+}

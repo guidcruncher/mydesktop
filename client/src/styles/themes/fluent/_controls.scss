@@ -1,0 +1,95 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  padding: var(--spacing-s) var(--spacing-l);
+  font-family: var(--font-family);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  user-select: none;
+  transition: var(--theming-transition);
+
+  border-radius: var(--radius-small); /* Uses 4px radius from the Fluent variables */
+  box-shadow: var(--shadow-default); /* Subtle shadow for all non-flat buttons */
+
+  &.icon {
+    color: var(--system-blue);
+    background: none;
+
+    &:hover {
+      filter: brightness(1.05);
+      box-shadow: var(--shadow-hover);
+    }
+  }
+
+  /* --- Primary (Accent) --- */
+  &.primary {
+    color: var(--btn-primary-color);
+    background: linear-gradient(
+      180deg,
+      var(--btn-primary-bg-start) 0%,
+      var(--btn-primary-bg-end) 100%
+    );
+
+    &:hover {
+      filter: brightness(1.05);
+      box-shadow: var(--shadow-hover);
+    }
+  }
+
+  /* --- Secondary (Default) --- */
+  &.secondary {
+    /* Fluent often uses an accent-colored border on a neutral background */
+    color: var(--text-primary);
+    background-color: var(--ui-card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+    padding: calc(var(--spacing-s) - 1px) calc(var(--spacing-l) - 1px); /* adjust padding for border */
+
+    &:hover {
+      background-color: var(--list-hover-bg); /* Use a slight background hint */
+      border-color: var(--accent-color);
+    }
+
+    &:active {
+      border-color: var(--accent-color);
+      background-color: var(--list-hover-bg);
+    }
+  }
+
+  /* --- Destructive --- */
+  &.destructive {
+    color: var(--system-white);
+    background-color: var(--system-red);
+
+    &:hover {
+      filter: brightness(1.05);
+      box-shadow: var(--shadow-hover);
+    }
+  }
+
+  /* --- Active/Pressed State (Shared) --- */
+  &:active {
+    filter: brightness(0.95);
+    transform: none; /* No translation */
+    box-shadow: none;
+  }
+
+  /* --- Disabled State (Shared) --- */
+  &:disabled {
+    pointer-events: none;
+    cursor: default;
+    color: var(--system-gray2);
+    background-color: var(--system-gray4);
+    border: 1px solid var(--system-gray4); /* Match border to background */
+    box-shadow: none;
+    filter: none;
+    transform: none;
+  }
+}

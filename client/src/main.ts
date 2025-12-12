@@ -1,4 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router' // Import the router
+import { UseGlassUi } from './components/'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+UseGlassUi(app)
+
+app.use(router)
+ap.mount('#app')

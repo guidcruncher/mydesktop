@@ -1,0 +1,236 @@
+@use './_system-colors' as *;
+
+// --- Component-Specific Variables ---
+:root {
+  /* Widget/Card Defaults */
+  --bg-widget: rgba(255, 255, 255, 0.85);
+  --shadow-base: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --border-color-widget: 1px solid rgba(255, 255, 255, 0.6);
+
+  /* Modal/Overlay */
+  --modal-overlay-bg: rgba(0, 0, 0, 0.4);
+  --modal-container-bg: rgba(255, 255, 255, 0.95);
+  --modal-shadow: rgba(0, 0, 0, 0.3);
+  --modal-header-bg-start: rgba(255, 255, 255, 0.8);
+  --modal-header-bg-end: rgba(245, 245, 247, 0.8);
+  --modal-header-border: rgba(0, 0, 0, 0.08);
+  --modal-title-color: #1d1d1f;
+  --modal-body-color: #1d1d1f;
+  --modal-body-secondary: #6e6e73;
+  --modal-footer-bg: rgba(245, 245, 247, 0.6);
+  --modal-footer-border: rgba(0, 0, 0, 0.08);
+
+  /* Buttons */
+  --btn-primary-bg-start: #007aff;
+  --btn-primary-bg-end: #0051d5;
+  --btn-primary-color: #ffffff;
+  --btn-primary-shadow: rgba(0, 122, 255, 0.4);
+  --btn-secondary-bg: rgba(0, 0, 0, 0.05);
+  --btn-secondary-bg-hover: rgba(0, 0, 0, 0.1);
+  --btn-secondary-color: #007aff;
+
+  /* Standard Controls (Form fields, etc.) */
+  --control-bg: #ffffff;
+  --control-border: #e5e5e5; /* Lighter gray border (UITextField look) */
+  --control-border-width: 1px;
+  --control-border-active: #3b82f6; /* blue-500 for focus */
+  --primary-text: #1f2937; /* gray-800 */
+  --icon-color: #6b7280; /* gray-500 */
+
+  /* List/Table Controls */
+  --list-bg: #ffffff;
+  --list-border: #e5e7eb;
+  --list-hover-bg: #eff6ff;
+  --list-separator: #f3f4f6;
+  --selected-bg: #3b82f6;
+  --selected-text: #ffffff;
+  --selected-hover-bg: #2563eb;
+
+  /* Window Controls (Traffic Lights) */
+  --control-close-start: #ff5f57;
+  --control-close-end: #ff3b30;
+  --control-close-icon: #4d0000;
+  --control-minimize-start: #ffbd2e;
+  --control-minimize-end: #ff9500;
+  --control-minimize-icon: #995700;
+  --control-maximize-start: #28cd41;
+  --control-maximize-end: #34c759;
+  --control-maximize-icon: #006610;
+
+  /* Popover/Tooltip */
+  --popover-bg: rgba(255, 255, 255, 0.95);
+  --popover-text: #1c1c1e;
+  --popover-border: rgba(0, 0, 0, 0.15);
+
+  /* Notification */
+  --notify-bg-color: rgba(255, 255, 255, 0.9);
+  --notify-text-color-primary: #1c1c1e; // Nearly black
+  --notify-text-color-secondary: #3c3c43;
+  --notify-border-color: rgba(0, 0, 0, 0.08);
+  --notify-close-btn-color: #8e8e93; // Medium gray
+
+  /* Panel */
+  --panel-bg: var(--color-system-background-tertiary); /* #ffffff */
+  --panel-radius: 8px; /* Example fixed radius */
+  --panel-color: var(--color-label); /* #000000 */
+
+  /* Stepper (Number Input) */
+  --stepper-primary: #007aff; /* Apple Blue for action */
+  --stepper-bg: rgba(255, 255, 255, 0.75); /* Liquid Glass effect light */
+  --stepper-border-color: rgba(0, 0, 0, 0.1);
+  --stepper-text-color: #000000;
+  --stepper-icon-color: var(--stepper-primary);
+  --stepper-disabled-icon: rgba(0, 0, 0, 0.3);
+
+  /* Map/GIS */
+  --map-bg-primary: #ffffff;
+  --map-bg-secondary: #f2f2f7;
+  --map-bg-tertiary: #e5e5ea;
+  --map-text-primary: #000000;
+  --map-text-secondary: #8e8e93;
+  --map-accent-color: #007aff;
+  --map-accent-destructive: #ff3b30;
+  --map-control-bg: rgba(255, 255, 255, 0.95);
+  --map-control-border: rgba(0, 0, 0, 0.04);
+  --map-control-divider: rgba(0, 0, 0, 0.08);
+  --map-control-hover: rgba(0, 0, 0, 0.05);
+  --map-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --map-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --map-shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  /* Segmented Control */
+  --segment-background: rgba(118, 118, 128, 0.12);
+  --segment-text: rgba(60, 60, 67, 0.6);
+  --segment-selected-background: #ffffff;
+  --segment-selected-text: #000000;
+  --segment-selected-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+
+  /* Clock */
+  --clock-face-color: var(--system-white);
+  --clock-border-color: rgba(0, 0, 0, 0.15); /* Subtle gray border */
+  --clock-hand-hour: var(--system-black);
+  --clock-hand-minute: var(--system-black);
+  --clock-hand-second: var(--system-red);
+
+  --color-folder-bg: rgba(255, 255, 255, 0.75);
+  --color-folder-shadow: rgba(31, 38, 135, 0.37);
+  --color-cell-label: var(--color-primary-text);
+  --color-cell-shadow: rgba(0, 0, 0, 0.12);
+}
+
+.dark-mode {
+  /* Widget/Card Defaults */
+  --bg-widget: rgba(44, 44, 56, 0.95);
+  --shadow-base: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --border-color-widget: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* Modal/Overlay */
+  --modal-overlay-bg: rgba(0, 0, 0, 0.6);
+  --modal-container-bg: rgba(30, 30, 30, 0.95);
+  --modal-shadow: rgba(0, 0, 0, 0.6);
+  --modal-header-bg-start: rgba(45, 45, 45, 0.8);
+  --modal-header-bg-end: rgba(28, 28, 30, 0.8);
+  --modal-header-border: rgba(255, 255, 255, 0.1);
+  --modal-title-color: #f5f5f7;
+  --modal-body-color: #f5f5f7;
+  --modal-body-secondary: #a1a1a6;
+  --modal-footer-bg: rgba(28, 28, 30, 0.6);
+  --modal-footer-border: rgba(255, 255, 255, 0.1);
+
+  /* Buttons */
+  --btn-primary-bg-start: #0a84ff;
+  --btn-primary-bg-end: #0066cc;
+  --btn-primary-color: #ffffff;
+  --btn-primary-shadow: rgba(10, 132, 255, 0.4);
+  --btn-secondary-bg: rgba(255, 255, 255, 0.1);
+  --btn-secondary-bg-hover: rgba(255, 255, 255, 0.15);
+  --btn-secondary-color: #0a84ff;
+
+  /* Standard Controls (Form fields, etc.) */
+  --control-bg: #1f2937;
+  --control-border: #4b5563; /* gray-600 */
+  --control-border-active: #60a5fa; /* blue-400 */
+  --primary-text: #f9fafb;
+  --icon-color: #9ca3af;
+
+  /* List/Table Controls */
+  --list-bg: #1f2937;
+  --list-border: #374151;
+  --list-hover-bg: #374151;
+  --list-separator: #374151;
+  --selected-bg: #3b82f6;
+  --selected-text: #ffffff;
+  --selected-hover-bg: #60a5fa;
+
+  /* Window Controls (Traffic Lights) - (Colors are often static/non-theming) */
+  --control-close-start: #ff5f57;
+  --control-close-end: #ff3b30;
+  --control-close-icon: #4d0000;
+  --control-minimize-start: #ffbd2e;
+  --control-minimize-end: #ff9500;
+  --control-minimize-icon: #995700;
+  --control-maximize-start: #28cd41;
+  --control-maximize-end: #34c759;
+  --control-maximize-icon: #006610;
+
+  /* Popover/Tooltip */
+  --popover-bg: rgba(40, 40, 40, 0.95);
+  --popover-text: #ffffff;
+  --popover-border: rgba(255, 255, 255, 0.15);
+
+  /* Notification */
+  --notify-bg-color: rgba(28, 28, 30, 0.9);
+  --notify-text-color-primary: #ffffff;
+  --notify-text-color-secondary: #e5e5ea;
+  --notify-border-color: rgba(255, 255, 255, 0.1);
+  --notify-close-btn-color: #98989d; // Lighter
+
+  /* Panel */
+  --panel-bg: #2c2c2e; /* Directly set to dark tertiary background */
+  --panel-color: #ffffff; /* Directly set to dark label color */
+
+  /* Stepper (Number Input) */
+  --stepper-primary: #0a84ff; /* Slightly brighter blue for dark mode */
+  --stepper-bg: rgba(28, 28, 30, 0.75); /* Liquid Glass effect dark */
+  --stepper-border-color: rgba(255, 255, 255, 0.2);
+  --stepper-text-color: #ffffff;
+  --stepper-icon-color: var(--stepper-primary);
+  --stepper-disabled-icon: rgba(255, 255, 255, 0.4);
+
+  /* Map/GIS */
+  --map-bg-primary: #1c1c1e;
+  --map-bg-secondary: #000000;
+  --map-bg-tertiary: #2c2c2e;
+  --map-text-primary: #ffffff;
+  --map-text-secondary: #98989d;
+  --map-accent-color: #0a84ff;
+  --map-accent-destructive: #ff453a;
+  --map-control-bg: rgba(28, 28, 30, 0.95);
+  --map-control-border: rgba(255, 255, 255, 0.1);
+  --map-control-divider: rgba(255, 255, 255, 0.15);
+  --map-control-hover: rgba(255, 255, 255, 0.1);
+  --map-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5);
+  --map-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.6);
+  --map-shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.7);
+
+  /* Segmented Control */
+  --segment-background: rgba(118, 118, 128, 0.24);
+  --segment-text: rgba(235, 235, 245, 0.6);
+  --segment-selected-background: rgba(99, 99, 102, 0.5);
+  --segment-selected-text: #ffffff;
+  --segment-selected-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
+
+  /* Clock */
+  --clock-face-color: #2c2c2e; /* Darker gray face */
+  --clock-border-color: rgba(255, 255, 255, 0.1);
+  --clock-hand-hour: var(--system-white);
+  --clock-hand-minute: var(--system-white);
+  --clock-hand-second: var(--system-red);
+
+  --color-folder-bg: rgba(40, 40, 40, 0.85);
+  --color-folder-shadow: rgba(0, 0, 0, 0.5);
+  --color-cell-label: var(--color-primary-text);
+  --color-cell-shadow: rgba(0, 0, 0, 0.8);
+}

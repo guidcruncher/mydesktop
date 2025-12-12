@@ -1,0 +1,83 @@
+// --- Core Theming: General UI & Aero/Glass Effects ---
+:root {
+  /* UI Palette (iOS-style Base) */
+  --ui-background: #f2f2f7;
+  --ui-card-bg: #ffffff;
+  --ui-text-primary: #000000;
+  --ui-text-secondary: #8e8e93;
+  --ui-text-tertiary: #c7c7cc;
+  --ui-separator: #c6c6c8;
+  --ui-field-bg: #e3e3e8;
+
+  /* General Backgrounds/Text */
+  --bg-primary: rgba(255, 255, 255, 0.95);
+  --bg-secondary: #f5f5f7;
+  --text-primary: #1d1d1f;
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --text-tertiary: rgba(0, 0, 0, 0.85);
+
+  /* Borders & Dividers */
+  --border-color: rgba(0, 0, 0, 0.05);
+  --divider-color: rgba(0, 0, 0, 0.1);
+
+  /* Accents & States */
+  --accent-color: #007aff;
+  --accent-hover: #0051d5;
+  --badge-bg: rgba(0, 122, 255, 0.1);
+  --badge-text: #007aff;
+
+  /* Shadows */
+  --shadow-default: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.12);
+
+  /* Glass/Aero Effects */
+  --color-glass-rgb: 255, 255, 255;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-highlight: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --glass-bg-opacity: 0.15;
+  --glass-border-opacity: 0.25;
+  --blur-radius-base: 20px;
+  --theming-transition:
+    background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+.dark-mode {
+  /* UI Palette (iOS-style Base) */
+  --ui-background: #000000;
+  --ui-card-bg: #1c1c1e;
+  --ui-text-primary: #ffffff;
+  --ui-text-secondary: #98989d;
+  --ui-text-tertiary: #5a5a5f;
+  --ui-separator: #38383a;
+  --ui-field-bg: #2c2c2e;
+
+  /* General Backgrounds/Text */
+  --bg-primary: rgba(28, 28, 30, 0.95);
+  --bg-secondary: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-tertiary: rgba(255, 255, 255, 0.85);
+
+  /* Borders & Dividers */
+  --border-color: rgba(255, 255, 255, 0.1);
+  --divider-color: rgba(255, 255, 255, 0.1);
+
+  /* Accents & States */
+  --accent-color: #0a84ff;
+  --accent-hover: #409cff;
+  --badge-bg: rgba(10, 132, 255, 0.2);
+  --badge-text: #0a84ff;
+
+  /* Shadows */
+  --shadow-default: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.6);
+
+  /* Glass/Aero Effects */
+  --color-glass-rgb: 0, 0, 0;
+  --glass-bg: rgba(30, 30, 30, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
