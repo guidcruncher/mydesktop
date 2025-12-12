@@ -1,6 +1,11 @@
 {
   "name": "mydesktop",
   "private": true,
+  "workspaces": [
+    "client",
+    "server",
+    "shared"
+  ],
   "scripts": {
     "install:all": "cd client && npm install && cd ../server && npm install",
     "server": "cd server && npm run dev-server",

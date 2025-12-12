@@ -1,16 +1,34 @@
-import Fastify, { FastifyInstance } from "fastify"
+import Fastify from "fastify"
 import cors from "@fastify/cors"
+import fastifyStatic from "@fastify/static"
+import path from "path"
 import { routes } from "./routes"
 
-const server: FastifyInstance = Fastify({ logger: true })
+const server = Fastify({ logger: true })
 
-// Register CORS to allow the frontend to communicate
-server.register(cors, {
-  origin: true, // In production, replace with your client URL
+// 1. Register CORS (Useful for dev, less critical if serving from same origin)
+server.register(cors)
+
+// 2. Register API Routes first (so they take precedence)
+server.register(routes)
+
+// 3. Serve Static Files (The built Vue app)
+// We assume the Vue build will be copied to a 'public' folder relative to this file
+server.register(fastifyStatic, {
+  root: path.join(__dirname, "public"),
+  prefix: "/", // Serve from the root
 })
 
-// Register Routes
-server.register(routes)
+// 4. SPA Fallback: If a route isn't found (and isn't an API), return index.html
+server.setNotFoundHandler((req, reply) => {
+  // If the request is for an API, return actual 404 JSON
+  if (req.raw.url?.startsWith("/api")) {
+    reply.status(404).send({ error: "API endpoint not found" })
+    return
+  }
+  // Otherwise serve index.html for Vue Router
+  reply.sendFile("index.html")
+})
 
 const start = async () => {
   server.listen({ port: 3009, host: "0.0.0.0" }, function (err, address) {
