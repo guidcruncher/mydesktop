@@ -3,7 +3,7 @@ services:
   # -----------------------------
   # Backend Development Container
   # -----------------------------
-  server:
+  mydesktop-server:
     image: node:20-alpine
     working_dir: /app/server
     ports:
@@ -17,17 +17,19 @@ services:
       - /app/client/node_modules
     environment:
       - PORT=3009
+    hostname: mydesktop-server
+    container_name: mydesktop-server
     # Install root deps (for workspaces) then start server dev mode
     command: sh -c "npm install && npm run dev --workspace=server"
 
   # -----------------------------
   # Frontend Development Container
   # -----------------------------
-  client:
+  mydesktop-client:
     image: node:20-alpine
     working_dir: /app/client
     ports:
-      - 3010:3010"
+      - 3010:3010
     volumes:
       - ./:/app
       - /app/node_modules
@@ -35,8 +37,10 @@ services:
       - /app/client/node_modules
     environment:
       # Point Vite to the backend container name
-      - VITE_API_TARGET=http://server:3009
+      - VITE_API_TARGET=http://mydesktop-server:3009
     depends_on:
-      - server
+      - mydesktop-server
+    hostname: mydesktop-client
+    container_name: mydesktop-client
     # Install (in case server didn't finish) then start vite
     command: sh -c "npm install && npm run dev --workspace=client"
