@@ -10,6 +10,7 @@ import UIAppIconItem from './UIAppIconItem.vue'
 import UIButton from './UIButton.vue'
 import UICollectionView from './UICollectionView.vue'
 import UICollectionViewItem from './UICollectionViewItem.vue'
+import UIColorPicker from './UIColorPicker.vue'
 import UIContentPanel from './UIContentPanel.vue'
 import UIDatePicker from './UIDatePicker.vue'
 import UIDropdownList from './UIDropdownList.vue'
@@ -50,7 +51,7 @@ import UIWidgetView from './UIWidgetView.vue'
 import '../styles/styles.scss'
 import { createPinia } from 'pinia'
 import { VisualEffect } from '../directives/visualEffect'
-import { BackgroundMesh } from '../directives/backgroundMesh'
+import { Background } from '../directives/background'
 import { ClickOutside } from '../directives/clickOutside'
 import { useThemeStore } from '../stores/themeStore'
 
@@ -66,6 +67,7 @@ export const GlassComponents = {
   UIButton,
   UICollectionView,
   UICollectionViewItem,
+  UIColorPicker,
   UIContentPanel,
   UIDatePicker,
   UIDropdownList,
@@ -110,7 +112,7 @@ export function  UseGlassUi(app) {
     const pinia = createPinia()
     app.directive('click-outside', ClickOutside);
     app.directive('visual-effect', VisualEffect);
-    app.directive('background-mesh', BackgroundMesh);
+    app.directive('background', Background);
 
     app.use(pinia);
     Object.keys(GlassComponents).forEach((name) => {

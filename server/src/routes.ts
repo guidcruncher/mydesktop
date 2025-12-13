@@ -1,16 +1,5 @@
-import { FastifyInstance } from "fastify"
+import { Proxy } from "./api/proxy/index.ts "
 
-export async function routes(fastify: FastifyInstance) {
-  fastify.get("/api/hello", async (request, reply) => {
-    return { message: "Hello from Fastify Server!" }
-  })
-
-  fastify.get("/api/data", async (request, reply) => {
-    return {
-      items: [
-        { id: 1, name: "Item One" },
-        { id: 2, name: "Item Two" },
-      ],
-    }
-  })
+export async function routes(fastify) {
+  Proxy(fastify)
 }

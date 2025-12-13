@@ -3,6 +3,10 @@ import cors from "@fastify/cors"
 import fastifyStatic from "@fastify/static"
 import path from "path"
 import { routes } from "./routes"
+import { fileURLToPath } from "url"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const server = Fastify({ logger: true })
 

@@ -1,6 +1,6 @@
-export const BackgroundMesh = (config, el) => {
-  const getMeshBackgroundCSS = () => {
-    const [c1, c2, c3, c4] = config.colors
+export const BackgroundMesh = (colors, el) => {
+  const getMeshBackgroundCSS = (colorvalues) => {
+    const [c1, c2, c3, c4] = colorvalues
 
     return `
         radial-gradient(circle at 10% 20%, ${c1} 0%, transparent 50%),
@@ -11,15 +11,19 @@ export const BackgroundMesh = (config, el) => {
   }
 
   const applyBodyStyles = (el) => {
-    const bodyStyle = {}
+    const bodyStyle = el.style
 
-    bodyStyle.backgroundImage = getMeshBackgroundCSS()
+    bodyStyle.backgroundImage = getMeshBackgroundCSS(colors)
 
     bodyStyle.backgroundSize = '200% 200%'
     bodyStyle.backgroundRepeat = 'no-repeat'
     bodyStyle.animation = 'moveMesh 30s infinite alternate'
     bodyStyle.minHeight = '100vh'
     bodyStyle.margin = '0'
+
+    if (!el.classList.contains('mesh-gradient')) {
+      el.classList.add('mesh-gradient')
+    }
 
     return bodyStyle
   }
