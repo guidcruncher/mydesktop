@@ -14,7 +14,7 @@ const bg = computed(() => {
   }
 })
 
-window.addEventListener(
+/* window.addEventListener(
   'touchmove',
   function (event) {
     if (event.scale !== 1) {
@@ -23,7 +23,7 @@ window.addEventListener(
     }
   },
   { passive: false },
-)
+)*/
 </script>
 
 <style lang="scss">
@@ -43,5 +43,10 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.container-wrapper {
+  overflow-y: scroll;
+  color: var(ui-text-primary);
 }
 </style>

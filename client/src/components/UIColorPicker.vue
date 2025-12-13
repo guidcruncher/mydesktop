@@ -128,7 +128,7 @@ function updateColor(): void {
   emit('update:modelValue', color)
   emit('selected', {
     hex: color,
-    hsl: `hsl(${Math.round(hue.value)}, ${Math.round(saturation.value)}, ${Math.round(lightness.value)})`,
+    hsla: `hsla(${Math.round(hue.value)}, ${Math.round(saturation.value)}, ${Math.round(lightness.value)}, 1)`,
     rgba: hex2rgba(color, 1),
   })
 }

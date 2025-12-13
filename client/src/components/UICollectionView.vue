@@ -17,7 +17,6 @@ import { ref } from 'vue'
   max-width: 800px;
   margin: 0 auto;
 }
-
 .cell {
   display: flex;
   flex-direction: column;
@@ -25,7 +24,6 @@ import { ref } from 'vue'
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-
 .cell-content {
   width: 80px;
   height: 80px;
@@ -39,23 +37,10 @@ import { ref } from 'vue'
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
-
 .cell-content:hover {
   transform: scale(0.95);
 }
-
 .cell:active .cell-content {
   transform: scale(0.9);
-}
-
-.icon {
-  font-size: 36px;
-}
-
-.cell-label {
-  font-size: 13px;
-  color: var(--primary-text);
-  text-align: center;
-  font-weight: 400;
 }
 </style>
