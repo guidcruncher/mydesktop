@@ -1,18 +1,11 @@
 <template>
-  <div class="container-wrapper" v-background="bg">
+  <div class="container-wrapper">
     <slot></slot>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-
-const bg = computed(() => {
-  return {
-    type: 'image',
-    src: 'https://assets.simpleviewinc.com/simpleview/image/fetch/c_fill,f_jpg,h_431,q_75,w_640/https://swtdmsmedia.newmindmedia.com/wsimgs/Lulworth_Estate_Photo_Competition_credit_Vikki_Douglas_Durdle_Door_2087049103.jpg',
-  }
-})
 
 /* window.addEventListener(
   'touchmove',
