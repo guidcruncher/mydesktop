@@ -37,7 +37,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .navigation-bar {
   position: sticky;
   top: 0;
@@ -83,6 +83,10 @@ onUnmounted(() => {
     &--right {
       justify-content: flex-end;
     }
+  }
+
+  body {
+    padding-bottom: 44px !important ;
   }
 }
 </style>

@@ -8,7 +8,7 @@ const v = ref({})
 
 const bg = computed(() => {
   return {
-    type: 'mesh',
+    type: 'image',
     colors: colors.value,
     src: 'https://assets.simpleviewinc.com/simpleview/image/fetch/c_fill,f_jpg,h_431,q_75,w_640/https://swtdmsmedia.newmindmedia.com/wsimgs/Lulworth_Estate_Photo_Competition_credit_Vikki_Douglas_Durdle_Door_2087049103.jpg',
   }

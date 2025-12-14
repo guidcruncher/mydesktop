@@ -18,13 +18,19 @@ const getFilename = (uri) => {
 export async function Proxy(fastify: FastifyInstance) {
   fastify.get("/api/proxy", async (request, reply) => {
     const imageUrl = request.query.url
+    const ua =
+      request.headers["User-Agent"] ??
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
 
     if (!imageUrl) {
       reply.code(400).send("Missing image URL parameter.")
       return
     }
 
-    const response = await fetch(imageUrl)
+    const response = await fetch(imageUrl, {
+      method: "GET",
+      headers: new Headers({ "User-Agent": ua }),
+    })
 
     if (!response.ok) {
       request.log.error(`Failed to fetch external image: ${response.status} ${response.statusText}`)

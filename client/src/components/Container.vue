@@ -24,15 +24,15 @@ html,
 body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100%0%;
   overflow: hidden; /* Disables scrolling on the root window */
   overscroll-behavior: none; /* Disables the "bounce" effect on Mac/iOS */
   touch-action: none;
 }
 
 #app {
-  width: 100%;
+  width: 100vw;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -40,6 +40,9 @@ body {
 
 .container-wrapper {
   overflow-y: scroll;
+  overflow-x: auto;
   color: var(ui-text-primary);
+  width: 100vw;
+  height: 100%;
 }
 </style>
