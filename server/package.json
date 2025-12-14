@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "cd .. && npm run dev",
-    "dev-server": "tsx watch src/index.ts --color",
-    "build": "NODE_ENV=development rm -rf ./dist && tsc --build . --pretty && tsc-alias",
+    "dev-server": "npm run registry && tsx watch src/index.ts --color",
+    "registry": "node ./scripts/apiiregistry.ts",
+    "build": "npm run registry && NODE_ENV=development rm -rf ./dist && tsc --build . --pretty && tsc-alias",
     "start": "node dist/index.js",
     "lint": "eslint . --fix --cache",
     "format": "prettier --write src/"
