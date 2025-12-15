@@ -1,0 +1,26 @@
+desktop:
+  background:
+    style: mesh
+    colors:
+      - "hsla(280, 80%, 70%, 1)"
+      - "hsla(200, 90%, 65%, 1)"
+      - "hsla(330, 80%, 75%, 1)"
+      - "hsla(40, 90%, 70%, 1)"
+    src: ""
+    color: ""
+
+grid:
+  components:
+    - name: Clock
+      type: widget
+      component: UIAnalogClock
+      props:
+        timezone: "Europe/London"
+
+    - name: "Pi-Hole"
+      type: app-icon
+      component: UIAppIconLink
+      props:
+        label: "Pi-Hole"
+        url: "http://192.168.1.202:3000/admin"
+        icon: "pi-hole"

@@ -9,6 +9,7 @@ import UIActivityIndicator from './UIActivityIndicator.vue'
 import UIAlert from './UIAlert.vue'
 import UIAnalogClock from './UIAnalogClock.vue'
 import UIAppIconItem from './UIAppIconItem.vue'
+import UIAppIconLink from './UIAppIconLink.vue'
 import UIButton from './UIButton.vue'
 import UICollectionView from './UICollectionView.vue'
 import UICollectionViewItem from './UICollectionViewItem.vue'
@@ -69,6 +70,7 @@ export const GlassComponents = {
   UIAlert,
   UIAnalogClock,
   UIAppIconItem,
+  UIAppIconLink,
   UIButton,
   UICollectionView,
   UICollectionViewItem,
