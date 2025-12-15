@@ -15,6 +15,7 @@ import UICollectionViewItem from './UICollectionViewItem.vue'
 import UIColorPicker from './UIColorPicker.vue'
 import UIContentPanel from './UIContentPanel.vue'
 import UIDatePicker from './UIDatePicker.vue'
+import UIDesktopRenderer from './UIDesktopRenderer.vue'
 import UIDropdownList from './UIDropdownList.vue'
 import UIDropdownMenu from './UIDropdownMenu.vue'
 import UIDropdownMenuItem from './UIDropdownMenuItem.vue'
@@ -74,6 +75,7 @@ export const GlassComponents = {
   UIColorPicker,
   UIContentPanel,
   UIDatePicker,
+  UIDesktopRenderer,
   UIDropdownList,
   UIDropdownMenu,
   UIDropdownMenuItem,
