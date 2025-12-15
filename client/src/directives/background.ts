@@ -12,11 +12,11 @@ const apply = (el, binding) => {
     return
   }
   const config = binding.value
-  if (!config.type) {
+  if (!config.style) {
     return
   }
   const ctl = document.body
-  switch (config.type) {
+  switch (config.style) {
     case 'mesh':
       BackgroundMesh(config.colors ?? colors, ctl)
       break

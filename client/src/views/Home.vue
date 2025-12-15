@@ -1,13 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { computed } from 'vue'
-
+import { onMounted, computed, ref } from 'vue'
+const showDesktop = ref(false)
 const desktop = ref({})
+const bg = ref({})
+
+onMounted(async () => {
+  var url = 'http://192.168.1.202:3009/api/desktop'
+  const response = await fetch(url)
+  if (response.ok) {
+    const json = await response.json()
+    if (json.desktop && json.layout) {
+      desktop.value = json
+      if (json.desktop.background) {
+        bg.value = json.desktop.background
+      }
+      showDesktop.value = true
+    }
+  } else {
+    alert('Error')
+  }
+})
 </script>
 
 <template>
   <div class="home" v-background="bg">
-    <UIDesktopRenderer v-model="desktop"> </UIDesktopRenderer>
+    <UIDesktopRenderer v-model="desktop" v-if="showDesktop"> </UIDesktopRenderer>
   </div>
-  {{ bg }}
 </template>

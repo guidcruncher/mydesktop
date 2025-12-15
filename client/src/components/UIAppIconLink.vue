@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   label: {
     type: String,
@@ -15,6 +17,10 @@ const props = defineProps({
 
 const emit = defineEmits(['click'])
 
+const iconUrl = computed(() => {
+  return `http://192.168.1.202:3009/api/icon/${props.icon}/png`
+})
+
 const handleClick = () => {
   if (!props.disabled) {
     emit('click', { name: props.name, label: props.label, icon: props.icon, url: props.url })
@@ -26,7 +32,7 @@ const handleClick = () => {
 <template>
   <div class="cell" :class="{ disabled: props.disabled }" @click="handleClick">
     <div class="cell-content">
-      <img v-if="icon" :src="icon" :alt="label" class="app-icon-image" />
+      <img v-if="icon" :src="iconUrl" :alt="label" class="app-icon-image" />
       <slot v-else name="icon"></slot>
     </div>
 

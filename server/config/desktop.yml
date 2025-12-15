@@ -6,14 +6,15 @@ desktop:
       - "hsla(200, 90%, 65%, 1)"
       - "hsla(330, 80%, 75%, 1)"
       - "hsla(40, 90%, 70%, 1)"
-    src: ""
-    color: ""
+    src: "https://sleepingbearhotels.com/wp-content/uploads/2025/05/Where-Is-Durdle-Door.webp"
+    color: "#d6d3ff"
 
-grid:
+layout:
+  columns: 12
   components:
     - name: Clock
       type: widget
-      component: UIAnalogClock
+      component: UIFlipClock
       props:
         timezone: "Europe/London"
 
