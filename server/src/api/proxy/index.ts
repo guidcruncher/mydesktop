@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify"
 import { Readable } from "node:stream"
 import Module from "node:module"
+import Parser from "rss-parser"
 
 const require = Module.createRequire(import.meta.url)
 const sharp = require("sharp")
@@ -16,6 +17,35 @@ const getFilename = (uri) => {
 }
 
 export async function Proxy(fastify: FastifyInstance) {
+  fastify.get("/api/proxy/rss", async (request, reply) => {
+    const rssUrl = request.query.url
+    const ua =
+      request.headers["User-Agent"] ??
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+    if (!rssUrl) {
+      reply.code(400).send("Missing feed URL parameter.")
+      return
+    }
+    const response = await fetch(rssUrl, {
+      method: "GET",
+      headers: new Headers({ "User-Agent": ua }),
+    })
+    if (!response.ok) {
+      request.log.error(`Failed to fetch external feed: ${response.status} ${response.statusText}`)
+      reply.code(response.status).send("Failed to fetch external feed.")
+      return
+    }
+    const feed = await response.text()
+    const contentType = response.headers.get("content-type") || "text/xml"
+    const filename = getFilename(rssUrl)
+    return reply
+      .header("Content-Disposition", `inline; filename='${filename}'`)
+      .header("Content-Type", contentType)
+      .header("Access-Control-Allow-Origin", "*")
+      .header("Cache-Control", "no-store")
+      .send(feed)
+  })
+
   fastify.get("/api/proxy", async (request, reply) => {
     const imageUrl = request.query.url
     const ua =

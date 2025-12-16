@@ -8,6 +8,14 @@
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.6);
 
+  /* News */
+  --news-bg-fallback: #e5e5ea; /* iOS Light Gray */
+  --news-accent: #ff2d55; /* Standard Pink/Red */
+  --news-text: #ffffff; /* Text on image is always white */
+  --news-text-sub: rgba(255, 255, 255, 0.85);
+  --news-shadow: rgba(0, 0, 0, 0.15); /* Lighter shadow */
+  --news-status-text: #8e8e93;
+
   /* Weather */
   --weather-w-compact: 160px;
   --weather-h-compact: 160px;
@@ -153,6 +161,14 @@
   --shadow-base: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* News */
+  --news-bg-fallback: #1c1c1e; /* iOS Dark Gray */
+  --news-accent: #ff375f; /* Slightly lighter/brighter accent for dark mode */
+  --news-text: #ffffff;
+  --news-text-sub: rgba(255, 255, 255, 0.8);
+  --news-shadow: rgba(0, 0, 0, 0.4); /* Deeper shadow */
+  --news-status-text: #98989d;
 
   /* Weather */
   --weather-bg-start: #2c3e50;

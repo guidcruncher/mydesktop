@@ -29,6 +29,7 @@ import UIListPicker from './UIListPicker.vue'
 import UIMenubar from './UIMenubar.vue'
 import UIModalDialog from './UIModalDialog.vue'
 import UINavigationBar from './UINavigationBar.vue'
+import UINewsHeadlines from './UINewsHeadlines.vue'
 import UINotificationBar from './UINotificationBar.vue'
 import UIPageControl from './UIPageControl.vue'
 import UIPopover from './UIPopover.vue'
@@ -91,6 +92,7 @@ export const GlassComponents = {
   UIMenubar,
   UIModalDialog,
   UINavigationBar,
+  UINewsHeadlines,
   UINotificationBar,
   UIPageControl,
   UIPopover,

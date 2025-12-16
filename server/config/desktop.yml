@@ -27,7 +27,14 @@ layout:
         icon: "pi-hole"
 
     - name: Weather
-      type: widget
+      type: custom
       component: UIWeather
       props:
         location: "Berinsfield"
+
+    - name: News
+      type: custom
+      component: UINewsHeadlines
+      props:
+        rss: "http://feeds.bbci.co.uk/news/rss.xml"
+        size: "medium"
