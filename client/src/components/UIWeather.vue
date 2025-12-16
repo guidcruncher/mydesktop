@@ -5,18 +5,20 @@ import { ref, onMounted, watch, nextTick, computed, onUnmounted } from 'vue';
 const props = defineProps({
   location: { type: String, default: 'London' },
   expanded: { type: Boolean, default: false },
-  theme: { type: String, default: 'light', validator: (v) => ['light', 'dark'].includes(v) }
 });
 
 const emit = defineEmits(['update:expanded']);
 
 // --- State ---
 const isExpanded = ref(props.expanded);
-const isDark = ref(props.theme === 'dark');
-const isAnimating = ref(false); // Controls existence of modal in DOM
+const isAnimating = ref(false); 
 const loading = ref(true);
 const searchOpen = ref(false);
 const searchQuery = ref('');
+const refreshTimer = ref(null);
+
+// Store current location for auto-refresh
+const currentLocation = ref({ lat: null, lon: null, name: '' });
 
 // Weather Data
 const weatherData = ref({
@@ -61,8 +63,12 @@ const getIcon = (code) => {
 };
 
 // --- API Logic ---
-const fetchWeather = async (lat, lon, name) => {
-  loading.value = true;
+const fetchWeather = async (lat, lon, name, silent = false) => {
+  // Store for auto-refresh
+  currentLocation.value = { lat, lon, name };
+  
+  if (!silent) loading.value = true;
+  
   try {
     const res = await fetch(`${API_URL}?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`);
     const data = await res.json();
@@ -94,7 +100,7 @@ const fetchWeather = async (lat, lon, name) => {
     };
   } catch (err) { console.error(err); } 
   finally { 
-    loading.value = false; 
+    if (!silent) loading.value = false; 
     refreshIcons();
   }
 };
@@ -120,33 +126,54 @@ const handleLocate = () => {
   }
 };
 
+// --- Helper: Refresh Data ---
+const refreshData = async (silent = false) => {
+  // Only refresh if we have a valid location loaded
+  if (currentLocation.value.lat && currentLocation.value.lon) {
+    await fetchWeather(
+      currentLocation.value.lat, 
+      currentLocation.value.lon, 
+      currentLocation.value.name, 
+      silent
+    );
+  }
+};
+
+// --- Auto Refresh Logic ---
+const startAutoRefresh = () => {
+  if (refreshTimer.value) clearInterval(refreshTimer.value);
+  // Refresh every 1 hour (3600000 ms)
+  refreshTimer.value = setInterval(() => {
+    refreshData(true); // Silent refresh
+  }, 3600000);
+};
+
 // --- Expansion / Animation Logic ---
 
 const openWidget = async () => {
   if (isExpanded.value) return;
   
-  // 1. Lock DOM & Set State
-  isAnimating.value = true; // Renders modal in DOM
+  // Force data refresh on expand
+  refreshData();
+
+  isAnimating.value = true;
   isExpanded.value = true;
   document.body.style.overflow = 'hidden';
   emit('update:expanded', true);
 
-  // 2. Initial Position (Match Compact Widget)
   const rect = compactRef.value.getBoundingClientRect();
   modalStyle.value = {
     top: `${rect.top}px`,
     left: `${rect.left}px`,
     width: `${rect.width}px`,
     height: `${rect.height}px`,
-    borderRadius: '22px', // Match compact radius
+    borderRadius: '22px',
     transform: 'none'
   };
 
-  // 3. Render Icons and Animate to Center (Next Tick)
   await nextTick();
-  refreshIcons(); // CRITICAL FIX: Scan new DOM for icons
+  refreshIcons(); 
   
-  // Force reflow ensures transition triggers
   void document.body.offsetHeight; 
   
   modalStyle.value = {
@@ -160,7 +187,9 @@ const openWidget = async () => {
 };
 
 const closeWidget = async () => {
-  // 1. Animate back to Compact Position
+  // Force silent data refresh on collapse to update compact view
+  refreshData(true);
+
   const rect = compactRef.value.getBoundingClientRect();
   modalStyle.value = {
     top: `${rect.top}px`,
@@ -173,31 +202,38 @@ const closeWidget = async () => {
   
   searchOpen.value = false;
 
-  // 2. Wait for transition, then cleanup
   setTimeout(() => {
     isExpanded.value = false;
     isAnimating.value = false;
     document.body.style.overflow = '';
     emit('update:expanded', false);
-  }, 600); // Match CSS duration
+  }, 600);
 };
 
 // Watchers
+// Location watcher handles the "Refresh on location change" requirement via searchCity->fetchWeather
 watch(() => props.location, (newVal) => { searchQuery.value = newVal; searchCity(); }, { immediate: true });
 watch(() => props.expanded, (newVal) => { if(newVal) openWidget(); else closeWidget(); });
-
-// Lifecycle
-onMounted(() => { loadIcons(); if(props.expanded) openWidget(); });
-onUnmounted(() => { document.body.style.overflow = ''; });
 watch(weatherData, refreshIcons);
 
+// Lifecycle
+onMounted(() => { 
+  loadIcons(); 
+  if(props.expanded) openWidget(); 
+  startAutoRefresh();
+});
+
+onUnmounted(() => { 
+  document.body.style.overflow = ''; 
+  if (refreshTimer.value) clearInterval(refreshTimer.value);
+});
+
 // Computed Theme Class for Teleport
-const themeClass = computed(() => isDark.value ? 'weather-theme-dark' : 'weather-theme-light');
 
 </script>
 
 <template>
-  <div class="weather-wrapper" :class="themeClass">
+  <div class="weather-wrapper" >
     
     <!-- COMPACT WIDGET (Always in DOM Flow) -->
     <div 
@@ -253,7 +289,6 @@ const themeClass = computed(() => isDark.value ? 'weather-theme-dark' : 'weather
               <div class="header-actions">
                 <button class="close-btn" @click.stop="closeWidget" title="Close"><i data-lucide="x" class="icon-sm"></i></button>
                 <div class="controls-row">
-                  <button class="icon-btn" @click.stop="isDark = !isDark"><i :data-lucide="isDark ? 'sun' : 'moon'" class="icon-xs"></i></button>
                   <button class="icon-btn" @click.stop="searchOpen = !searchOpen"><i data-lucide="search" class="icon-xs"></i></button>
                   <button class="icon-btn" @click.stop="handleLocate"><i data-lucide="navigation" class="icon-xs"></i></button>
                 </div>
