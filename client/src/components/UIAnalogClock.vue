@@ -47,7 +47,7 @@
             :y="50 - 40 * Math.cos((h * 30 * Math.PI) / 180) + 1.5"
             text-anchor="middle"
             alignment-baseline="middle"
-            font-size="6"
+            font-size="8"
             font-weight="bold"
             :fill="markerColor || 'var(--ui-text-primary, #000000'"
           >

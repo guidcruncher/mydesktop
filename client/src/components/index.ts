@@ -50,6 +50,7 @@ import UITimePicker from './UITimePicker.vue'
 import UIToolbar from './UIToolbar.vue'
 import UIView from './UIView.vue'
 import UIVisualEffectView from './UIVisualEffectView.vue'
+import UIWeather from './UIWeather.vue'
 import UIWheelListView from './UIWheelListView.vue'
 import UIWidgetView from './UIWidgetView.vue'
 import '../styles/styles.scss'
@@ -111,6 +112,7 @@ export const GlassComponents = {
   UIToolbar,
   UIView,
   UIVisualEffectView,
+  UIWeather,
   UIWheelListView,
   UIWidgetView,
 }
