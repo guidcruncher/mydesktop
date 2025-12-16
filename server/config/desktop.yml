@@ -14,7 +14,7 @@ layout:
   components:
     - name: Clock
       type: widget
-      component: UIFlipClock
+      component: UIAnalogClock
       props:
         timezone: "Europe/London"
 

@@ -15,7 +15,7 @@ export async function Desktop(fastify: FastifyInstance) {
       .header("Content-Disposition", `inline; filename=config.json'`)
       .header("Content-Type", "application/json")
       .header("Access-Control-Allow-Origin", "*")
-      .header("Cache-Control", "public, max-age=31536000")
+      .header("Cache-Control", "no-store, private")
       .send(JSON.stringify(doc))
   })
 }
