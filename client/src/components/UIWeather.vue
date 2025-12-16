@@ -1,32 +1,35 @@
 <script setup>
-import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue';
+import { ref, onMounted, watch, nextTick, computed, onUnmounted } from 'vue';
 
 // --- Props & Emits ---
 const props = defineProps({
   location: { type: String, default: 'London' },
   expanded: { type: Boolean, default: false },
+  theme: { type: String, default: 'light', validator: (v) => ['light', 'dark'].includes(v) }
 });
 
 const emit = defineEmits(['update:expanded']);
 
 // --- State ---
 const isExpanded = ref(props.expanded);
+const isDark = ref(props.theme === 'dark');
+const isAnimating = ref(false); // Controls existence of modal in DOM
 const loading = ref(true);
-const error = ref(null);
 const searchOpen = ref(false);
 const searchQuery = ref('');
 
+// Weather Data
 const weatherData = ref({
   current: { temp: '--', condition: 'Loading...', code: 0, wind: '--', humid: '--', feels: '--' },
   daily: [],
   locationName: props.location
 });
 
-// Animation Refs
-const widgetRef = ref(null);
-const widgetStyle = ref({});
-const showPlaceholder = ref(false);
+// DOM Refs
+const compactRef = ref(null);
+const modalStyle = ref({});
 
+// API Constants
 const API_URL = "https://api.open-meteo.com/v1/forecast";
 const GEO_URL = "https://geocoding-api.open-meteo.com/v1/search";
 
@@ -42,6 +45,10 @@ const loadIcons = () => {
   }
 };
 
+const refreshIcons = () => {
+  nextTick(() => window.lucide?.createIcons());
+};
+
 const getIcon = (code) => {
   const map = {
     0: { icon: 'sun', desc: 'Sunny' }, 1: { icon: 'sun', desc: 'Clear' },
@@ -53,7 +60,7 @@ const getIcon = (code) => {
   return map[code] || { icon: 'cloud', desc: 'Unknown' };
 };
 
-// --- Data Fetching ---
+// --- API Logic ---
 const fetchWeather = async (lat, lon, name) => {
   loading.value = true;
   try {
@@ -86,7 +93,10 @@ const fetchWeather = async (lat, lon, name) => {
       daily
     };
   } catch (err) { console.error(err); } 
-  finally { loading.value = false; nextTick(() => window.lucide?.createIcons()); }
+  finally { 
+    loading.value = false; 
+    refreshIcons();
+  }
 };
 
 const searchCity = async () => {
@@ -110,103 +120,92 @@ const handleLocate = () => {
   }
 };
 
-// --- Animation Logic ---
-const toggleExpand = (forceState = null) => {
-  const newState = forceState !== null ? forceState : !isExpanded.value;
-  if (newState === isExpanded.value) return;
+// --- Expansion / Animation Logic ---
+
+const openWidget = async () => {
+  if (isExpanded.value) return;
   
-  isExpanded.value = newState;
-  emit('update:expanded', newState);
+  // 1. Lock DOM & Set State
+  isAnimating.value = true; // Renders modal in DOM
+  isExpanded.value = true;
+  document.body.style.overflow = 'hidden';
+  emit('update:expanded', true);
 
-  if (newState) {
-    // 1. Lock scrolling
-    document.body.style.overflow = 'hidden';
+  // 2. Initial Position (Match Compact Widget)
+  const rect = compactRef.value.getBoundingClientRect();
+  modalStyle.value = {
+    top: `${rect.top}px`,
+    left: `${rect.left}px`,
+    width: `${rect.width}px`,
+    height: `${rect.height}px`,
+    borderRadius: '22px', // Match compact radius
+    transform: 'none'
+  };
 
-    // 2. Start from current position
-    const rect = widgetRef.value.getBoundingClientRect();
-    widgetStyle.value = {
-      position: 'fixed',
-      top: `${rect.top}px`,
-      left: `${rect.left}px`,
-      width: 'var(--weather-w-compact)',
-      height: 'var(--weather-h-compact)',
-      margin: 0,
-      zIndex: 50
-    };
-    showPlaceholder.value = true;
-
-    // 3. Animate to Center
-    nextTick(() => {
-      void widgetRef.value.offsetWidth; // Force Reflow
-      // Removing explicit top/left lets CSS .expanded class take over (50%/50% center)
-      widgetStyle.value = {
-        position: 'fixed',
-        zIndex: 50,
-      };
-    });
-  } else {
-    // 1. Unlock scrolling
-    document.body.style.overflow = '';
-    searchOpen.value = false;
-    
-    // 2. Find placeholder to animate back to
-    if (showPlaceholder.value) {
-        const placeholderEl = widgetRef.value.parentElement.querySelector('.widget-placeholder');
-        if (placeholderEl) {
-            const rect = placeholderEl.getBoundingClientRect();
-            // Force coordinates back to original location
-            widgetStyle.value = {
-                position: 'fixed',
-                top: `${rect.top}px`,
-                left: `${rect.left}px`,
-                width: 'var(--weather-w-compact)',
-                height: 'var(--weather-h-compact)',
-                zIndex: 50
-            };
-            // Wait for transition end before snapping back to flow
-            setTimeout(() => {
-                showPlaceholder.value = false;
-                widgetStyle.value = {}; 
-            }, 600); // Matches CSS transition
-        } else {
-            showPlaceholder.value = false;
-            widgetStyle.value = {};
-        }
-    } else {
-        widgetStyle.value = {};
-    }
-  }
+  // 3. Render Icons and Animate to Center (Next Tick)
+  await nextTick();
+  refreshIcons(); // CRITICAL FIX: Scan new DOM for icons
+  
+  // Force reflow ensures transition triggers
+  void document.body.offsetHeight; 
+  
+  modalStyle.value = {
+    top: '50%',
+    left: '50%',
+    width: 'var(--weather-w-expand)',
+    height: 'var(--weather-h-expand)',
+    borderRadius: '34px',
+    transform: 'translate(-50%, -50%)'
+  };
 };
 
-watch(() => props.location, (newVal) => { searchQuery.value = newVal; searchCity(); }, { immediate: true });
-watch(() => props.expanded, (newVal) => toggleExpand(newVal));
+const closeWidget = async () => {
+  // 1. Animate back to Compact Position
+  const rect = compactRef.value.getBoundingClientRect();
+  modalStyle.value = {
+    top: `${rect.top}px`,
+    left: `${rect.left}px`,
+    width: `${rect.width}px`,
+    height: `${rect.height}px`,
+    borderRadius: '22px',
+    transform: 'none'
+  };
+  
+  searchOpen.value = false;
 
-onMounted(() => { loadIcons(); if(props.expanded) toggleExpand(true); });
+  // 2. Wait for transition, then cleanup
+  setTimeout(() => {
+    isExpanded.value = false;
+    isAnimating.value = false;
+    document.body.style.overflow = '';
+    emit('update:expanded', false);
+  }, 600); // Match CSS duration
+};
+
+// Watchers
+watch(() => props.location, (newVal) => { searchQuery.value = newVal; searchCity(); }, { immediate: true });
+watch(() => props.expanded, (newVal) => { if(newVal) openWidget(); else closeWidget(); });
+
+// Lifecycle
+onMounted(() => { loadIcons(); if(props.expanded) openWidget(); });
 onUnmounted(() => { document.body.style.overflow = ''; });
-watch(weatherData, () => nextTick(() => window.lucide?.createIcons()));
+watch(weatherData, refreshIcons);
+
+// Computed Theme Class for Teleport
+const themeClass = computed(() => isDark.value ? 'weather-theme-dark' : 'weather-theme-light');
+
 </script>
 
 <template>
-  <div class="weather-wrapper" >
+  <div class="weather-wrapper" :class="themeClass">
     
-    <!-- Backdrop with increased blur -->
+    <!-- COMPACT WIDGET (Always in DOM Flow) -->
     <div 
-      class="backdrop" 
-      :class="{ active: isExpanded }"
-      @click="toggleExpand(false)"
-    ></div>
-
-    <div v-if="showPlaceholder" class="widget-placeholder"></div>
-
-    <div 
-      ref="widgetRef"
-      class="ios-widget"
-      :class="{ expanded: isExpanded }"
-      :style="widgetStyle"
-      @click="!isExpanded && toggleExpand(true)"
+      ref="compactRef"
+      class="ios-widget compact-widget"
+      :class="{ 'opacity-0': isExpanded }" 
+      @click="openWidget"
     >
-      
-      <!-- COMPACT -->
       <div class="view-compact">
         <div class="compact-header">
           <span>{{ weatherData.locationName }}</span>
@@ -219,54 +218,79 @@ watch(weatherData, () => nextTick(() => window.lucide?.createIcons()));
           <span class="compact-condition">{{ weatherData.current.condition }}</span>
         </div>
       </div>
+    </div>
 
-      <!-- EXPANDED -->
-      <div class="view-expanded">
-        <div class="search-overlay" :class="{ active: searchOpen }">
-          <input v-model="searchQuery" @keyup.enter="searchCity" type="text" placeholder="Search City..." class="search-input">
-          <button @click="searchCity" class="search-go">Go</button>
-        </div>
+    <!-- EXPANDED MODAL (Teleported to Body) -->
+    <Teleport to="body">
+      <div v-if="isAnimating" class="weather-teleport-container" :class="themeClass">
+        
+        <!-- Backdrop -->
+        <div 
+          class="backdrop" 
+          :class="{ active: isExpanded }"
+          @click="closeWidget"
+        ></div>
 
-        <div class="widget-header">
-          <div>
-            <h2 class="city-name-lg">{{ weatherData.locationName }}</h2>
-            <p class="condition-lg">{{ weatherData.current.condition }}</p>
-          </div>
-          <div class="header-actions">
-            <button class="close-btn" @click.stop="toggleExpand(false)" title="Close"><i data-lucide="x" class="icon-sm"></i></button>
-            <div class="controls-row">
-              <button class="icon-btn" @click.stop="searchOpen = !searchOpen"><i data-lucide="search" class="icon-xs"></i></button>
-              <button class="icon-btn" @click.stop="handleLocate"><i data-lucide="navigation" class="icon-xs"></i></button>
+        <!-- Expanded Widget -->
+        <div 
+          class="ios-widget expanded-modal"
+          :style="modalStyle"
+        >
+          <div class="view-expanded">
+            
+            <!-- Search -->
+            <div class="search-overlay" :class="{ active: searchOpen }">
+              <input v-model="searchQuery" @keyup.enter="searchCity" type="text" placeholder="Search City..." class="search-input">
+              <button @click="searchCity" class="search-go">Go</button>
             </div>
-          </div>
-        </div>
 
-        <div class="expanded-content">
-          <div class="main-weather-lg">
-            <div class="main-icon-container"><i :data-lucide="weatherData.current.icon" class="icon-lg"></i></div>
-            <div class="temp-lg">{{ weatherData.current.temp }}°</div>
-            <div class="hl-lg">H:{{ weatherData.current.high }}° L:{{ weatherData.current.low }}°</div>
-          </div>
+            <!-- Header -->
+            <div class="widget-header">
+              <div>
+                <h2 class="city-name-lg">{{ weatherData.locationName }}</h2>
+                <p class="condition-lg">{{ weatherData.current.condition }}</p>
+              </div>
+              <div class="header-actions">
+                <button class="close-btn" @click.stop="closeWidget" title="Close"><i data-lucide="x" class="icon-sm"></i></button>
+                <div class="controls-row">
+                  <button class="icon-btn" @click.stop="isDark = !isDark"><i :data-lucide="isDark ? 'sun' : 'moon'" class="icon-xs"></i></button>
+                  <button class="icon-btn" @click.stop="searchOpen = !searchOpen"><i data-lucide="search" class="icon-xs"></i></button>
+                  <button class="icon-btn" @click.stop="handleLocate"><i data-lucide="navigation" class="icon-xs"></i></button>
+                </div>
+              </div>
+            </div>
 
-          <div class="stats-row">
-            <div class="stat-item"><span class="stat-label">Wind</span><span class="stat-val">{{ weatherData.current.wind }}</span></div>
-            <div class="stat-item"><span class="stat-label">Humidity</span><span class="stat-val">{{ weatherData.current.humid }}%</span></div>
-            <div class="stat-item"><span class="stat-label">Feels</span><span class="stat-val">{{ weatherData.current.feels }}°</span></div>
-          </div>
+            <!-- Content -->
+            <div class="expanded-content">
+              <div class="main-weather-lg">
+                <div class="main-icon-container"><i :data-lucide="weatherData.current.icon" class="icon-lg"></i></div>
+                <div class="temp-lg">{{ weatherData.current.temp }}°</div>
+                <div class="hl-lg">H:{{ weatherData.current.high }}° L:{{ weatherData.current.low }}°</div>
+              </div>
 
-          <div class="forecast-container">
-            <div class="stat-label mb-2">3-Day Forecast</div>
-            <div class="forecast-grid">
-              <div v-for="(day, idx) in weatherData.daily" :key="idx" class="forecast-day">
-                <div class="f-day">{{ day.day }}</div>
-                <i :data-lucide="day.icon" class="icon-sm"></i>
-                <div class="f-temp">{{ day.max }}°</div>
+              <div class="stats-row">
+                <div class="stat-item"><span class="stat-label">Wind</span><span class="stat-val">{{ weatherData.current.wind }}</span></div>
+                <div class="stat-item"><span class="stat-label">Humidity</span><span class="stat-val">{{ weatherData.current.humid }}%</span></div>
+                <div class="stat-item"><span class="stat-label">Feels</span><span class="stat-val">{{ weatherData.current.feels }}°</span></div>
+              </div>
+
+              <div class="forecast-container">
+                <div class="stat-label mb-2">3-Day Forecast</div>
+                <div class="forecast-grid">
+                  <div v-for="(day, idx) in weatherData.daily" :key="idx" class="forecast-day">
+                    <div class="f-day">{{ day.day }}</div>
+                    <i :data-lucide="day.icon" class="icon-sm"></i>
+                    <div class="f-temp">{{ day.max }}°</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
-    </div>
+    </Teleport>
+
   </div>
 </template>
 
@@ -276,79 +300,86 @@ watch(weatherData, () => nextTick(() => window.lucide?.createIcons()));
 .weather-wrapper {
   color: var(--weather-text-primary);
   font-family: var(--weather-font-family);
+  display: inline-block; /* Wraps compact widget size */
+}
+
+/* Ensure font/color variables pass to Teleport container */
+.weather-teleport-container {
+  color: var(--weather-text-primary);
+  font-family: var(--weather-font-family);
+  position: absolute; /* Non-intrusive container */
+  top: 0; left: 0; width: 0; height: 0;
 }
 
 /* Backdrop */
 .backdrop {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: var(--weather-backdrop-color);
   backdrop-filter: blur(var(--weather-backdrop-blur));
   -webkit-backdrop-filter: blur(var(--weather-backdrop-blur));
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 40;
+  opacity: 0; pointer-events: none; transition: opacity 0.6s ease;
+  z-index: 9998;
 }
 .backdrop.active { opacity: 1; pointer-events: all; }
 
-/* Placeholder */
-.widget-placeholder {
-  width: var(--weather-w-compact);
-  height: var(--weather-h-compact);
-  border-radius: 22px;
-  background: transparent;
-}
-
-/* Widget Container */
+/* Base Widget Style (Shared) */
 .ios-widget {
   background: linear-gradient(180deg, var(--weather-bg-start), var(--weather-bg-end));
-  border-radius: 22px;
   box-shadow: var(--weather-shadow);
   overflow: hidden;
-  position: relative;
-  
+  user-select: none;
+  /* Smooth animation for FLIP properties */
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              top 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-radius 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Compact specific */
+.compact-widget {
   width: var(--weather-w-compact);
   height: var(--weather-h-compact);
-  
+  border-radius: 22px;
   cursor: pointer;
-  user-select: none;
-  transition: var(--weather-transition-spring);
+  position: relative;
 }
+/* Hide compact when expanded (creates illusion it moved) */
+.opacity-0 { opacity: 0; pointer-events: none; transition: opacity 0.1s; }
 
-/* Expanded State - Center Logic */
-.ios-widget.expanded {
-  width: var(--weather-w-expand);
-  height: var(--weather-h-expand);
-  border-radius: 34px;
+/* Expanded Modal specific */
+.expanded-modal {
+  position: fixed;
+  z-index: 9999;
   cursor: default;
-  
-  /* Absolute Center */
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column;
 }
 
-/* View Layers */
-.view-compact, .view-expanded {
-  position: absolute; inset: 0; padding: 20px; transition: opacity 0.2s ease;
+/* Views */
+.view-compact {
+  padding: 20px; height: 100%;
+  display: flex; flex-direction: column; justify-content: space-between;
 }
 
-.view-compact { opacity: 1; display: flex; flex-direction: column; justify-content: space-between; transition-delay: 0.1s; }
-.view-expanded { opacity: 0; pointer-events: none; display: flex; flex-direction: column; overflow-y: auto; scrollbar-width: none; }
+.view-expanded {
+  padding: 20px; height: 100%;
+  display: flex; flex-direction: column;
+  opacity: 0; /* Fade in content after expansion starts */
+  animation: fadeIn 0.4s ease 0.2s forwards;
+  overflow-y: auto; scrollbar-width: none;
+}
 .view-expanded::-webkit-scrollbar { display: none; }
 
-.ios-widget.expanded .view-compact { opacity: 0; pointer-events: none; transition-delay: 0s; }
-.ios-widget.expanded .view-expanded { opacity: 1; pointer-events: all; transition-delay: 0.2s; }
+@keyframes fadeIn { to { opacity: 1; } }
 
-/* Internal Styling */
+/* Internal Styling (Same as before) */
 .compact-header { font-size: 16px; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 .compact-body { display: flex; flex-direction: column; gap: 4px; }
 .compact-temp { font-size: 42px; font-weight: 300; line-height: 1; }
 .compact-condition { font-size: 13px; color: var(--weather-text-secondary); font-weight: 500; }
 .compact-icon-wrapper { position: absolute; top: 15px; right: 15px; }
 
-/* Expanded Styling */
 .widget-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; flex-shrink: 0; }
 .city-name-lg { font-size: 28px; font-weight: 600; margin: 0; }
 .condition-lg { font-size: 15px; color: var(--weather-text-secondary); margin: 0; }
@@ -386,7 +417,6 @@ watch(weatherData, () => nextTick(() => window.lucide?.createIcons()));
 .f-day { font-size: 13px; font-weight: 600; color: var(--weather-text-secondary); }
 .f-temp { font-size: 14px; font-weight: 600; }
 
-/* Search Overlay */
 .search-overlay {
   position: absolute; top: 60px; left: 20px; right: 20px;
   background: var(--weather-overlay-bg); padding: 10px; border-radius: 12px;
@@ -404,6 +434,3 @@ watch(weatherData, () => nextTick(() => window.lucide?.createIcons()));
 .icon-xs { color: var(--weather-text-primary); width: 14px; height: 14px; }
 .mb-2 { margin-bottom: 10px; }
 </style>
-
-
-
