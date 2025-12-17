@@ -97,10 +97,6 @@ const onTouchEnd = (e, taskId) => {
 </script>
 
 <template>
-  <div class="todo-app-container">
-    <!-- Background Mesh -->
-    <div class="todo-mesh-bg"></div>
-
     <!-- Main Widget Card -->
     <div class="todo-widget-card">
       <!-- Header -->
@@ -243,31 +239,10 @@ const onTouchEnd = (e, taskId) => {
           </button>
         </div>
       </div>
-    </div>
-  </div>
+</div>
 </template>
 
 <style>
-/* --- BASE --- */
-.todo-app-container {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: var(--todo-text-primary);
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-  .todo-app-container {
-    padding: 1rem;
-  }
-}
 
 /* --- BACKGROUND --- */
 .todo-mesh-bg {

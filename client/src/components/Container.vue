@@ -44,5 +44,6 @@ body {
   color: var(ui-text-primary);
   width: 100vw;
   height: 100%;
+  padding-bottom: 120px;
 }
 </style>
