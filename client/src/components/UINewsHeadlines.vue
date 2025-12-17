@@ -89,7 +89,17 @@ const error = ref(false)
 const hovering = ref(false)
 const widgetRef = ref(null)
 const bgOpacity = ref(1.0)
+const refreshTimer = ref(null)
 let autoRotateInterval = null
+
+// --- Auto Refresh Logic ---
+const startAutoRefresh = () => {
+  if (refreshTimer.value) clearInterval(refreshTimer.value)
+  // Refresh every 1 hour (3600000 ms)
+  refreshTimer.value = setInterval(() => {
+    fetchNews() // Silent refresh
+  }, 3600000)
+}
 
 // Ripple State
 const ripple = ref({ show: false, x: 0, y: 0 })
@@ -262,10 +272,12 @@ const resetTimer = () => {
 // --- Lifecycle ---
 onMounted(() => {
   fetchNews()
+  startAutoRefresh()
 })
 
 onUnmounted(() => {
   if (autoRotateInterval) clearInterval(autoRotateInterval)
+  if (refreshTimer.value) clearInterval(refreshTimer.value)
 })
 
 watch(

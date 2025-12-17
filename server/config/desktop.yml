@@ -8,6 +8,8 @@ desktop:
       - "hsla(40, 90%, 70%, 1)"
     src: "https://sleepingbearhotels.com/wp-content/uploads/2025/05/Where-Is-Durdle-Door.webp"
     color: "#d6d3ff"
+  foreground:
+    color: "#000000"
 
 layout:
   columns: 12
@@ -36,5 +38,11 @@ layout:
       type: custom
       component: UINewsHeadlines
       props:
-        rss: "http://feeds.bbci.co.uk/news/rss.xml"
+        rss: "https://feeds.skynews.com/feeds/rss/home.xml"
         size: "medium"
+
+    - name: Moon Phase
+      type: custom
+      component: UISunMoonPhase
+      props:
+        location: London

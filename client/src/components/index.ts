@@ -39,6 +39,7 @@ import UISegmentedControl from './UISegmentedControl.vue'
 import UISlider from './UISlider.vue'
 import UISplitView from './UISplitView.vue'
 import UIStepper from './UIStepper.vue'
+import UISunMoonPhase from './UISunMoonPhase.vue'
 import UISwitch from './UISwitch.vue'
 import UITabBar from './UITabBar.vue'
 import UITabItem from './UITabItem.vue'
@@ -102,6 +103,7 @@ export const GlassComponents = {
   UISlider,
   UISplitView,
   UIStepper,
+  UISunMoonPhase,
   UISwitch,
   UITabBar,
   UITabItem,

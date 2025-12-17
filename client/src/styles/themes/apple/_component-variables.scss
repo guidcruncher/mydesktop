@@ -8,6 +8,22 @@
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.6);
 
+  /* Sun moon phase */
+  --sunmoon-bg-body: #f2f2f7;
+  --sunmoon-bg-widget: rgba(255, 255, 255, 0.65);
+  --sunmoon-border-widget: rgba(255, 255, 255, 0.4);
+  --sunmoon-text-primary: #000000;
+  --sunmoon-text-secondary: #8e8e93;
+  --sunmoon-accent-color: #007aff;
+  --sunmoon-shadow-widget: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --sunmoon-sun-path: #e5e5ea;
+  --sunmoon-sun-fill: #ff9500;
+  --sunmoon-sun-dot-stroke: #f2f2f7;
+  --sunmoon-moon-bg: #e5e5ea;
+  --sunmoon-moon-lit: #ffdd00;
+  --sunmoon-input-bg: rgba(118, 118, 128, 0.12);
+  --sunmoon-card-bg: rgba(255, 255, 255, 0.05);
+
   /* News */
   --news-bg-fallback: #e5e5ea; /* iOS Light Gray */
   --news-accent: #ff2d55; /* Standard Pink/Red */
@@ -169,6 +185,22 @@
   --news-text-sub: rgba(255, 255, 255, 0.8);
   --news-shadow: rgba(0, 0, 0, 0.4); /* Deeper shadow */
   --news-status-text: #98989d;
+
+  /* Sun moon phase */
+  --sunmoon-bg-body: #000000;
+  --sunmoon-bg-widget: rgba(30, 30, 30, 0.75);
+  --sunmoon-border-widget: rgba(255, 255, 255, 0.1);
+  --sunmoon-text-primary: #ffffff;
+  --sunmoon-text-secondary: #98989d;
+  --sunmoon-accent-color: #0a84ff;
+  --sunmoon-shadow-widget: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --sunmoon-sun-path: #3a3a3c;
+  --sunmoon-sun-fill: #ff9f0a;
+  --sunmoon-sun-dot-stroke: #1c1c1e;
+  --sunmoon-moon-bg: #2c2c2e;
+  --sunmoon-moon-lit: #f2f2f7;
+  --sunmoon-input-bg: rgba(118, 118, 128, 0.24);
+  --sunmoon-card-bg: rgba(255, 255, 255, 0.05);
 
   /* Weather */
   --weather-bg-start: #2c3e50;
