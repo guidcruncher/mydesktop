@@ -49,6 +49,7 @@ import UITextField from './UITextField.vue'
 import UITextView from './UITextView.vue'
 import UIThemeChooser from './UIThemeChooser.vue'
 import UITimePicker from './UITimePicker.vue'
+import UITodolist from './UITodolist.vue'
 import UIToolbar from './UIToolbar.vue'
 import UIView from './UIView.vue'
 import UIVisualEffectView from './UIVisualEffectView.vue'
@@ -113,6 +114,7 @@ export const GlassComponents = {
   UITextView,
   UIThemeChooser,
   UITimePicker,
+  UITodolist,
   UIToolbar,
   UIView,
   UIVisualEffectView,

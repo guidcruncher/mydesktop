@@ -1,96 +1,99 @@
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue'
 
 // --- State ---
-const tasks = ref([]);
-const newTaskInput = ref('');
-const currentFilter = ref('all'); // 'all', 'active', 'completed'
+const tasks = ref([])
+const newTaskInput = ref('')
+const currentFilter = ref('all') // 'all', 'active', 'completed'
 
 // --- Computed ---
 const filteredTasks = computed(() => {
   if (currentFilter.value === 'active') {
-    return tasks.value.filter(t => !t.completed);
+    return tasks.value.filter((t) => !t.completed)
   }
   if (currentFilter.value === 'completed') {
-    return tasks.value.filter(t => t.completed);
+    return tasks.value.filter((t) => t.completed)
   }
-  return tasks.value;
-});
+  return tasks.value
+})
 
 const pendingCount = computed(() => {
-  return tasks.value.filter(t => !t.completed).length;
-});
+  return tasks.value.filter((t) => !t.completed).length
+})
 
 const dateDisplay = computed(() => {
-  const now = new Date();
-  const options = { weekday: 'long', month: 'short', day: 'numeric' };
-  return now.toLocaleDateString('en-US', options);
-});
+  const now = new Date()
+  const options = { weekday: 'long', month: 'short', day: 'numeric' }
+  return now.toLocaleDateString('en-US', options)
+})
 
 // --- Methods ---
 const addTask = () => {
-  const text = newTaskInput.value.trim();
-  if (!text) return;
+  const text = newTaskInput.value.trim()
+  if (!text) return
 
   tasks.value.unshift({
     id: Date.now(),
     text,
     completed: false,
-    createdAt: new Date().toISOString()
-  });
+    createdAt: new Date().toISOString(),
+  })
 
-  newTaskInput.value = '';
-};
+  newTaskInput.value = ''
+}
 
 const toggleTask = (taskId) => {
-  const task = tasks.value.find(t => t.id === taskId);
+  const task = tasks.value.find((t) => t.id === taskId)
   if (task) {
-    task.completed = !task.completed;
+    task.completed = !task.completed
   }
-};
+}
 
 const deleteTask = (taskId) => {
-  // Simple filter for data removal. 
-  // In a real app, you might want to wait for animation to finish, 
+  // Simple filter for data removal.
+  // In a real app, you might want to wait for animation to finish,
   // but Vue <TransitionGroup> handles the visual part.
-  tasks.value = tasks.value.filter(t => t.id !== taskId);
-};
+  tasks.value = tasks.value.filter((t) => t.id !== taskId)
+}
 
 const setFilter = (filter) => {
-  currentFilter.value = filter;
-};
+  currentFilter.value = filter
+}
 
 // --- Lifecycle & Persistence ---
 onMounted(() => {
   // Load Tasks
-  const savedTasks = localStorage.getItem('todo-tasks');
+  const savedTasks = localStorage.getItem('todo-tasks')
   if (savedTasks) {
     try {
-      tasks.value = JSON.parse(savedTasks);
+      tasks.value = JSON.parse(savedTasks)
     } catch (e) {
-      console.error('Failed to parse tasks', e);
+      console.error('Failed to parse tasks', e)
     }
   }
+})
 
-});
-
-watch(tasks, (newTasks) => {
-  localStorage.setItem('todo-tasks', JSON.stringify(newTasks));
-}, { deep: true });
+watch(
+  tasks,
+  (newTasks) => {
+    localStorage.setItem('todo-tasks', JSON.stringify(newTasks))
+  },
+  { deep: true },
+)
 
 // --- Touch Handling (Swipe to Delete) ---
-let touchStartX = 0;
+let touchStartX = 0
 const onTouchStart = (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-};
+  touchStartX = e.changedTouches[0].screenX
+}
 
 const onTouchEnd = (e, taskId) => {
-  const touchEndX = e.changedTouches[0].screenX;
+  const touchEndX = e.changedTouches[0].screenX
   if (touchStartX - touchEndX > 100) {
     // Swipe Left Detected
-    deleteTask(taskId);
+    deleteTask(taskId)
   }
-};
+}
 </script>
 
 <template>
@@ -100,7 +103,6 @@ const onTouchEnd = (e, taskId) => {
 
     <!-- Main Widget Card -->
     <div class="todo-widget-card">
-      
       <!-- Header -->
       <header class="todo-header">
         <div>
@@ -108,55 +110,81 @@ const onTouchEnd = (e, taskId) => {
           <h1 class="todo-title-text">Tasks</h1>
           <div class="todo-count-badge">{{ pendingCount }} Pending</div>
         </div>
-        
       </header>
 
       <!-- Filters -->
       <div class="todo-filter-container">
-        <button 
-          @click="setFilter('all')" 
+        <button
+          @click="setFilter('all')"
           :class="['todo-filter-btn', { 'todo-active': currentFilter === 'all' }]"
-        >All</button>
-        <button 
-          @click="setFilter('active')" 
+        >
+          All
+        </button>
+        <button
+          @click="setFilter('active')"
           :class="['todo-filter-btn', { 'todo-active': currentFilter === 'active' }]"
-        >Active</button>
-        <button 
-          @click="setFilter('completed')" 
+        >
+          Active
+        </button>
+        <button
+          @click="setFilter('completed')"
           :class="['todo-filter-btn', { 'todo-active': currentFilter === 'completed' }]"
-        >Done</button>
+        >
+          Done
+        </button>
       </div>
 
       <!-- Task List Area -->
       <div class="todo-list-container">
         <TransitionGroup name="todo-list">
-          <div 
-            v-for="task in filteredTasks" 
+          <div
+            v-for="task in filteredTasks"
             :key="task.id"
             class="todo-task-item"
             @touchstart="onTouchStart"
             @touchend="(e) => onTouchEnd(e, task.id)"
           >
             <div class="todo-task-inner">
-              <button 
-                @click.stop="toggleTask(task.id)" 
+              <button
+                @click.stop="toggleTask(task.id)"
                 :class="['todo-check-btn', { 'todo-checked': task.completed }]"
               >
                 <!-- Check Icon -->
-                <svg class="todo-check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  class="todo-check-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </button>
-              
+
               <span :class="['todo-task-text', { 'todo-completed': task.completed }]">
                 {{ task.text }}
               </span>
-              
+
               <button @click.stop="deleteTask(task.id)" class="todo-delete-btn">
                 <!-- Trash Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <path
+                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                  ></path>
                 </svg>
               </button>
             </div>
@@ -166,7 +194,17 @@ const onTouchEnd = (e, taskId) => {
         <!-- Empty State -->
         <div v-if="filteredTasks.length === 0" class="todo-empty-state">
           <div class="todo-empty-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="40"
+              height="40"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
           </div>
@@ -179,100 +217,40 @@ const onTouchEnd = (e, taskId) => {
       <div class="todo-input-bar-container">
         <div class="todo-input-wrapper">
           <span class="todo-plus-icon">+</span>
-          <input 
-            type="text" 
+          <input
+            type="text"
             v-model="newTaskInput"
-            class="todo-task-input" 
-            placeholder="New Reminder..." 
+            class="todo-task-input"
+            placeholder="New Reminder..."
             @keydown.enter="addTask"
-          >
+          />
           <button @click="addTask" class="todo-add-btn">
-             <!-- Arrow Up Icon -->
-             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="19" x2="12" y2="5"></line>
-                <polyline points="5 12 12 5 19 12"></polyline>
-              </svg>
+            <!-- Arrow Up Icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
           </button>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <style>
-/* --- CSS VARIABLES & THEME ENGINE --- */
-/* Note: We use :root to allow the theme to apply globally if needed, 
-   but specific to our todo- prefixed variables */
-
-:root {
-  /* Palette */
-  --todo-color-blue: #007AFF;
-  --todo-color-blue-hover: #0063ce;
-  --todo-color-red: #FF3B30;
-  --todo-color-green: #34C759;
-  --todo-color-yellow: #FFCC00;
-  
-  /* Light Mode Defaults */
-  --todo-bg-body: #F2F2F7;
-  --todo-text-primary: #1C1C1E;
-  --todo-text-secondary: #8E8E93;
-  --todo-text-placeholder: #AEAEB2;
-  
-  /* Glassmorphism - Light */
-  --todo-glass-panel-bg: rgba(255, 255, 255, 0.45);
-  --todo-glass-border: rgba(255, 255, 255, 0.6);
-  --todo-glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  
-  /* Task Item - Light */
-  --todo-task-bg: rgba(255, 255, 255, 0.6);
-  --todo-task-bg-hover: rgba(255, 255, 255, 0.8);
-  --todo-task-border: rgba(255, 255, 255, 0.4);
-  
-  /* Gradients - Light */
-  --todo-mesh-gradient: 
-      radial-gradient(at 0% 0%, hsla(192,100%,92%,1) 0, transparent 50%), 
-      radial-gradient(at 50% 100%, hsla(264,100%,92%,1) 0, transparent 50%), 
-      radial-gradient(at 100% 0%, hsla(326,100%,92%,1) 0, transparent 50%);
-
-  /* Controls */
-  --todo-btn-bg: rgba(255, 255, 255, 0.5);
-  --todo-btn-text: #1C1C1E;
-  --todo-input-bg: rgba(255, 255, 255, 0.5);
-}
-
-:root[data-todo-theme="dark"] {
-  /* Dark Mode Overrides */
-  --todo-bg-body: #000000;
-  --todo-text-primary: #FFFFFF;
-  --todo-text-secondary: #98989D;
-  --todo-text-placeholder: #636366;
-
-  /* Glassmorphism - Dark */
-  --todo-glass-panel-bg: rgba(30, 30, 30, 0.45);
-  --todo-glass-border: rgba(255, 255, 255, 0.1);
-  --todo-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-
-  /* Task Item - Dark */
-  --todo-task-bg: rgba(255, 255, 255, 0.05);
-  --todo-task-bg-hover: rgba(255, 255, 255, 0.1);
-  --todo-task-border: rgba(255, 255, 255, 0.05);
-
-  /* Gradients - Dark */
-  --todo-mesh-gradient: 
-      radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-      radial-gradient(at 50% 0%, hsla(225,39%,15%,1) 0, transparent 50%), 
-      radial-gradient(at 100% 0%, hsla(339,49%,15%,1) 0, transparent 50%);
-
-   /* Controls */
-   --todo-btn-bg: rgba(255, 255, 255, 0.1);
-   --todo-btn-text: #FFCC00;
-   --todo-input-bg: rgba(0, 0, 0, 0.2);
-}
-
 /* --- BASE --- */
 .todo-app-container {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: var(--todo-text-primary);
   width: 100%;
   height: 100vh;
@@ -286,13 +264,18 @@ const onTouchEnd = (e, taskId) => {
 }
 
 @media (max-width: 768px) {
-  .todo-app-container { padding: 1rem; }
+  .todo-app-container {
+    padding: 1rem;
+  }
 }
 
 /* --- BACKGROUND --- */
 .todo-mesh-bg {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 0;
   background: var(--todo-bg-body);
   background-image: var(--todo-mesh-gradient);
@@ -370,16 +353,22 @@ const onTouchEnd = (e, taskId) => {
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(10px);
-  transition: transform 0.2s, background-color 0.3s;
+  transition:
+    transform 0.2s,
+    background-color 0.3s;
   color: var(--todo-text-primary);
 }
 
-:root[data-todo-theme="dark"] .todo-theme-btn {
+:root[data-todo-theme='dark'] .todo-theme-btn {
   color: var(--todo-color-yellow);
 }
 
-.todo-theme-btn:hover { transform: scale(1.05); }
-.todo-theme-btn:active { transform: scale(0.95); }
+.todo-theme-btn:hover {
+  transform: scale(1.05);
+}
+.todo-theme-btn:active {
+  transform: scale(0.95);
+}
 
 /* --- FILTERS --- */
 .todo-filter-container {
@@ -397,7 +386,9 @@ const onTouchEnd = (e, taskId) => {
   font-weight: 600;
   cursor: pointer;
   opacity: 0.5;
-  transition: opacity 0.3s, color 0.3s;
+  transition:
+    opacity 0.3s,
+    color 0.3s;
   color: var(--todo-text-primary);
   white-space: nowrap;
 }
@@ -407,7 +398,9 @@ const onTouchEnd = (e, taskId) => {
   color: var(--todo-color-blue);
 }
 
-.todo-filter-btn:hover { opacity: 1; }
+.todo-filter-btn:hover {
+  opacity: 1;
+}
 
 /* --- TASK LIST --- */
 .todo-list-container {
@@ -446,7 +439,9 @@ const onTouchEnd = (e, taskId) => {
   backdrop-filter: blur(12px);
   border: 1px solid var(--todo-task-border);
   border-radius: 1rem;
-  transition: transform 0.2s, background-color 0.2s;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
   cursor: pointer;
 }
 
@@ -528,8 +523,12 @@ const onTouchEnd = (e, taskId) => {
 }
 
 /* Show delete button on hover or focus-within */
-.todo-task-item:hover .todo-delete-btn { opacity: 1; }
-.todo-task-item:focus-within .todo-delete-btn { opacity: 1; }
+.todo-task-item:hover .todo-delete-btn {
+  opacity: 1;
+}
+.todo-task-item:focus-within .todo-delete-btn {
+  opacity: 1;
+}
 /* Always show on touch devices when active? CSS can't detect touch well, relies on :hover which works on tap sometimes */
 
 /* --- EMPTY STATE --- */
@@ -592,7 +591,7 @@ const onTouchEnd = (e, taskId) => {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
 }
 
@@ -636,13 +635,22 @@ const onTouchEnd = (e, taskId) => {
   flex-shrink: 0;
 }
 
-.todo-add-btn:hover { background-color: var(--todo-color-blue-hover); }
-.todo-add-btn:active { transform: scale(0.9); }
+.todo-add-btn:hover {
+  background-color: var(--todo-color-blue-hover);
+}
+.todo-add-btn:active {
+  transform: scale(0.9);
+}
 
 /* --- ANIMATIONS --- */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* Scrollbar Hide */
