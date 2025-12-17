@@ -46,3 +46,9 @@ layout:
       component: UISunMoonPhase
       props:
         location: London
+
+    - name: TodoList
+      type: custom
+      component: UITodolist
+      props:
+        location: London
