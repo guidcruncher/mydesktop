@@ -1,7 +1,6 @@
 <script setup lang="ts"></script>
 
 <template>
-  <IPInfo />
   <UINavigationBar title="Desktop">
     <template #left> </template>
     <template #right>

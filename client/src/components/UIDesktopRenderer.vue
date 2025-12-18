@@ -23,6 +23,10 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  location: {
+    type: String,
+    default: ""
+  },
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -39,6 +43,11 @@ const getprops = (item) => {
       p.markerColor = '#000000'
       break
   }
+
+  if ((!p.location) || (p.location == "current")) {
+    p.location = props.location
+  }
+
   return p
 }
 const components = computed(() => {

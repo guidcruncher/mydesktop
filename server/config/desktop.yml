@@ -103,7 +103,7 @@ layout:
       type: custom
       component: UIWeatherWidget
       props:
-        location: "Berinsfield"
+        location: "current"
 
     - name: News
       type: custom
@@ -116,22 +116,22 @@ layout:
       type: custom
       component: UISunMoonPhaseWidget
       props:
-        location: London
+        location: "current"
 
     - name: TodoList
       type: custom
       component: UITodolistWidget
       props:
-        location: London
+        location: "current"
 
     - name: Map
       type: custom
       component: UIMapWidget
       props:
-        location: London
+        location: "current"
 
     - name: Calendar
       type: custom
       component: UICalendarWidget
       props:
-        location: London
+        location: "current"
