@@ -91,10 +91,18 @@ layout:
             url: "http://192.168.1.211:8080"
             icon: "qbittorrent"
 
+    - name: "vopidy"
+      type: app-icon
+      component: UIAppIconLink
+      props:
+        label: "Vopidy"
+        url: "https://0875ce890ad6.duckdns.org"
+        icon: "spotify"
+
     - name: Weather
       type: custom
       component: UIWeatherWidget
-      props:  
+      props:
         location: "Berinsfield"
 
     - name: News
