@@ -353,7 +353,7 @@ onMounted(() => {
 
   /* 90% Dimensions */
   width: 90vw;
-  height: 90vh;
+  height: 80vh;
 
   /* Ensure rounded corners persist */
   border-radius: var(--map-border-radius);

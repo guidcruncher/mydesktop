@@ -29,10 +29,72 @@ layout:
         url: "http://192.168.1.202:3000/admin"
         icon: "pi-hole"
 
+    - name: "File browser"
+      type: app-icon
+      component: UIAppIconLink
+      props:
+        label: "File Browser"
+        url: "https://6d26316a6dcf.duckdns.org/login?redirect=/files/"
+        icon: "file-browser"
+
+    - name: "Jellyfin"
+      type: app-icon
+      component: UIAppIconLink
+      props:
+        label: "Jellyfin"
+        url: "http://192.168.1.202:8096/"
+        icon: "jellyfin"
+
+    - name: "arr"
+      type: folder
+      props:
+        label: "Arrr"
+        icon: "file-explorer"
+      components:
+        - name: "Prowlarr"
+          type: app-icon
+          component: UIAppIconLink
+          props:
+            label: "Prowlarr"
+            url: "http://192.168.1.213:9696"
+            icon: "prowlarr"
+
+        - name: "Jellyseerr"
+          type: app-icon
+          component: UIAppIconLink
+          props:
+            label: "Jellyseerr"
+            url: "http://192.168.1.210:5055/login"
+            icon: "jellyseerr"
+
+        - name: "Radarr"
+          type: app-icon
+          component: UIAppIconLink
+          props:
+            label: "Radarr"
+            url: "http://192.168.1.214:7878"
+            icon: "radarr"
+
+        - name: "Lidarr"
+          type: app-icon
+          component: UIAppIconLink
+          props:
+            label: "Lidarr"
+            url: "http://192.168.1.212:8686"
+            icon: "lidarr"
+
+        - name: "QBittorrent"
+          type: app-icon
+          component: UIAppIconLink
+          props:
+            label: "QBittorrent"
+            url: "http://192.168.1.211:8080"
+            icon: "qbittorrent"
+
     - name: Weather
       type: custom
       component: UIWeatherWidget
-      props:
+      props:  
         location: "Berinsfield"
 
     - name: News

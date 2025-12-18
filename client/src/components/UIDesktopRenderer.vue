@@ -4,7 +4,13 @@
       <UIWidgetView v-if="item.type == 'widget'">
         <component :is="item.component" v-bind="getprops(item)"></component>
       </UIWidgetView>
-
+      <UIFolderViewWidget v-else-if="item.type == 'folder'" v-bind="getprops(item)">
+        <component
+          v-for="child in item.components"
+          :is="child.component"
+          v-bind="getprops(child)"
+        ></component>
+      </UIFolderViewWidget>
       <component v-else :is="item.component" v-bind="getprops(item)"></component>
     </ResponsiveGridItem>
   </ResponsiveGrid>

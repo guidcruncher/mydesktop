@@ -24,6 +24,7 @@ import UIDropdownMenuItem from './UIDropdownMenuItem.vue'
 import UIDropdownMenuTrigger from './UIDropdownMenuTrigger.vue'
 import UIFlipClock from './UIFlipClock.vue'
 import UIFolderView from './UIFolderView.vue'
+import UIFolderViewWidget from './UIFolderViewWidget.vue'
 import UIImage from './UIImage.vue'
 import UIImageView from './UIImageView.vue'
 import UIListPicker from './UIListPicker.vue'
@@ -91,6 +92,7 @@ export const GlassComponents = {
   UIDropdownMenuTrigger,
   UIFlipClock,
   UIFolderView,
+  UIFolderViewWidget,
   UIImage,
   UIImageView,
   UIListPicker,
