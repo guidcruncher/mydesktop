@@ -30,25 +30,25 @@ layout:
 
     - name: Weather
       type: custom
-      component: UIWeather
+      component: UIWeatherWidget
       props:
         location: "Berinsfield"
 
     - name: News
       type: custom
-      component: UINewsHeadlines
+      component: UINewsHeadlinesWidget
       props:
         rss: "https://feeds.skynews.com/feeds/rss/home.xml"
         size: "medium"
 
     - name: Moon Phase
       type: custom
-      component: UISunMoonPhase
+      component: UISunMoonPhaseWidget
       props:
         location: London
 
     - name: TodoList
       type: custom
-      component: UITodolist
+      component: UITodolistWidget
       props:
         location: London
