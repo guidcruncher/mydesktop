@@ -97,167 +97,152 @@ const onTouchEnd = (e, taskId) => {
 </script>
 
 <template>
-    <!-- Main Widget Card -->
-    <div class="todo-widget-card">
-      <!-- Header -->
-      <header class="todo-header">
-        <div>
-          <h2 class="todo-date-text">{{ dateDisplay }}</h2>
-          <h1 class="todo-title-text">Tasks</h1>
-          <div class="todo-count-badge">{{ pendingCount }} Pending</div>
-        </div>
-      </header>
-
-      <!-- Filters -->
-      <div class="todo-filter-container">
-        <button
-          @click="setFilter('all')"
-          :class="['todo-filter-btn', { 'todo-active': currentFilter === 'all' }]"
-        >
-          All
-        </button>
-        <button
-          @click="setFilter('active')"
-          :class="['todo-filter-btn', { 'todo-active': currentFilter === 'active' }]"
-        >
-          Active
-        </button>
-        <button
-          @click="setFilter('completed')"
-          :class="['todo-filter-btn', { 'todo-active': currentFilter === 'completed' }]"
-        >
-          Done
-        </button>
+  <!-- Main Widget Card -->
+  <div class="todo-widget-card">
+    <!-- Header -->
+    <header class="todo-header">
+      <div>
+        <h2 class="todo-date-text">{{ dateDisplay }}</h2>
+        <h1 class="todo-title-text">Tasks</h1>
+        <div class="todo-count-badge">{{ pendingCount }} Pending</div>
       </div>
+    </header>
 
-      <!-- Task List Area -->
-      <div class="todo-list-container">
-        <TransitionGroup name="todo-list">
-          <div
-            v-for="task in filteredTasks"
-            :key="task.id"
-            class="todo-task-item"
-            @touchstart="onTouchStart"
-            @touchend="(e) => onTouchEnd(e, task.id)"
-          >
-            <div class="todo-task-inner">
-              <button
-                @click.stop="toggleTask(task.id)"
-                :class="['todo-check-btn', { 'todo-checked': task.completed }]"
+    <!-- Filters -->
+    <div class="todo-filter-container">
+      <button
+        @click="setFilter('all')"
+        :class="['todo-filter-btn', { 'todo-active': currentFilter === 'all' }]"
+      >
+        All
+      </button>
+      <button
+        @click="setFilter('active')"
+        :class="['todo-filter-btn', { 'todo-active': currentFilter === 'active' }]"
+      >
+        Active
+      </button>
+      <button
+        @click="setFilter('completed')"
+        :class="['todo-filter-btn', { 'todo-active': currentFilter === 'completed' }]"
+      >
+        Done
+      </button>
+    </div>
+
+    <!-- Task List Area -->
+    <div class="todo-list-container">
+      <TransitionGroup name="todo-list">
+        <div
+          v-for="task in filteredTasks"
+          :key="task.id"
+          class="todo-task-item"
+          @touchstart="onTouchStart"
+          @touchend="(e) => onTouchEnd(e, task.id)"
+        >
+          <div class="todo-task-inner">
+            <button
+              @click.stop="toggleTask(task.id)"
+              :class="['todo-check-btn', { 'todo-checked': task.completed }]"
+            >
+              <!-- Check Icon -->
+              <svg
+                class="todo-check-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <!-- Check Icon -->
-                <svg
-                  class="todo-check-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </button>
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </button>
 
-              <span :class="['todo-task-text', { 'todo-completed': task.completed }]">
-                {{ task.text }}
-              </span>
+            <span :class="['todo-task-text', { 'todo-completed': task.completed }]">
+              {{ task.text }}
+            </span>
 
-              <button @click.stop="deleteTask(task.id)" class="todo-delete-btn">
-                <!-- Trash Icon -->
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path
-                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                  ></path>
-                </svg>
-              </button>
-            </div>
+            <button @click.stop="deleteTask(task.id)" class="todo-delete-btn">
+              <!-- Trash Icon -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path
+                  d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                ></path>
+              </svg>
+            </button>
           </div>
-        </TransitionGroup>
-
-        <!-- Empty State -->
-        <div v-if="filteredTasks.length === 0" class="todo-empty-state">
-          <div class="todo-empty-icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          </div>
-          <p class="todo-empty-text">No tasks here</p>
-          <p class="todo-empty-subtext">Add a task to get started</p>
         </div>
-      </div>
+      </TransitionGroup>
 
-      <!-- Input Area -->
-      <div class="todo-input-bar-container">
-        <div class="todo-input-wrapper">
-          <span class="todo-plus-icon">+</span>
-          <input
-            type="text"
-            v-model="newTaskInput"
-            class="todo-task-input"
-            placeholder="New Reminder..."
-            @keydown.enter="addTask"
-          />
-          <button @click="addTask" class="todo-add-btn">
-            <!-- Arrow Up Icon -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="12" y1="19" x2="12" y2="5"></line>
-              <polyline points="5 12 12 5 19 12"></polyline>
-            </svg>
-          </button>
+      <!-- Empty State -->
+      <div v-if="filteredTasks.length === 0" class="todo-empty-state">
+        <div class="todo-empty-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
         </div>
+        <p class="todo-empty-text">No tasks here</p>
+        <p class="todo-empty-subtext">Add a task to get started</p>
       </div>
-</div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="todo-input-bar-container">
+      <div class="todo-input-wrapper">
+        <span class="todo-plus-icon">+</span>
+        <input
+          type="text"
+          v-model="newTaskInput"
+          class="todo-task-input"
+          placeholder="New Reminder..."
+          @keydown.enter="addTask"
+        />
+        <button @click="addTask" class="todo-add-btn">
+          <!-- Arrow Up Icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style>
-
-/* --- BACKGROUND --- */
-.todo-mesh-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
-  background: var(--todo-bg-body);
-  background-image: var(--todo-mesh-gradient);
-  background-size: 200% 200%;
-  transition: all 0.7s ease;
-}
-
 /* --- WIDGET CARD --- */
 .todo-widget-card {
   width: 100%;
