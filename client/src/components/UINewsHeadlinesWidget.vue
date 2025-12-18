@@ -7,7 +7,6 @@
     @mouseenter="hovering = true"
     @mouseleave="hovering = false"
   >
-    <!-- Loading / Error States -->
     <div v-if="loading" class="news-status-msg">
       <span>Updating...</span>
     </div>
@@ -16,15 +15,16 @@
       <button @click.stop="fetchNews" class="news-retry-btn">Retry</button>
     </div>
 
-    <!-- Background Layer -->
-    <div
-      class="news-bg-image"
-      :style="{ backgroundImage: currentBgStyle, opacity: bgOpacity }"
-    ></div>
-    <!-- Dark overlay for text readability -->
+    <Transition name="news-bg-fade">
+      <div
+        :key="currentIndex"
+        class="news-bg-image"
+        :style="{ backgroundImage: currentBgStyle }"
+      ></div>
+    </Transition>
+
     <div class="news-overlay"></div>
 
-    <!-- Ripple Effect -->
     <span
       v-if="ripple.show"
       class="news-click-ripple"
@@ -32,7 +32,6 @@
       @animationend="ripple.show = false"
     ></span>
 
-    <!-- Pagination Dots -->
     <div class="news-pagination">
       <div
         v-for="(_, index) in articles"
@@ -42,7 +41,6 @@
       ></div>
     </div>
 
-    <!-- Content -->
     <div class="news-content">
       <div class="news-header">
         <div class="news-source-icon">N</div>
@@ -88,7 +86,6 @@ const loading = ref(true)
 const error = ref(false)
 const hovering = ref(false)
 const widgetRef = ref(null)
-const bgOpacity = ref(1.0)
 const refreshTimer = ref(null)
 let autoRotateInterval = null
 
@@ -202,24 +199,15 @@ const fetchNews = async () => {
   }
 }
 
-const triggerTransition = () => {
-  bgOpacity.value = 0.5
-  setTimeout(() => {
-    bgOpacity.value = 1.0
-  }, 200)
-}
-
 const nextStory = () => {
   if (articles.value.length === 0) return
   currentIndex.value = (currentIndex.value + 1) % articles.value.length
-  triggerTransition()
   resetTimer()
 }
 
 const prevStory = () => {
   if (articles.value.length === 0) return
   currentIndex.value = (currentIndex.value - 1 + articles.value.length) % articles.value.length
-  triggerTransition()
   resetTimer()
 }
 
@@ -339,8 +327,18 @@ watch(
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: opacity 0.3s ease-in-out;
   z-index: 1;
+}
+
+/* Transition Classes */
+.news-bg-fade-enter-active,
+.news-bg-fade-leave-active {
+  transition: opacity 0.6s ease;
+}
+
+.news-bg-fade-enter-from,
+.news-bg-fade-leave-to {
+  opacity: 0;
 }
 
 .news-overlay {
