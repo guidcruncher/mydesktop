@@ -2,20 +2,16 @@
   <div class="cal-wrapper">
     <div class="cal-widget">
       <!-- Left Side: Selected Date Info -->
-      <div 
-        class="cal-left-col" 
-        @click="resetToToday" 
-        title="Click to jump to Today"
-      >
+      <div class="cal-left-col" @click="resetToToday" title="Click to jump to Today">
         <div class="cal-today-container">
           <div class="cal-day-name">{{ selectedDayName }}</div>
           <div class="cal-date-number">{{ selectedDayNumber }}</div>
         </div>
-        
+
         <div class="cal-events-list">
           <div class="cal-event-item" v-for="(event, index) in currentEvents" :key="index">
-            <div 
-              class="cal-event-indicator" 
+            <div
+              class="cal-event-indicator"
               :class="event.color === 'blue' ? 'cal-indicator-blue' : 'cal-indicator-orange'"
             ></div>
             <span class="cal-event-text">{{ event.text }}</span>
@@ -32,21 +28,21 @@
             <button class="cal-nav-btn" @click.stop="nextMonth">&#10095;</button>
           </div>
         </div>
-        
+
         <div class="cal-calendar-grid">
           <!-- Headers -->
           <div class="cal-grid-header" v-for="day in weekDays" :key="day">{{ day }}</div>
-          
+
           <!-- Days -->
-          <div 
-            v-for="(cell, index) in gridCells" 
+          <div
+            v-for="(cell, index) in gridCells"
             :key="index"
             class="cal-grid-cell"
             :class="{
               'cal-cell-prev-month': cell.type === 'prev',
               'cal-cell-next-month': cell.type === 'next',
               'cal-cell-today': cell.isToday,
-              'cal-cell-selected': cell.isSelected
+              'cal-cell-selected': cell.isSelected,
             }"
             @click="selectDate(cell)"
           >
@@ -59,88 +55,99 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed } from 'vue'
 
 // --- State ---
-const now = new Date();
+const now = new Date()
 // View date tracks the month currently being viewed (always set to 1st of month)
-const viewDate = ref(new Date(now.getFullYear(), now.getMonth(), 1));
+const viewDate = ref(new Date(now.getFullYear(), now.getMonth(), 1))
 // Selected date tracks the specific day clicked
-const selectedDate = ref(new Date(now.getFullYear(), now.getMonth(), now.getDate()));
+const selectedDate = ref(new Date(now.getFullYear(), now.getMonth(), now.getDate()))
 
 // --- Constants ---
-const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 // --- Computed Props ---
 
 const selectedDayName = computed(() => {
-  return dayNames[selectedDate.value.getDay()];
-});
+  return dayNames[selectedDate.value.getDay()]
+})
 
 const selectedDayNumber = computed(() => {
-  return selectedDate.value.getDate();
-});
+  return selectedDate.value.getDate()
+})
 
 const currentMonthLabel = computed(() => {
-  return `${monthNames[viewDate.value.getMonth()]} ${viewDate.value.getFullYear()}`;
-});
+  return `${monthNames[viewDate.value.getMonth()]} ${viewDate.value.getFullYear()}`
+})
 
 const currentEvents = computed(() => {
   // Mock event logic
-  const date = selectedDate.value.getDate();
+  const date = selectedDate.value.getDate()
   if (date % 2 === 0) {
     return [
-      { text: "Design Review", color: "blue" },
-      { text: "Gym @ 6pm", color: "orange" }
-    ];
+      { text: 'Design Review', color: 'blue' },
+      { text: 'Gym @ 6pm', color: 'orange' },
+    ]
   } else {
-    return [
-      { text: "Deep Work", color: "blue" }
-    ];
+    return [{ text: 'Deep Work', color: 'blue' }]
   }
-});
+})
 
 const gridCells = computed(() => {
-  const year = viewDate.value.getFullYear();
-  const month = viewDate.value.getMonth();
-  
-  const cells = [];
-  
+  const year = viewDate.value.getFullYear()
+  const month = viewDate.value.getMonth()
+
+  const cells = []
+
   // First day of month (0=Sun, 1=Mon...)
-  const firstDayIndex = new Date(year, month, 1).getDay();
+  const firstDayIndex = new Date(year, month, 1).getDay()
   // Adjust for Monday start (ISO): Sun(0)->6, Mon(1)->0
-  const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
-  
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const daysInPrevMonth = new Date(year, month, 0).getDate();
-  
+  const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const daysInPrevMonth = new Date(year, month, 0).getDate()
+
   // Previous Month Fillers
   for (let i = startOffset - 1; i >= 0; i--) {
-    const dayNum = daysInPrevMonth - i;
-    const fullDate = new Date(year, month - 1, dayNum);
-    cells.push(createCellObject(dayNum, fullDate, 'prev'));
+    const dayNum = daysInPrevMonth - i
+    const fullDate = new Date(year, month - 1, dayNum)
+    cells.push(createCellObject(dayNum, fullDate, 'prev'))
   }
-  
+
   // Current Month
   for (let i = 1; i <= daysInMonth; i++) {
-    const fullDate = new Date(year, month, i);
-    cells.push(createCellObject(i, fullDate, 'current'));
+    const fullDate = new Date(year, month, i)
+    cells.push(createCellObject(i, fullDate, 'current'))
   }
-  
+
   // Next Month Fillers
   // We want to fill up to 42 cells (6 rows) to keep height stable
-  const totalCells = cells.length;
-  const remaining = 42 - totalCells;
-  
+  const totalCells = cells.length
+  const remaining = 42 - totalCells
+
   for (let i = 1; i <= remaining; i++) {
-    const fullDate = new Date(year, month + 1, i);
-    cells.push(createCellObject(i, fullDate, 'next'));
+    const fullDate = new Date(year, month + 1, i)
+    cells.push(createCellObject(i, fullDate, 'next'))
   }
-  
-  return cells;
-});
+
+  return cells
+})
 
 // --- Helper Methods ---
 
@@ -150,41 +157,42 @@ function createCellObject(dayNum, dateObj, type) {
     date: dateObj,
     type,
     isToday: isSameDay(dateObj, now),
-    isSelected: isSameDay(dateObj, selectedDate.value)
-  };
+    isSelected: isSameDay(dateObj, selectedDate.value),
+  }
 }
 
 function isSameDay(d1, d2) {
-  return d1.getDate() === d2.getDate() &&
-         d1.getMonth() === d2.getMonth() &&
-         d1.getFullYear() === d2.getFullYear();
+  return (
+    d1.getDate() === d2.getDate() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getFullYear() === d2.getFullYear()
+  )
 }
 
 // --- Actions ---
 
 function prevMonth() {
-  viewDate.value = new Date(viewDate.value.getFullYear(), viewDate.value.getMonth() - 1, 1);
+  viewDate.value = new Date(viewDate.value.getFullYear(), viewDate.value.getMonth() - 1, 1)
 }
 
 function nextMonth() {
-  viewDate.value = new Date(viewDate.value.getFullYear(), viewDate.value.getMonth() + 1, 1);
+  viewDate.value = new Date(viewDate.value.getFullYear(), viewDate.value.getMonth() + 1, 1)
 }
 
 function selectDate(cell) {
-  selectedDate.value = cell.date;
-  
+  selectedDate.value = cell.date
+
   // If clicking a prev/next month date, switch the view
   if (cell.type !== 'current') {
-    viewDate.value = new Date(cell.date.getFullYear(), cell.date.getMonth(), 1);
+    viewDate.value = new Date(cell.date.getFullYear(), cell.date.getMonth(), 1)
   }
 }
 
 function resetToToday() {
-  const today = new Date();
-  selectedDate.value = today;
-  viewDate.value = new Date(today.getFullYear(), today.getMonth(), 1);
+  const today = new Date()
+  selectedDate.value = today
+  viewDate.value = new Date(today.getFullYear(), today.getMonth(), 1)
 }
-
 </script>
 
 <style scoped>
@@ -202,7 +210,7 @@ function resetToToday() {
   --cal-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
   --cal-indicator-blue-bg: #007aff;
   --cal-indicator-orange-bg: #ff9500;
-  --cal-hover-bg: rgba(128,128,128,0.1);
+  --cal-hover-bg: rgba(128, 128, 128, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -226,7 +234,9 @@ function resetToToday() {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -245,7 +255,9 @@ function resetToToday() {
   display: flex;
   padding: 16px;
   gap: 16px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   user-select: none;
   box-sizing: border-box;
 }
@@ -393,7 +405,9 @@ function resetToToday() {
   margin: 0 auto;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .cal-grid-cell:hover {
@@ -424,4 +438,3 @@ function resetToToday() {
   color: #ffffff !important;
 }
 </style>
-

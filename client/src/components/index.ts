@@ -11,6 +11,7 @@ import UIAnalogClock from './UIAnalogClock.vue'
 import UIAppIconItem from './UIAppIconItem.vue'
 import UIAppIconLink from './UIAppIconLink.vue'
 import UIButton from './UIButton.vue'
+import UICalendarWidget from './UICalendarWidget.vue'
 import UICollectionView from './UICollectionView.vue'
 import UICollectionViewItem from './UICollectionViewItem.vue'
 import UIColorPicker from './UIColorPicker.vue'
@@ -26,10 +27,11 @@ import UIFolderView from './UIFolderView.vue'
 import UIImage from './UIImage.vue'
 import UIImageView from './UIImageView.vue'
 import UIListPicker from './UIListPicker.vue'
+import UIMapWidget from './UIMapWidget.vue'
 import UIMenubar from './UIMenubar.vue'
 import UIModalDialog from './UIModalDialog.vue'
 import UINavigationBar from './UINavigationBar.vue'
-import UINewsHeadlines from './UINewsHeadlines.vue'
+import UINewsHeadlinesWidget from './UINewsHeadlinesWidget.vue'
 import UINotificationBar from './UINotificationBar.vue'
 import UIPageControl from './UIPageControl.vue'
 import UIPopover from './UIPopover.vue'
@@ -39,7 +41,7 @@ import UISegmentedControl from './UISegmentedControl.vue'
 import UISlider from './UISlider.vue'
 import UISplitView from './UISplitView.vue'
 import UIStepper from './UIStepper.vue'
-import UISunMoonPhase from './UISunMoonPhase.vue'
+import UISunMoonPhaseWidget from './UISunMoonPhaseWidget.vue'
 import UISwitch from './UISwitch.vue'
 import UITabBar from './UITabBar.vue'
 import UITabItem from './UITabItem.vue'
@@ -49,11 +51,11 @@ import UITextField from './UITextField.vue'
 import UITextView from './UITextView.vue'
 import UIThemeChooser from './UIThemeChooser.vue'
 import UITimePicker from './UITimePicker.vue'
-import UITodolist from './UITodolist.vue'
+import UITodolistWidget from './UITodolistWidget.vue'
 import UIToolbar from './UIToolbar.vue'
 import UIView from './UIView.vue'
 import UIVisualEffectView from './UIVisualEffectView.vue'
-import UIWeather from './UIWeather.vue'
+import UIWeatherWidget from './UIWeatherWidget.vue'
 import UIWheelListView from './UIWheelListView.vue'
 import UIWidgetView from './UIWidgetView.vue'
 import '../styles/styles.scss'
@@ -76,6 +78,7 @@ export const GlassComponents = {
   UIAppIconItem,
   UIAppIconLink,
   UIButton,
+  UICalendarWidget,
   UICollectionView,
   UICollectionViewItem,
   UIColorPicker,
@@ -91,10 +94,11 @@ export const GlassComponents = {
   UIImage,
   UIImageView,
   UIListPicker,
+  UIMapWidget,
   UIMenubar,
   UIModalDialog,
   UINavigationBar,
-  UINewsHeadlines,
+  UINewsHeadlinesWidget,
   UINotificationBar,
   UIPageControl,
   UIPopover,
@@ -104,7 +108,7 @@ export const GlassComponents = {
   UISlider,
   UISplitView,
   UIStepper,
-  UISunMoonPhase,
+  UISunMoonPhaseWidget,
   UISwitch,
   UITabBar,
   UITabItem,
@@ -114,11 +118,11 @@ export const GlassComponents = {
   UITextView,
   UIThemeChooser,
   UITimePicker,
-  UITodolist,
+  UITodolistWidget,
   UIToolbar,
   UIView,
   UIVisualEffectView,
-  UIWeather,
+  UIWeatherWidget,
   UIWheelListView,
   UIWidgetView,
 };

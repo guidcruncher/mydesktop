@@ -51,7 +51,7 @@
 
       <div class="news-headline-wrapper" v-if="currentArticle">
         <div class="news-headline">
-          {{ currentArticle.title }}
+          <div v-html="currentArticle.title" />
         </div>
         <div class="news-meta">
           <span class="news-time">{{ currentArticle.timeStr }}</span>

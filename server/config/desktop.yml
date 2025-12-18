@@ -1,3 +1,4 @@
+
 desktop:
   background:
     style: mesh
@@ -50,5 +51,17 @@ layout:
     - name: TodoList
       type: custom
       component: UITodolistWidget
+      props:
+        location: London
+
+    - name: Map
+      type: custom
+      component: UIMapWidget
+      props:
+        location: London
+
+    - name: Calendar
+      type: custom
+      component: UICalendarWidget
       props:
         location: London

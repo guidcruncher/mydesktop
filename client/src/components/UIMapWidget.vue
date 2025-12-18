@@ -1,593 +1,617 @@
 <script setup>
-import { ref, onMounted, nextTick, shallowRef, watch } from 'vue';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { ref, onMounted } from 'vue'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
-// --- Props ---
+// Define Props
 const props = defineProps({
-  defaultLat: {
-    type: Number,
-    default: 51.505
-  },
-  defaultLng: {
-    type: Number,
-    default: -0.09
-  },
-  defaultLabel: {
+  location: {
     type: String,
-    default: "London"
+    default: 'London',
   },
-  zoomLevelWidget: {
-    type: Number,
-    default: 14
-  },
-  zoomLevelFull: {
-    type: Number,
-    default: 15
+})
+
+// State
+const isExpanded = ref(false)
+const currentMode = ref('standard') // 'standard' or 'satellite'
+const searchQuery = ref('')
+const locationTitle = ref('Loading...')
+const locationSubtitle = ref('...')
+
+// Refs to DOM elements
+const mapContainer = ref(null)
+
+// Leaflet Instances (non-reactive for performance)
+let map = null
+let tileLayer = null
+let marker = null
+
+// Constants
+const expandedZoom = 16
+const initialZoom = 15
+const standardTiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+const satelliteTiles =
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+
+// --- API & Logic ---
+
+const geocodeLocation = async (query) => {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`,
+    )
+    const data = await response.json()
+    if (data && data.length > 0) return data[0]
+    return null
+  } catch (error) {
+    console.error('Geocoding failed', error)
+    return null
   }
-});
+}
 
-// --- State ---
-const isOpen = ref(false);
-const searchQuery = ref('');
-const searchResults = ref([]);
-const currentLabel = ref(props.defaultLabel);
-const isSatellite = ref(false);
+const initMap = async () => {
+  // 1. Resolve Initial Location
+  let lat = 51.5074 // Fallback
+  let lng = -0.1278
 
-// Refs for DOM elements
-const widgetMapContainer = ref(null);
-const fullMapContainer = ref(null);
+  const locationData = await geocodeLocation(props.location)
 
-// Shallow Refs for Leaflet instances (prevents Proxy overhead issues)
-const widgetMap = shallowRef(null);
-const fullMap = shallowRef(null);
-const currentMarker = shallowRef(null);
-const standardLayer = shallowRef(null);
-const satelliteLayer = shallowRef(null);
+  if (locationData) {
+    lat = parseFloat(locationData.lat)
+    lng = parseFloat(locationData.lon)
 
-let searchTimeout = null;
+    // Parse Display Name for UI
+    const parts = locationData.display_name.split(',')
+    locationTitle.value = parts[0]
+    locationSubtitle.value = parts.slice(1, 3).join(',').trim()
+  } else {
+    locationTitle.value = props.location
+    locationSubtitle.value = 'Location not found'
+  }
 
-// --- Lifecycle ---
-onMounted(() => {
-  initWidgetMap();
-  initFullMap();
-});
-
-// --- Methods ---
-
-const initWidgetMap = () => {
-  if (!widgetMapContainer.value) return;
-
-  widgetMap.value = L.map(widgetMapContainer.value, {
-    center: [props.defaultLat, props.defaultLng],
-    zoom: props.zoomLevelWidget,
+  // 2. Initialize Leaflet
+  map = L.map(mapContainer.value, {
+    center: [lat, lng],
+    zoom: initialZoom,
     zoomControl: false,
-    attributionControl: false,
     dragging: false,
-    touchZoom: false,
     scrollWheelZoom: false,
     doubleClickZoom: false,
-    boxZoom: false
-  });
+    touchZoom: false,
+    boxZoom: false,
+    keyboard: false,
+    tap: false,
+    attributionControl: false,
+  })
 
-  // Widget Tile Layer
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    className: 'leaflet-layer-default'
-  }).addTo(widgetMap.value);
+  // 3. Add Layer
+  tileLayer = L.tileLayer(standardTiles, { maxZoom: 19 }).addTo(map)
 
-  // Widget Marker
-  L.circleMarker([props.defaultLat, props.defaultLng], {
-    radius: 8,
-    fillColor: 'var(--map-accent-color)',
-    color: '#ffffff',
-    weight: 3,
-    opacity: 1,
-    fillOpacity: 1
-  }).addTo(widgetMap.value);
-};
+  // 4. Add Custom Marker
+  const pulseIcon = L.divIcon({
+    className: 'map-custom-pin', // Styled in global CSS below
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+  })
+  marker = L.marker([lat, lng], { icon: pulseIcon }).addTo(map)
 
-const initFullMap = () => {
-  if (!fullMapContainer.value) return;
+  // 5. Set Initial Mode Class
+  mapContainer.value.classList.add('map-standard-mode')
+}
 
-  fullMap.value = L.map(fullMapContainer.value, {
-    center: [props.defaultLat, props.defaultLng],
-    zoom: props.zoomLevelFull,
-    zoomControl: false
-  });
+// --- Interactions ---
 
-  // Standard Layer
-  standardLayer.value = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors',
-    className: 'leaflet-layer-default'
-  });
+const expandWidget = () => {
+  if (isExpanded.value) return
+  isExpanded.value = true
 
-  // Satellite Layer
-  satelliteLayer.value = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 19,
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri...'
-  });
+  if (map) {
+    map.dragging.enable()
+    map.scrollWheelZoom.enable()
+    map.doubleClickZoom.enable()
+    map.touchZoom.enable()
+    map.keyboard.enable()
+    if (map.tap) map.tap.enable()
 
-  // Add Default Layer
-  standardLayer.value.addTo(fullMap.value);
-
-  // Add Zoom Control
-  L.control.zoom({ position: 'bottomright' }).addTo(fullMap.value);
-
-  addMarkerToFullMap(props.defaultLat, props.defaultLng, props.defaultLabel);
-};
-
-const addMarkerToFullMap = (lat, lng, title) => {
-  if (!fullMap.value) return;
-
-  if (currentMarker.value) {
-    fullMap.value.removeLayer(currentMarker.value);
+    // Resize map after CSS transition
+    setTimeout(() => {
+      map.invalidateSize()
+      map.setZoom(expandedZoom)
+    }, 300)
   }
+}
 
-  currentMarker.value = L.marker([lat, lng]).addTo(fullMap.value)
-    .bindPopup(title)
-    .openPopup();
+const collapseWidget = (e) => {
+  e?.stopPropagation()
+  isExpanded.value = false
+  searchQuery.value = ''
 
-  fullMap.value.setView([lat, lng], props.zoomLevelFull);
-};
+  if (map) {
+    map.dragging.disable()
+    map.scrollWheelZoom.disable()
+    map.doubleClickZoom.disable()
+    map.touchZoom.disable()
+    map.keyboard.disable()
+    if (map.tap) map.tap.disable()
 
-// --- Actions ---
+    setTimeout(() => {
+      map.invalidateSize()
+      map.flyTo(marker.getLatLng(), initialZoom, { animate: true, duration: 1 })
+    }, 300)
+  }
+}
 
-const openModal = async () => {
-  isOpen.value = true;
-  // Wait for transition/DOM update then invalidate size
-  await nextTick();
-  setTimeout(() => {
-    if (fullMap.value) {
-      fullMap.value.invalidateSize();
-      if (currentMarker.value) {
-        fullMap.value.panTo(currentMarker.value.getLatLng());
-      }
-    }
-  }, 300);
-};
+const toggleLayer = (e) => {
+  e?.stopPropagation()
+  currentMode.value = currentMode.value === 'standard' ? 'satellite' : 'standard'
 
-const closeModal = () => {
-  isOpen.value = false;
-  searchQuery.value = '';
-  searchResults.value = [];
-};
-
-const toggleSatellite = () => {
-  if (!fullMap.value) return;
-  
-  if (isSatellite.value) {
-    // Switch to Standard
-    fullMap.value.removeLayer(satelliteLayer.value);
-    standardLayer.value.addTo(fullMap.value);
+  if (currentMode.value === 'satellite') {
+    mapContainer.value.classList.remove('map-standard-mode')
+    tileLayer.setUrl(satelliteTiles)
   } else {
-    // Switch to Satellite
-    fullMap.value.removeLayer(standardLayer.value);
-    satelliteLayer.value.addTo(fullMap.value);
+    mapContainer.value.classList.add('map-standard-mode')
+    tileLayer.setUrl(standardTiles)
   }
-  isSatellite.value = !isSatellite.value;
-};
+}
 
-// --- Search Logic ---
+const handleSearch = async () => {
+  if (!searchQuery.value) return
 
-const handleSearchInput = (e) => {
-  const query = e.target.value.trim();
-  searchQuery.value = query;
+  const result = await geocodeLocation(searchQuery.value)
+  if (result) {
+    const lat = parseFloat(result.lat)
+    const lng = parseFloat(result.lon)
 
-  if (searchTimeout) clearTimeout(searchTimeout);
+    // Fly to new location
+    map.flyTo([lat, lng], expandedZoom, { animate: true, duration: 1.5 })
+    marker.setLatLng([lat, lng])
 
-  if (query.length < 3) {
-    searchResults.value = [];
-    return;
+    // Update Text
+    const parts = result.display_name.split(',')
+    locationTitle.value = parts[0]
+    locationSubtitle.value = parts.slice(1, 3).join(',').trim()
+
+    // Unfocus input
+    document.activeElement.blur()
+  } else {
+    alert('Location not found')
   }
+}
 
-  searchTimeout = setTimeout(() => {
-    performSearch(query);
-  }, 500);
-};
-
-const performSearch = async (query) => {
-  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    searchResults.value = data;
-  } catch (error) {
-    console.error("Search failed:", error);
-  }
-};
-
-const selectLocation = (item) => {
-  const lat = parseFloat(item.lat);
-  const lon = parseFloat(item.lon);
-  
-  // Format Name
-  const displayName = item.display_name.split(',').slice(0, 3).join(',');
-  const shortName = item.name || displayName.split(',')[0];
-
-  // Update State
-  currentLabel.value = shortName;
-  searchQuery.value = displayName;
-  searchResults.value = []; // Clear results
-
-  // Update Maps
-  addMarkerToFullMap(lat, lon, displayName);
-  
-  if (widgetMap.value) {
-    widgetMap.value.setView([lat, lon], props.zoomLevelWidget);
-    // Note: In a real app we'd update the widget marker position here too, 
-    // but for this demo we just pan the view.
-  }
-};
-
+onMounted(() => {
+  initMap()
+})
 </script>
 
 <template>
-  <div class="map-component-root">
-    
-    <!-- Widget View -->
-    <div class="map-widget-wrapper" @click="openModal">
-      <div class="map-widget-header">
-        <div class="map-widget-title">Maps</div>
-        <div class="map-widget-location-name">{{ currentLabel }}</div>
-      </div>
-      <div ref="widgetMapContainer" class="map-widget-map"></div>
-    </div>
+  <div class="map-wrapper">
+    <!-- Blur Backdrop -->
+    <div
+      class="map-backdrop"
+      :class="{ 'map-backdrop-active': isExpanded }"
+      @click="collapseWidget"
+    ></div>
 
-    <!-- Full View Modal -->
-    <div class="map-full-view-overlay" :class="{ 'map-active': isOpen }">
-      <div class="map-modal-header">
-        <button class="map-close-btn" @click.stop="closeModal">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <div class="map-widget-container" :class="{ 'map-expanded': isExpanded }" @click="expandWidget">
+      <!-- Search Bar -->
+      <div class="map-search-container">
+        <svg
+          class="map-search-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          class="map-search-input"
+          placeholder="Search Maps"
+          v-model="searchQuery"
+          @keydown.enter="handleSearch"
+          @click.stop
+        />
+      </div>
+
+      <!-- UI Controls -->
+      <div class="map-ui-controls">
+        <button
+          class="map-control-btn map-close-btn"
+          @click="collapseWidget"
+          aria-label="Close Map"
+        >
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-        <div class="map-search-container">
-          <div class="map-search-icon"></div>
-          <input 
-            type="text" 
-            class="map-search-input" 
-            placeholder="Search for a place or address"
-            :value="searchQuery"
-            @input="handleSearchInput"
-          >
-          
-          <!-- Results Dropdown -->
-          <div v-if="searchResults.length > 0" class="map-search-results">
-            <div 
-              v-for="(result, index) in searchResults" 
-              :key="index" 
-              class="map-result-item"
-              @click="selectLocation(result)"
-            >
-              {{ result.display_name.split(',').slice(0, 3).join(',') }}
-            </div>
-          </div>
+
+        <button
+          class="map-control-btn map-layer-btn"
+          @click="toggleLayer"
+          aria-label="Toggle Satellite View"
+        >
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" />
+            <path
+              d="M2 17L12 22L22 17"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M2 12L12 17L22 12"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Map Element -->
+      <div id="map" ref="mapContainer"></div>
+
+      <!-- Bottom Overlay -->
+      <div class="map-widget-overlay">
+        <div class="map-location-info">
+          <span class="map-location-title">{{ locationTitle }}</span>
+          <span class="map-location-subtitle">{{ locationSubtitle }}</span>
+        </div>
+        <div class="map-navigate-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M21,11L3,2L6,21L10.5,13.5L21,11Z" />
+          </svg>
         </div>
       </div>
-      
-      <div class="map-full-map-container">
-        <div ref="fullMapContainer" style="width:100%; height:100%;"></div>
-        
-        <!-- Satellite Toggle Button -->
-        <button 
-          class="map-view-toggle" 
-          :class="{ 'map-toggle-active': isSatellite }"
-          @click="toggleSatellite" 
-          title="Toggle Satellite View"
-        >
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
     </div>
-
   </div>
 </template>
 
 <style>
-/* Global Styles & Variables 
-  We use a non-scoped block for variables and Leaflet overrides 
-*/
-:root {
-  /* Light Theme Variables */
-  --map-bg-primary: #ffffff;
-  --map-bg-secondary: #f2f2f7;
-  --map-bg-blur: rgba(255, 255, 255, 0.8);
-  --map-text-primary: #000000;
-  --map-text-secondary: #8e8e93;
-  --map-accent-color: #007aff;
-  --map-divider-color: #c6c6c8;
-  --map-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-  --map-widget-radius: 22px;
-  --map-search-bg: #e3e3e8;
-  --map-btn-bg: #ffffff;
-  --map-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --map-transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Dark Theme Variables */
-    --map-bg-primary: #1c1c1e;
-    --map-bg-secondary: #000000;
-    --map-bg-blur: rgba(30, 30, 30, 0.7);
-    --map-text-primary: #ffffff;
-    --map-text-secondary: #98989d;
-    --map-accent-color: #0a84ff;
-    --map-divider-color: #38383a;
-    --map-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-    --map-search-bg: #2c2c2e;
-    --map-btn-bg: #2c2c2e;
-  }
-}
-
-/* Leaflet Overrides */
-.leaflet-container {
-  font-family: var(--map-font-family) !important;
-  background: var(--map-bg-secondary) !important;
-}
-
-.leaflet-control-attribution {
-  background: rgba(255, 255, 255, 0.5) !important;
-  border-radius: 4px;
-  padding: 0 4px;
-  font-size: 10px;
-  color: var(--map-text-secondary);
-}
-
-@media (prefers-color-scheme: dark) {
-  .leaflet-control-attribution {
-    background: rgba(0, 0, 0, 0.5) !important;
-  }
-  /* Invert map tiles for dark mode using CSS filter, but ONLY for the default layer */
-  .leaflet-layer-default .leaflet-tile {
+.dark-mode {
+  .map-standard-mode .leaflet-tile-pane {
     filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
   }
 }
 </style>
 
 <style scoped>
-/* Component Scoped Styles */
-
-.map-component-root {
-  font-family: var(--map-font-family);
-  display: inline-block;
-}
-
-/* --- Widget Styles --- */
-.map-widget-wrapper {
-  position: relative;
-  width: 340px;
-  height: 340px; 
-  border-radius: var(--map-widget-radius);
-  box-shadow: var(--map-shadow);
-  overflow: hidden;
-  background: var(--map-bg-primary);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.map-widget-wrapper:active {
-  transform: scale(0.98);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-}
-
-.map-widget-header {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 400;
+/* Wrapper to handle positioning */
+.map-wrapper {
   display: flex;
-  flex-direction: column;
-  pointer-events: none; 
-}
-
-.map-widget-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--map-accent-color);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
-  background: var(--map-bg-blur);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 4px 8px;
-  border-radius: 6px;
-  align-self: flex-start;
-}
-
-.map-widget-location-name {
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--map-text-primary);
-  text-shadow: 0 1px 4px rgba(255,255,255,0.5);
-}
-
-@media (prefers-color-scheme: dark) {
-  .map-widget-location-name {
-    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
-  }
-}
-
-.map-widget-map {
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
-  z-index: 1;
-  pointer-events: none;
 }
 
-/* --- Full View / Modal Styles --- */
-.map-full-view-overlay {
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+/* --- BACKDROP --- */
+.map-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: var(--map-bg-secondary);
-  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.2); /* Slight tint */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  z-index: 90;
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.95);
-  transition: var(--map-transition);
-  display: flex;
-  flex-direction: column;
+  transition: opacity 0.5s ease;
 }
 
-.map-full-view-overlay.map-active {
+.map-backdrop-active {
   opacity: 1;
   pointer-events: auto;
-  transform: scale(1);
 }
 
-.map-modal-header {
-  height: 60px;
-  padding: 10px 16px;
+/* --- WIDGET CONTAINER --- */
+.map-widget-container {
+  width: 340px;
+  height: 340px;
+  background-color: var(--map-widget-bg);
+  border-radius: var(--map-border-radius);
+  box-shadow: var(--map-shadow);
+  position: relative;
+  overflow: hidden;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--map-bg-blur);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 0.5px solid var(--map-divider-color);
-  z-index: 1002;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 91; /* Just above backdrop */
+  transition: all 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+  transform-origin: center center;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.map-widget-container:not(.map-expanded):active {
+  transform: scale(0.96);
+  transition: transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* --- EXPANDED STATE (90% View) --- */
+.map-widget-container.map-expanded {
+  position: fixed;
+  /* Center on screen */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* 90% Dimensions */
+  width: 90vw;
+  height: 90vh;
+
+  /* Ensure rounded corners persist */
+  border-radius: var(--map-border-radius);
+
+  z-index: 100;
+  cursor: default;
+  box-shadow: var(--map-expanded-shadow);
+  margin: 0;
+}
+
+/* --- UI CONTROLS (Buttons) --- */
+.map-ui-controls {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-}
-
-.map-close-btn {
-  background: var(--map-search-bg);
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  color: var(--map-accent-color);
-  font-size: 18px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.map-close-btn:hover {
-  opacity: 0.8;
-}
-
-.map-search-container {
-  flex-grow: 1;
-  position: relative;
-}
-
-.map-search-input {
-  width: 100%;
-  background: var(--map-search-bg);
-  border: none;
-  padding: 8px 12px 8px 36px;
-  border-radius: 10px;
-  font-size: 17px;
-  color: var(--map-text-primary);
-  outline: none;
-  height: 36px;
-  box-sizing: border-box;
-}
-
-.map-search-icon {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 14px;
-  height: 14px;
-  border: 2px solid var(--map-text-secondary);
-  border-radius: 50%;
-  pointer-events: none;
-}
-.map-search-icon::after {
-  content: '';
-  position: absolute;
-  width: 2px;
-  height: 6px;
-  background: var(--map-text-secondary);
-  bottom: -5px;
-  right: -2px;
-  transform: rotate(-45deg);
-}
-
-.map-search-results {
-  position: absolute;
-  top: 45px;
-  left: 0;
-  right: 0;
-  background: var(--map-bg-blur);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border-radius: 12px;
-  box-shadow: var(--map-shadow);
-  max-height: 300px;
-  overflow-y: auto;
-  z-index: 1003;
-}
-
-.map-result-item {
-  padding: 12px 16px;
-  border-bottom: 0.5px solid var(--map-divider-color);
-  color: var(--map-text-primary);
-  font-size: 15px;
-  cursor: pointer;
-}
-.map-result-item:last-child {
-  border-bottom: none;
-}
-.map-result-item:hover {
-  background: rgba(128, 128, 128, 0.1);
-}
-
-.map-full-map-container {
   width: 100%;
   height: 100%;
-  z-index: 1001;
-  position: relative;
+  pointer-events: none;
+  z-index: 20;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-/* View Toggle Button */
-.map-view-toggle {
-  position: absolute;
-  top: 90px;
-  right: 16px;
+.map-control-btn {
   width: 44px;
   height: 44px;
   background: var(--map-btn-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 1005;
   border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--map-accent-color);
-  transition: transform 0.2s, background-color 0.2s, color 0.2s;
-}
-.map-view-toggle:active {
-  transform: scale(0.95);
-}
-.map-view-toggle svg {
-  width: 24px;
-  height: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.2s ease;
+  cursor: pointer;
+  color: var(--map-btn-icon);
+  margin-bottom: 12px;
+  box-shadow: var(--map-btn-shadow);
 }
 
-.map-toggle-active {
-  background: var(--map-accent-color);
-  color: #ffffff;
+.map-control-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.map-control-btn:active {
+  transform: scale(0.9);
+}
+
+.map-widget-container.map-expanded .map-control-btn {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0.2s;
+}
+
+.map-close-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+/* --- SEARCH BAR --- */
+.map-search-container {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  width: 90%;
+  max-width: 400px;
+  background: var(--map-input-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  height: 50px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: var(--map-btn-shadow);
+  z-index: 25;
+}
+
+.map-widget-container.map-expanded .map-search-container {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+  transition-delay: 0.1s;
+  top: 20px;
+}
+
+.map-search-icon {
+  color: var(--map-text-secondary);
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+}
+
+.map-search-input {
+  background: transparent;
+  border: none;
+  font-size: 17px;
+  color: var(--map-text-primary);
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+}
+
+.map-search-input::placeholder {
+  color: var(--map-text-secondary);
+}
+
+/* --- MAP ELEMENT --- */
+#map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: var(--map-widget-bg);
+  transition: background-color 0.3s;
+}
+
+/* --- INFO OVERLAY --- */
+.map-widget-overlay {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  background: var(--map-overlay-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 18px;
+  padding: 14px 18px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--map-overlay-shadow);
+  transition:
+    bottom 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    max-width 0.5s ease,
+    left 0.5s ease;
+}
+
+.map-widget-container.map-expanded .map-widget-overlay {
+  bottom: 40px;
+  max-width: 400px;
+  left: 50%;
+  transform: translateX(-50%);
+  right: auto;
+  width: 90%;
+}
+
+.map-location-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.map-location-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--map-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-location-subtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--map-text-secondary);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-navigate-icon {
+  width: 36px;
+  height: 36px;
+  background-color: var(--map-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+.map-navigate-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  transform: rotate(45deg);
+  margin-left: -2px;
+  margin-top: 2px;
+}
+
+/* --- CUSTOM PIN & PULSE --- */
+:global(.map-custom-pin) {
+  background-color: var(--map-accent);
+  border: 3px solid var(--map-pin-border);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transition: border-color 0.3s;
+}
+
+:global(.map-custom-pin::after) {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--map-accent);
+  opacity: 0.6;
+  animation: map-pulse 2s infinite;
+  z-index: -1;
+}
+
+@keyframes map-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(3.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Hide Leaflet Controls */
+:global(.leaflet-control-attribution) {
+  display: none;
+}
+:global(.leaflet-control-zoom) {
+  display: none !important;
 }
 </style>
-
