@@ -25,7 +25,7 @@ const props = defineProps({
   },
   location: {
     type: String,
-    default: ""
+    default: '',
   },
 })
 
@@ -44,7 +44,7 @@ const getprops = (item) => {
       break
   }
 
-  if ((!p.location) || (p.location == "current")) {
+  if (!p.location || p.location == 'current') {
     p.location = props.location
   }
 

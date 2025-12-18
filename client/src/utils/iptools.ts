@@ -7,11 +7,11 @@ export async function IpInformation() {
     if (result.ok) {
       let cityResult = {}
       ipinfo = await result.json()
-try {
-      cityResult = await fetch('https://ipinfo.io/city')
-} catch (err) {
-  cityResult.ok = false
-}
+      try {
+        cityResult = await fetch('https://ipinfo.io/city')
+      } catch (err) {
+        cityResult.ok = false
+      }
 
       if (cityResult.ok) {
         const city = await cityResult.text()

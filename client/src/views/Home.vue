@@ -12,7 +12,7 @@ onMounted(async () => {
   const response = await fetch(url)
   if (response.ok) {
     const json = await response.json()
-  
+
     if (json.desktop && json.layout) {
       const ipinfo = await IpInformation()
       location.value = ipinfo.full
