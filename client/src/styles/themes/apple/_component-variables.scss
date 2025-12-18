@@ -8,6 +8,30 @@
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.6);
 
+  /* Calendar widget */
+  /* Backgrounds */
+  --cal-bg-body: #f2f2f7;
+  --cal-bg-widget: rgba(255, 255, 255, 0.65);
+  --cal-bg-widget-border: rgba(255, 255, 255, 0.4);
+  --cal-hover-bg: rgba(0, 0, 0, 0.05);
+  --cal-nav-btn-bg: rgba(128, 128, 128, 0.1);
+
+  /* Typography & Icons */
+  --cal-text-primary: #000000;
+  --cal-text-secondary: #8e8e93;
+  --cal-text-weekend: #8e8e93;
+
+  /* Accents & States */
+  --cal-accent-color: #007aff; /* Apple Blue */
+  --cal-accent-secondary: #ff2d55; /* Apple Pink/Red */
+  --cal-today-bg: #007aff;
+  --cal-today-text: #ffffff;
+
+  /* Effects */
+  --cal-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --cal-blur-strength: 40px;
+  --cal-border-radius: 22px;
+
   /* Map */
   /* Colors */
   --map-body-bg: #f2f2f7;
@@ -226,6 +250,21 @@
   --shadow-base: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* calendar widget */
+  --cal-bg-body: #000000;
+  --cal-bg-widget: rgba(30, 30, 30, 0.8);
+  --cal-bg-widget-border: rgba(255, 255, 255, 0.1);
+  --cal-hover-bg: rgba(255, 255, 255, 0.1);
+  --cal-nav-btn-bg: rgba(255, 255, 255, 0.1);
+  --cal-text-primary: #ffffff;
+  --cal-text-secondary: #98989d;
+  --cal-text-weekend: #98989d;
+  --cal-accent-color: #0a84ff;
+  --cal-accent-secondary: #ff2d55;
+  --cal-today-bg: #0a84ff;
+  --cal-today-text: #ffffff;
+  --cal-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 
   /* Map */
   --map-body-bg: #000000;
