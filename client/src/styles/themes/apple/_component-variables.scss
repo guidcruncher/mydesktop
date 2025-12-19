@@ -242,6 +242,32 @@
   --color-folder-shadow: rgba(31, 38, 135, 0.37);
   --color-cell-label: var(--color-primary-text);
   --color-cell-shadow: rgba(0, 0, 0, 0.12);
+
+  /* YAML Editor */
+  --ymledit-bg: #ffffff;
+  --ymledit-fg: #24292e;
+  --ymledit-caret: #000000;
+  --ymledit-selection: #b3d4fc;
+  --ymledit-gutter-bg: #f6f8fa;
+  --ymledit-gutter-fg: #bbb;
+  --ymledit-border: #e1e4e8;
+  /* Status Colors */
+  --ymledit-status-ok-bg: #dafbe1;
+  --ymledit-status-ok-fg: #1a7f37;
+  --ymledit-status-err-bg: #ffebe9;
+  --ymledit-status-err-fg: #cf222e;
+  /* Syntax Highlighting Mapping */
+  --ymledit-syntax-key: #22863a;
+  --ymledit-syntax-string: #032f62;
+  --ymledit-syntax-value: #005cc5;
+  --ymledit-syntax-comment: #6a737d;
+  --ymledit-syntax-keyword: #d73a49;
+  --ymledit-syntax-meta: #6f42c1;
+  /* UI Colors */
+  --ymledit-toolbar-bg: #f6f8fa;
+  --ymledit-toolbar-btn-bg: #ffffff;
+  --ymledit-toolbar-btn-border: #d1d5da;
+  --ymledit-toolbar-btn-hover: #f3f4f6;
 }
 
 .dark-mode {
@@ -392,4 +418,28 @@
   --color-folder-bg: rgba(40, 40, 40, 0.85);
   --color-folder-shadow: rgba(0, 0, 0, 0.5);
   --color-cell-shadow: rgba(0, 0, 0, 0.8);
+
+  /* YAML Editor */
+  /* Dark Theme Overrides */
+  --ymledit-bg: #1e1e1e;
+  --ymledit-fg: #d4d4d4;
+  --ymledit-caret: #ffffff;
+  --ymledit-selection: #264f78;
+  --ymledit-gutter-bg: #252526;
+  --ymledit-gutter-fg: #6e7681;
+  --ymledit-border: #30363d;
+  --ymledit-status-ok-bg: #238636;
+  --ymledit-status-ok-fg: #ffffff;
+  --ymledit-status-err-bg: #8c1d18;
+  --ymledit-status-err-fg: #ffffff;
+  --ymledit-syntax-key: #7ee787;
+  --ymledit-syntax-string: #a5d6ff;
+  --ymledit-syntax-value: #79c0ff;
+  --ymledit-syntax-comment: #8b949e;
+  --ymledit-syntax-keyword: #ff7b72;
+  --ymledit-syntax-meta: #d2a8ff;
+  --ymledit-toolbar-bg: #0d1117;
+  --ymledit-toolbar-btn-bg: #21262d;
+  --ymledit-toolbar-btn-border: #30363d;
+  --ymledit-toolbar-btn-hover: #30363d;
 }

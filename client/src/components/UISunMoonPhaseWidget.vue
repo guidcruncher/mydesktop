@@ -80,14 +80,14 @@
         </div>
         <div class="sunmoon-moon-viz">
           <MoonPhase
-            width="50px"
+            width="80px"
             :latitude="lat"
             :illumination="moonIllumination"
             :phase="moonPhaseName"
           />
         </div>
         <div class="sunmoon-moon-info">
-          <div class="sunmoon-moon-phase-name">{{ moonPhaseName }}</div>
+          <div class="sunmoon-moon-phase-name"><br />{{ moonPhaseName }}</div>
           <div class="sunmoon-moon-illumination">{{ moonIllumination }}% Illumination</div>
         </div>
       </div>
