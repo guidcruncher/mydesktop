@@ -268,7 +268,7 @@ const onTouchEnd = (e, taskId) => {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--todo-text-secondary);
+  color: var(--ui-text-secondary);
   margin-bottom: 0.25rem;
   margin-top: 0;
 }
@@ -276,7 +276,7 @@ const onTouchEnd = (e, taskId) => {
 .todo-title-text {
   font-size: 2.25rem;
   font-weight: 700;
-  background: linear-gradient(to right, var(--todo-text-primary), var(--todo-text-secondary));
+  background: linear-gradient(to right, var(--ui-text-primary), var(--ui-text-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0;
@@ -308,7 +308,7 @@ const onTouchEnd = (e, taskId) => {
   transition:
     transform 0.2s,
     background-color 0.3s;
-  color: var(--todo-text-primary);
+  color: var(--ui-text-primary);
 }
 
 /* Updated selector to use standard .dark-mode class */
@@ -342,7 +342,7 @@ const onTouchEnd = (e, taskId) => {
   transition:
     opacity 0.3s,
     color 0.3s;
-  color: var(--todo-text-primary);
+  color: var(--ui-text-primary);
   white-space: nowrap;
 }
 
@@ -443,7 +443,7 @@ const onTouchEnd = (e, taskId) => {
 .todo-task-text {
   flex-grow: 1;
   font-size: 1.1rem;
-  color: var(--todo-text-primary);
+  color: var(--ui-text-primary);
   transition: color 0.2s;
   white-space: nowrap;
   overflow: hidden;
@@ -451,7 +451,7 @@ const onTouchEnd = (e, taskId) => {
 }
 
 .todo-task-text.todo-completed {
-  color: var(--todo-text-secondary);
+  color: var(--ui-text-secondary);
   text-decoration: line-through;
 }
 
@@ -520,7 +520,7 @@ const onTouchEnd = (e, taskId) => {
 
 .todo-empty-subtext {
   font-size: 0.875rem;
-  color: var(--todo-text-secondary);
+  color: var(--ui-text-secondary);
   margin: 0.25rem 0 0 0;
 }
 
@@ -532,7 +532,6 @@ const onTouchEnd = (e, taskId) => {
   width: 100%;
   padding: 1.5rem;
   padding-bottom: 2rem;
-  background: linear-gradient(to top, var(--todo-bg-body) 0%, transparent 100%);
   z-index: 20;
   box-sizing: border-box;
 }
@@ -555,7 +554,7 @@ const onTouchEnd = (e, taskId) => {
 }
 
 .todo-plus-icon {
-  color: var(--todo-text-secondary);
+  color: var(--ui-text-secondary);
   font-size: 1.2rem;
 }
 
@@ -566,12 +565,12 @@ const onTouchEnd = (e, taskId) => {
   outline: none;
   height: 3rem;
   font-size: 1.1rem;
-  color: var(--todo-text-primary);
+  color: var(--ui-text-primary);
   min-width: 0;
 }
 
 .todo-task-input::placeholder {
-  color: var(--todo-text-placeholder);
+  color: var(--ui-text-placeholder);
 }
 
 .todo-add-btn {

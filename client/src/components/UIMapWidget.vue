@@ -457,7 +457,7 @@ onMounted(() => {
 }
 
 .map-search-icon {
-  color: var(--map-text-secondary);
+  color: var(--ui-text-secondary);
   width: 18px;
   height: 18px;
   margin-right: 10px;
@@ -467,14 +467,14 @@ onMounted(() => {
   background: transparent;
   border: none;
   font-size: 17px;
-  color: var(--map-text-primary);
+  color: var(--ui-text-primary);
   width: 100%;
   height: 100%;
   font-family: inherit;
 }
 
 .map-search-input::placeholder {
-  color: var(--map-text-secondary);
+  color: var(--ui-text-secondary);
 }
 
 /* --- MAP ELEMENT --- */
@@ -526,7 +526,7 @@ onMounted(() => {
 .map-location-title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--map-text-primary);
+  color: var(--ui-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -535,7 +535,7 @@ onMounted(() => {
 .map-location-subtitle {
   font-size: 13px;
   font-weight: 400;
-  color: var(--map-text-secondary);
+  color: var(--ui-text-secondary);
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;

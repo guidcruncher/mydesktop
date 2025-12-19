@@ -6,7 +6,7 @@
         type="text"
         class="sunmoon-search-input"
         placeholder="Search city..."
-j        v-model="searchQuery"
+        v-model="searchQuery"
         @keydown.enter="handleSearch"
       />
       <button class="sunmoon-close-search" @click="toggleSearch(false)">Cancel</button>
@@ -79,10 +79,12 @@ j        v-model="searchQuery"
           Moon Phase
         </div>
         <div class="sunmoon-moon-viz">
-          <svg viewBox="0 0 100 100" width="100%" height="100%">
-            <circle cx="50" cy="50" r="45" fill="var(--sunmoon-moon-bg)" />
-            <path :d="moonPath" fill="var(--sunmoon-moon-lit)" />
-          </svg>
+          <MoonPhase
+            width="50px"
+            :latitude="lat"
+            :illumination="moonIllumination"
+            :phase="moonPhaseName"
+          />
         </div>
         <div class="sunmoon-moon-info">
           <div class="sunmoon-moon-phase-name">{{ moonPhaseName }}</div>
@@ -522,4 +524,3 @@ onUnmounted(() => {
   opacity: 0.5;
 }
 </style>
-

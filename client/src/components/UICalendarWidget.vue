@@ -127,7 +127,7 @@ onMounted(() => {})
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--cal-text-primary);
+  color: var(--ui-text-primary);
 }
 
 /* Ambient Background */
@@ -221,7 +221,7 @@ onMounted(() => {})
 .cal-nav-btn {
   background: none;
   border: none;
-  color: var(--cal-text-primary);
+  color: var(--ui-text-primary);
   cursor: pointer;
   width: 20px;
   height: 20px;
@@ -261,7 +261,7 @@ onMounted(() => {})
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--cal-text-secondary);
+  color: var(--ui-text-secondary);
   padding-bottom: 4px;
   opacity: 0.8;
 }
@@ -302,7 +302,7 @@ onMounted(() => {})
 }
 
 .cal-day.cal-weekend {
-  color: var(--cal-text-weekend);
+  color: var(--ui-text-weekend);
 }
 
 /* Controls */
@@ -318,7 +318,7 @@ onMounted(() => {})
   background: var(--cal-bg-widget);
   backdrop-filter: blur(20px);
   border: 1px solid var(--cal-bg-widget-border);
-  color: var(--cal-text-primary);
+  color: var(--ui-text-primary);
   display: flex;
   justify-content: center;
   align-items: center;

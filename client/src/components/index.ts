@@ -4,6 +4,7 @@ import FlipCard from './FlipCard.vue'
 import IPInfo from './IPInfo.vue'
 import IconView from './IconView.vue'
 import MKMapView from './MKMapView.vue'
+import MoonPhase from './MoonPhase.vue'
 import ResponsiveGrid from './ResponsiveGrid.vue'
 import ResponsiveGridItem from './ResponsiveGridItem.vue'
 import UIActivityIndicator from './UIActivityIndicator.vue'
@@ -73,6 +74,7 @@ export const GlassComponents = {
   IPInfo,
   IconView,
   MKMapView,
+  MoonPhase,
   ResponsiveGrid,
   ResponsiveGridItem,
   UIActivityIndicator,
@@ -129,19 +131,18 @@ export const GlassComponents = {
   UIWeatherWidget,
   UIWheelListView,
   UIWidgetView,
-};
+}
 
+export function UseGlassUi(app) {
+  const pinia = createPinia()
+  app.directive('click-outside', ClickOutside)
+  app.directive('visual-effect', VisualEffect)
+  app.directive('background', Background)
 
-export function  UseGlassUi(app) {
-    const pinia = createPinia()
-    app.directive('click-outside', ClickOutside);
-    app.directive('visual-effect', VisualEffect);
-    app.directive('background', Background);
-
-    app.use(pinia);
-    Object.keys(GlassComponents).forEach((name) => {
-      app.component(name, GlassComponents[name]);
-    });
-    const themeStore = useThemeStore()
-    themeStore.restoreTheme()
-};
+  app.use(pinia)
+  Object.keys(GlassComponents).forEach((name) => {
+    app.component(name, GlassComponents[name])
+  })
+  const themeStore = useThemeStore()
+  themeStore.restoreTheme()
+}
