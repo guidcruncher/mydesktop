@@ -258,13 +258,10 @@ onUnmounted(() => {
   document.body.style.overflow = ''
   if (refreshTimer.value) clearInterval(refreshTimer.value)
 })
-
-// Computed Theme Class for Teleport
 </script>
 
 <template>
   <div class="weather-wrapper">
-    <!-- COMPACT WIDGET (Always in DOM Flow) -->
     <div
       ref="compactRef"
       class="ios-widget compact-widget"
@@ -285,16 +282,12 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- EXPANDED MODAL (Teleported to Body) -->
     <Teleport to="body">
-      <div v-if="isAnimating" class="weather-teleport-container" :class="themeClass">
-        <!-- Backdrop -->
+      <div v-if="isAnimating" class="weather-teleport-container">
         <div class="backdrop" :class="{ active: isExpanded }" @click="closeWidget"></div>
 
-        <!-- Expanded Widget -->
         <div class="ios-widget expanded-modal" :style="modalStyle">
           <div class="view-expanded">
-            <!-- Search -->
             <div class="search-overlay" :class="{ active: searchOpen }">
               <input
                 v-model="searchQuery"
@@ -306,7 +299,6 @@ onUnmounted(() => {
               <button @click="searchCity" class="search-go">Go</button>
             </div>
 
-            <!-- Header -->
             <div class="widget-header">
               <div>
                 <h2 class="city-name-lg">{{ weatherData.locationName }}</h2>
@@ -327,7 +319,6 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <!-- Content -->
             <div class="expanded-content">
               <div class="main-weather-lg">
                 <div class="main-icon-container">
@@ -373,8 +364,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* @import './weather-theme.css'; */
-
 .weather-wrapper {
   color: var(--weather-text-primary);
   font-family: var(--weather-font-family);

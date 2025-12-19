@@ -280,8 +280,8 @@ watch(
 .news-widget-container {
   /* Layout Vars */
   --news-radius: 22px;
-  --news-font-stack:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  /* Use the system font family defined in _component-variables.scss */
+  --news-font-stack: var(--weather-font-family);
 
   position: relative;
   border-radius: var(--news-radius);

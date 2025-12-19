@@ -1,6 +1,5 @@
 <template>
   <div class="cal-wrapper">
-    <!-- Widget -->
     <div class="cal-widget">
       <div class="cal-header">
         <div class="cal-month-name" @click="resetToToday">{{ monthName }}</div>
@@ -18,10 +17,8 @@
         <div class="cal-weekday" v-for="day in weekDays" :key="day">{{ day }}</div>
 
         <div class="cal-days-container">
-          <!-- Padding Days -->
           <div v-for="pad in paddingDays" :key="'pad-' + pad" class="cal-day cal-empty"></div>
 
-          <!-- Actual Days -->
           <div
             v-for="day in daysInMonth"
             :key="day.date"
@@ -343,5 +340,3 @@ onMounted(() => {})
   stroke-linejoin: round;
 }
 </style>
-
-e

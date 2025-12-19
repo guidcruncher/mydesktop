@@ -97,9 +97,7 @@ const onTouchEnd = (e, taskId) => {
 </script>
 
 <template>
-  <!-- Main Widget Card -->
   <div class="todo-widget-card">
-    <!-- Header -->
     <header class="todo-header">
       <div>
         <h2 class="todo-date-text">{{ dateDisplay }}</h2>
@@ -108,7 +106,6 @@ const onTouchEnd = (e, taskId) => {
       </div>
     </header>
 
-    <!-- Filters -->
     <div class="todo-filter-container">
       <button
         @click="setFilter('all')"
@@ -130,7 +127,6 @@ const onTouchEnd = (e, taskId) => {
       </button>
     </div>
 
-    <!-- Task List Area -->
     <div class="todo-list-container">
       <TransitionGroup name="todo-list">
         <div
@@ -145,7 +141,6 @@ const onTouchEnd = (e, taskId) => {
               @click.stop="toggleTask(task.id)"
               :class="['todo-check-btn', { 'todo-checked': task.completed }]"
             >
-              <!-- Check Icon -->
               <svg
                 class="todo-check-icon"
                 xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +160,6 @@ const onTouchEnd = (e, taskId) => {
             </span>
 
             <button @click.stop="deleteTask(task.id)" class="todo-delete-btn">
-              <!-- Trash Icon -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="14"
@@ -187,7 +181,6 @@ const onTouchEnd = (e, taskId) => {
         </div>
       </TransitionGroup>
 
-      <!-- Empty State -->
       <div v-if="filteredTasks.length === 0" class="todo-empty-state">
         <div class="todo-empty-icon">
           <svg
@@ -209,7 +202,6 @@ const onTouchEnd = (e, taskId) => {
       </div>
     </div>
 
-    <!-- Input Area -->
     <div class="todo-input-bar-container">
       <div class="todo-input-wrapper">
         <span class="todo-plus-icon">+</span>
@@ -221,7 +213,6 @@ const onTouchEnd = (e, taskId) => {
           @keydown.enter="addTask"
         />
         <button @click="addTask" class="todo-add-btn">
-          <!-- Arrow Up Icon -->
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -296,7 +287,8 @@ const onTouchEnd = (e, taskId) => {
   font-weight: 500;
   padding: 0.125rem 0.625rem;
   border-radius: 9999px;
-  background-color: rgba(0, 122, 255, 0.15);
+  /* Use color-mix for opacity handling of the variable */
+  background-color: color-mix(in srgb, var(--todo-color-blue), transparent 85%);
   color: var(--todo-color-blue);
   display: inline-block;
   margin-top: 0.5rem;
@@ -319,7 +311,8 @@ const onTouchEnd = (e, taskId) => {
   color: var(--todo-text-primary);
 }
 
-:root[data-todo-theme='dark'] .todo-theme-btn {
+/* Updated selector to use standard .dark-mode class */
+.dark-mode .todo-theme-btn {
   color: var(--todo-color-yellow);
 }
 
@@ -417,7 +410,8 @@ const onTouchEnd = (e, taskId) => {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px solid rgba(142, 142, 147, 0.5);
+  /* Standard system gray for border */
+  border: 2px solid color-mix(in srgb, var(--system-gray), transparent 50%);
   background: transparent;
   margin-right: 1rem;
   flex-shrink: 0;
@@ -466,7 +460,8 @@ const onTouchEnd = (e, taskId) => {
   height: 32px;
   border-radius: 50%;
   border: none;
-  background-color: rgba(255, 59, 48, 0.1);
+  /* Use color-mix for red opacity */
+  background-color: color-mix(in srgb, var(--todo-color-red), transparent 90%);
   color: var(--todo-color-red);
   display: flex;
   align-items: center;

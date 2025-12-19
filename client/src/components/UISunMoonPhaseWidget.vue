@@ -1,19 +1,17 @@
 <template>
   <div class="sunmoon-widget-container" :class="{ 'sunmoon-loading-shim': loading }">
-    <!-- Search Overlay -->
     <div class="sunmoon-search-overlay" :class="{ 'sunmoon-active': isSearchActive }">
       <input
         ref="searchInput"
         type="text"
         class="sunmoon-search-input"
         placeholder="Search city..."
-        v-model="searchQuery"
+j        v-model="searchQuery"
         @keydown.enter="handleSearch"
       />
       <button class="sunmoon-close-search" @click="toggleSearch(false)">Cancel</button>
     </div>
 
-    <!-- Header -->
     <div class="sunmoon-header">
       <div class="sunmoon-location-group" @click="toggleSearch(true)">
         <div class="sunmoon-location-title">
@@ -30,38 +28,33 @@
     </div>
 
     <div class="sunmoon-data-section">
-      <!-- Sun Section -->
       <div class="sunmoon-card">
         <div class="sunmoon-label">Sun Position</div>
         <div class="sunmoon-sun-viz">
           <svg viewBox="0 0 200 100" style="width: 100%; height: 100%; overflow: visible">
-            <!-- Track -->
             <path
               d="M 20 90 A 80 80 0 0 1 180 90"
               fill="none"
-              stroke="var(--sunmoon-sun-path)"
+              stroke="var(--ui-text-secondary)"
               stroke-width="3"
               stroke-dasharray="5,5"
               stroke-linecap="round"
             />
-            <!-- Progress -->
             <path
               :d="sunProgressPath"
               fill="none"
-              stroke="var(--sunmoon-sun-fill)"
+              stroke="#FCE570"
               stroke-width="4"
               stroke-linecap="round"
             />
-            <!-- Dot -->
             <circle
               :cx="sunDotX"
               :cy="sunDotY"
               r="8"
               :fill="sunDotFill"
-              stroke="var(--sunmoon-sun-dot-stroke)"
+              stroke="#FCE570"
               stroke-width="2"
             />
-            <!-- Horizon -->
             <line
               x1="10"
               y1="90"
@@ -76,12 +69,11 @@
           <span>{{ formattedSunrise }}</span>
           <span>{{ formattedSunset }}</span>
         </div>
-        <div style="font-size: 12px; margin-top: 5px; color: var(--sunmoon-text-secondary)">
-          Daylight: <span style="color: var(--sunmoon-text-primary)">{{ daylightDuration }}</span>
+        <div style="font-size: 12px; margin-top: 5px; color: var(--ui-text-secondary)">
+          Daylight: <span style="color: var(--ui-text-primary)">{{ daylightDuration }}</span>
         </div>
       </div>
 
-      <!-- Moon Section -->
       <div class="sunmoon-card" style="flex-direction: column; justify-content: center">
         <div class="sunmoon-label" style="position: absolute; top: 16px; left: 16px">
           Moon Phase
@@ -348,8 +340,9 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 20px;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: var(--sunmoon-text-primary);
+  /* Use Shared Font Variable */
+  font-family: var(--weather-font-family);
+  color: var(--ui-text-primary);
   box-sizing: border-box;
   transition:
     background-color 0.3s ease,
@@ -381,7 +374,7 @@ onUnmounted(() => {
 .sunmoon-location-icon {
   width: 14px;
   height: 14px;
-  fill: var(--sunmoon-text-primary);
+  fill: var(--ui-text-primary);
   opacity: 0.5;
 }
 
@@ -389,13 +382,13 @@ onUnmounted(() => {
   font-size: 32px;
   font-weight: 300;
   margin-top: 4px;
-  color: var(--sunmoon-text-primary);
+  color: var(--ui-text-primary);
   letter-spacing: -0.5px;
 }
 
 .sunmoon-date-subtitle {
   font-size: 13px;
-  color: var(--sunmoon-text-secondary);
+  color: var(--ui-text-secondary);
   font-weight: 500;
   margin-top: 2px;
   text-transform: uppercase;
@@ -412,7 +405,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--sunmoon-text-primary);
+  color: var(--ui-text-primary);
 }
 
 /* Search Overlay */
@@ -444,7 +437,7 @@ onUnmounted(() => {
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 16px;
-  color: var(--sunmoon-text-primary);
+  color: var(--ui-text-primary);
   outline: none;
 }
 
@@ -481,7 +474,7 @@ onUnmounted(() => {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--sunmoon-text-secondary);
+  color: var(--ui-text-secondary);
   letter-spacing: 0.5px;
   align-self: flex-start;
   margin-bottom: 4px;
@@ -499,7 +492,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: var(--sunmoon-text-secondary);
+  color: var(--ui-text-secondary);
   font-weight: 600;
   margin-top: -10px;
 }
@@ -517,11 +510,11 @@ onUnmounted(() => {
 .sunmoon-moon-phase-name {
   font-size: 14px;
   font-weight: 600;
-  color: var(--sunmoon-text-primary);
+  color: var(--ui-text-primary);
 }
 .sunmoon-moon-illumination {
   font-size: 12px;
-  color: var(--sunmoon-text-secondary);
+  color: var(--ui-text-secondary);
   margin-top: 2px;
 }
 
@@ -529,3 +522,4 @@ onUnmounted(() => {
   opacity: 0.5;
 }
 </style>
+

@@ -10,22 +10,22 @@
 
   /* Calendar widget */
   /* Backgrounds */
-  --cal-bg-body: #f2f2f7;
+  --cal-bg-body: var(--system-gray6);
   --cal-bg-widget: rgba(255, 255, 255, 0.65);
   --cal-bg-widget-border: rgba(255, 255, 255, 0.4);
   --cal-hover-bg: rgba(0, 0, 0, 0.05);
   --cal-nav-btn-bg: rgba(128, 128, 128, 0.1);
 
   /* Typography & Icons */
-  --cal-text-primary: #000000;
-  --cal-text-secondary: #8e8e93;
-  --cal-text-weekend: #8e8e93;
+  --cal-text-primary: var(--color-primary-text);
+  --cal-text-secondary: var(--system-gray);
+  --cal-text-weekend: var(--system-gray);
 
   /* Accents & States */
-  --cal-accent-color: #007aff; /* Apple Blue */
+  --cal-accent-color: var(--system-blue);
   --cal-accent-secondary: #ff2d55; /* Apple Pink/Red */
-  --cal-today-bg: #007aff;
-  --cal-today-text: #ffffff;
+  --cal-today-bg: var(--system-blue);
+  --cal-today-text: var(--system-white);
 
   /* Effects */
   --cal-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -34,16 +34,16 @@
 
   /* Map */
   /* Colors */
-  --map-body-bg: #f2f2f7;
-  --map-widget-bg: #ffffff;
-  --map-text-primary: #000000;
+  --map-body-bg: var(--system-gray6);
+  --map-widget-bg: var(--system-white);
+  --map-text-primary: var(--color-primary-text);
   --map-text-secondary: #6e6e73;
   --map-overlay-bg: rgba(255, 255, 255, 0.75);
   --map-input-bg: rgba(235, 235, 245, 0.85);
-  --map-accent: #007aff; /* Apple Blue */
+  --map-accent: var(--system-blue);
   --map-btn-bg: rgba(235, 235, 245, 0.6);
   --map-btn-icon: #3a3a3c;
-  --map-pin-border: #ffffff;
+  --map-pin-border: var(--system-white);
   --map-border-radius: 22px;
 
   /* Shadows */
@@ -53,16 +53,16 @@
   --map-btn-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
   /* Todolist */
-  --todo-color-blue: #007aff;
+  --todo-color-blue: var(--system-blue);
   --todo-color-blue-hover: #0063ce;
-  --todo-color-red: #ff3b30;
-  --todo-color-green: #34c759;
+  --todo-color-red: var(--system-red);
+  --todo-color-green: var(--system-green);
   --todo-color-yellow: #ffcc00;
   /* Light Mode Defaults */
-  --todo-bg-body: #f2f2f7;
+  --todo-bg-body: var(--system-gray6);
   --todo-text-primary: #1c1c1e;
-  --todo-text-secondary: #8e8e93;
-  --todo-text-placeholder: #aeaeb2;
+  --todo-text-secondary: var(--system-gray);
+  --todo-text-placeholder: var(--system-gray2);
   /* Glassmorphism - Light */
   --todo-glass-panel-bg: rgba(255, 255, 255, 0.8);
   --todo-glass-border: rgba(255, 255, 255, 0.6);
@@ -82,28 +82,28 @@
   --todo-input-bg: rgba(255, 255, 255, 0.5);
 
   /* Sun moon phase */
-  --sunmoon-bg-body: #f2f2f7;
+  --sunmoon-bg-body: var(--system-gray6);
   --sunmoon-bg-widget: rgba(255, 255, 255, 0.65);
   --sunmoon-border-widget: rgba(255, 255, 255, 0.4);
-  --sunmoon-text-primary: #000000;
-  --sunmoon-text-secondary: #8e8e93;
-  --sunmoon-accent-color: #007aff;
+  --sunmoon-text-primary: var(--color-primary-text);
+  --sunmoon-text-secondary: var(--system-gray);
+  --sunmoon-accent-color: var(--system-blue);
   --sunmoon-shadow-widget: 0 10px 30px rgba(0, 0, 0, 0.1);
-  --sunmoon-sun-path: #e5e5ea;
-  --sunmoon-sun-fill: #ff9500;
-  --sunmoon-sun-dot-stroke: #f2f2f7;
-  --sunmoon-moon-bg: #e5e5ea;
+  --sunmoon-sun-path: var(--system-gray5);
+  --sunmoon-sun-fill: var(--system-orange);
+  --sunmoon-sun-dot-stroke: var(--system-gray6);
+  --sunmoon-moon-bg: var(--system-gray5);
   --sunmoon-moon-lit: #ffdd00;
   --sunmoon-input-bg: rgba(118, 118, 128, 0.12);
   --sunmoon-card-bg: rgba(255, 255, 255, 0.05);
 
   /* News */
-  --news-bg-fallback: #e5e5ea; /* iOS Light Gray */
+  --news-bg-fallback: var(--system-gray5);
   --news-accent: #ff2d55; /* Standard Pink/Red */
-  --news-text: #ffffff; /* Text on image is always white */
+  --news-text: var(--system-white);
   --news-text-sub: rgba(255, 255, 255, 0.85);
   --news-shadow: rgba(0, 0, 0, 0.15); /* Lighter shadow */
-  --news-status-text: #8e8e93;
+  --news-status-text: var(--system-gray);
 
   /* Weather */
   --weather-w-compact: 160px;
@@ -124,7 +124,7 @@
 
   --weather-bg-start: #65c7f7;
   --weather-bg-end: #0052d4;
-  --weather-text-primary: #ffffff;
+  --weather-text-primary: var(--system-white);
   --weather-text-secondary: rgba(255, 255, 255, 0.7);
   --weather-glass-bg: rgba(255, 255, 255, 0.2);
   --weather-glass-border: rgba(255, 255, 255, 0.3);
@@ -147,16 +147,16 @@
   --modal-footer-border: rgba(0, 0, 0, 0.08);
 
   /* Buttons */
-  --btn-primary-bg-start: #007aff;
+  --btn-primary-bg-start: var(--system-blue);
   --btn-primary-bg-end: #0051d5;
-  --btn-primary-color: #ffffff;
+  --btn-primary-color: var(--system-white);
   --btn-primary-shadow: rgba(0, 122, 255, 0.4);
   --btn-secondary-bg: rgba(0, 0, 0, 0.05);
   --btn-secondary-bg-hover: rgba(0, 0, 0, 0.1);
-  --btn-secondary-color: #007aff;
+  --btn-secondary-color: var(--system-blue);
 
   /* Standard Controls (Form fields, etc.) */
-  --control-bg: #ffffff;
+  --control-bg: var(--system-white);
   --control-border: #e5e5e5; /* Lighter gray border (UITextField look) */
   --control-border-width: 1px;
   --control-border-active: #3b82f6; /* blue-500 for focus */
@@ -164,23 +164,23 @@
   --icon-color: #6b7280; /* gray-500 */
 
   /* List/Table Controls */
-  --list-bg: #ffffff;
+  --list-bg: var(--system-white);
   --list-border: #e5e7eb;
   --list-hover-bg: #eff6ff;
   --list-separator: #f3f4f6;
   --selected-bg: #3b82f6;
-  --selected-text: #ffffff;
+  --selected-text: var(--system-white);
   --selected-hover-bg: #2563eb;
 
   /* Window Controls (Traffic Lights) */
   --control-close-start: #ff5f57;
-  --control-close-end: #ff3b30;
+  --control-close-end: var(--system-red);
   --control-close-icon: #4d0000;
   --control-minimize-start: #ffbd2e;
-  --control-minimize-end: #ff9500;
+  --control-minimize-end: var(--system-orange);
   --control-minimize-icon: #995700;
   --control-maximize-start: #28cd41;
-  --control-maximize-end: #34c759;
+  --control-maximize-end: var(--system-green);
   --control-maximize-icon: #006610;
 
   /* Popover/Tooltip */
@@ -193,7 +193,7 @@
   --notify-text-color-primary: #1c1c1e; // Nearly black
   --notify-text-color-secondary: #3c3c43;
   --notify-border-color: rgba(0, 0, 0, 0.08);
-  --notify-close-btn-color: #8e8e93; // Medium gray
+  --notify-close-btn-color: var(--system-gray);
 
   /* Panel */
   --panel-bg: var(--color-system-background-tertiary); /* #ffffff */
@@ -201,21 +201,21 @@
   --panel-color: var(--color-label); /* #000000 */
 
   /* Stepper (Number Input) */
-  --stepper-primary: #007aff; /* Apple Blue for action */
+  --stepper-primary: var(--system-blue);
   --stepper-bg: rgba(255, 255, 255, 0.75); /* Liquid Glass effect light */
   --stepper-border-color: rgba(0, 0, 0, 0.1);
-  --stepper-text-color: #000000;
+  --stepper-text-color: var(--color-primary-text);
   --stepper-icon-color: var(--stepper-primary);
   --stepper-disabled-icon: rgba(0, 0, 0, 0.3);
 
   /* Map/GIS */
-  --map-bg-primary: #ffffff;
-  --map-bg-secondary: #f2f2f7;
-  --map-bg-tertiary: #e5e5ea;
-  --map-text-primary: #000000;
-  --map-text-secondary: #8e8e93;
-  --map-accent-color: #007aff;
-  --map-accent-destructive: #ff3b30;
+  --map-bg-primary: var(--system-white);
+  --map-bg-secondary: var(--system-gray6);
+  --map-bg-tertiary: var(--system-gray5);
+  --map-text-primary: var(--color-primary-text);
+  --map-text-secondary: var(--system-gray);
+  --map-accent-color: var(--system-blue);
+  --map-accent-destructive: var(--system-red);
   --map-control-bg: rgba(255, 255, 255, 0.95);
   --map-control-border: rgba(0, 0, 0, 0.04);
   --map-control-divider: rgba(0, 0, 0, 0.08);
@@ -227,8 +227,8 @@
   /* Segmented Control */
   --segment-background: rgba(118, 118, 128, 0.12);
   --segment-text: rgba(60, 60, 67, 0.6);
-  --segment-selected-background: #ffffff;
-  --segment-selected-text: #000000;
+  --segment-selected-background: var(--system-white);
+  --segment-selected-text: var(--color-primary-text);
   --segment-selected-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
 
   /* Clock */
@@ -252,36 +252,25 @@
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.1);
 
   /* calendar widget */
-  --cal-bg-body: #000000;
   --cal-bg-widget: rgba(30, 30, 30, 0.8);
   --cal-bg-widget-border: rgba(255, 255, 255, 0.1);
   --cal-hover-bg: rgba(255, 255, 255, 0.1);
   --cal-nav-btn-bg: rgba(255, 255, 255, 0.1);
-  --cal-text-primary: #ffffff;
   --cal-text-secondary: #98989d;
   --cal-text-weekend: #98989d;
-  --cal-accent-color: #0a84ff;
-  --cal-today-bg: #0a84ff;
   --cal-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 
   /* Map */
-  --map-body-bg: #000000;
-  --map-widget-bg: #1c1c1e;
-  --map-text-primary: #ffffff;
-  --map-text-secondary: #8e8e93;
   --map-overlay-bg: rgba(30, 30, 30, 0.75);
   --map-input-bg: rgba(44, 44, 46, 0.85);
   --map-btn-bg: rgba(30, 30, 30, 0.6);
   --map-btn-icon: #ebebf5;
-  --map-pin-border: #2c2c2e;
   --map-shadow: 0 4px 48px rgba(0, 0, 0, 0.5);
   --map-expanded-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
 
   /* Toodo list */
-  --todo-bg-body: #000000;
-  --todo-text-primary: #ffffff;
+  --todo-text-primary: var(--system-white);
   --todo-text-secondary: #98989d;
-  --todo-text-placeholder: #636366;
   /* Glassmorphism - Dark */
   --todo-glass-panel-bg: rgba(30, 30, 30, 1);
   --todo-glass-border: rgba(255, 255, 255, 0.1);
@@ -301,27 +290,18 @@
   --todo-input-bg: rgba(0, 0, 0, 0.2);
 
   /* News */
-  --news-bg-fallback: #1c1c1e; /* iOS Dark Gray */
   --news-accent: #ff375f; /* Slightly lighter/brighter accent for dark mode */
   --news-text-sub: rgba(255, 255, 255, 0.8);
   --news-shadow: rgba(0, 0, 0, 0.4); /* Deeper shadow */
   --news-status-text: #98989d;
 
   /* Sun moon phase */
-  --sunmoon-bg-body: #000000;
   --sunmoon-bg-widget: rgba(30, 30, 30, 1);
   --sunmoon-border-widget: rgba(255, 255, 255, 0.1);
-  --sunmoon-text-primary: #ffffff;
   --sunmoon-text-secondary: #98989d;
-  --sunmoon-accent-color: #0a84ff;
   --sunmoon-shadow-widget: 0 10px 30px rgba(0, 0, 0, 0.4);
-  --sunmoon-sun-path: #3a3a3c;
-  --sunmoon-sun-fill: #ff9f0a;
-  --sunmoon-sun-dot-stroke: #1c1c1e;
-  --sunmoon-moon-bg: #2c2c2e;
   --sunmoon-moon-lit: #f2f2f7;
   --sunmoon-input-bg: rgba(118, 118, 128, 0.24);
-  --sunmoon-card-bg: rgba(255, 255, 255, 0.05);
 
   /* Weather */
   --weather-bg-start: #2c3e50;
@@ -348,61 +328,48 @@
   --modal-footer-border: rgba(255, 255, 255, 0.1);
 
   /* Buttons */
-  --btn-primary-bg-start: #0a84ff;
   --btn-primary-bg-end: #0066cc;
   --btn-primary-shadow: rgba(10, 132, 255, 0.4);
   --btn-secondary-bg: rgba(255, 255, 255, 0.1);
   --btn-secondary-bg-hover: rgba(255, 255, 255, 0.15);
-  --btn-secondary-color: #0a84ff;
 
   /* Standard Controls (Form fields, etc.) */
-  --control-bg: #1f2937;
   --control-border: #4b5563; /* gray-600 */
   --control-border-active: #60a5fa; /* blue-400 */
   --primary-text: #f9fafb;
   --icon-color: #9ca3af;
 
   /* List/Table Controls */
-  --list-bg: #1f2937;
   --list-border: #374151;
   --list-hover-bg: #374151;
   --list-separator: #374151;
-  --selected-bg: #3b82f6;
-  --selected-text: #ffffff;
   --selected-hover-bg: #60a5fa;
+
+  /* Window Controls (Traffic Lights) - (Colors are often static/non-theming) */
 
   /* Popover/Tooltip */
   --popover-bg: rgba(40, 40, 40, 0.95);
-  --popover-text: #ffffff;
+  --popover-text: var(--system-white);
   --popover-border: rgba(255, 255, 255, 0.15);
 
   /* Notification */
   --notify-bg-color: rgba(28, 28, 30, 0.9);
-  --notify-text-color-primary: #ffffff;
+  --notify-text-color-primary: var(--system-white);
   --notify-text-color-secondary: #e5e5ea;
   --notify-border-color: rgba(255, 255, 255, 0.1);
   --notify-close-btn-color: #98989d; // Lighter
 
   /* Panel */
-  --panel-bg: #2c2c2e; /* Directly set to dark tertiary background */
-  --panel-color: #ffffff; /* Directly set to dark label color */
+  --panel-bg: var(--system-gray5);
+  --panel-color: var(--system-white);
 
   /* Stepper (Number Input) */
-  --stepper-primary: #0a84ff; /* Slightly brighter blue for dark mode */
   --stepper-bg: rgba(28, 28, 30, 0.75); /* Liquid Glass effect dark */
   --stepper-border-color: rgba(255, 255, 255, 0.2);
-  --stepper-text-color: #ffffff;
-  --stepper-icon-color: var(--stepper-primary);
   --stepper-disabled-icon: rgba(255, 255, 255, 0.4);
 
   /* Map/GIS */
-  --map-bg-primary: #1c1c1e;
-  --map-bg-secondary: #000000;
-  --map-bg-tertiary: #2c2c2e;
-  --map-text-primary: #ffffff;
   --map-text-secondary: #98989d;
-  --map-accent-color: #0a84ff;
-  --map-accent-destructive: #ff453a;
   --map-control-bg: rgba(28, 28, 30, 0.95);
   --map-control-border: rgba(255, 255, 255, 0.1);
   --map-control-divider: rgba(255, 255, 255, 0.15);
@@ -414,12 +381,10 @@
   /* Segmented Control */
   --segment-background: rgba(118, 118, 128, 0.24);
   --segment-text: rgba(235, 235, 245, 0.6);
-  --segment-selected-background: rgba(99, 99, 102, 0.5);
-  --segment-selected-text: #ffffff;
   --segment-selected-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
 
   /* Clock */
-  --clock-face-color: #2c2c2e; /* Darker gray face */
+  --clock-face-color: var(--system-gray5);
   --clock-border-color: rgba(255, 255, 255, 0.1);
   --clock-hand-hour: var(--system-white);
   --clock-hand-minute: var(--system-white);
