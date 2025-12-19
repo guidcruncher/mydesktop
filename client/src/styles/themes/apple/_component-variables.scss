@@ -261,9 +261,7 @@
   --cal-text-secondary: #98989d;
   --cal-text-weekend: #98989d;
   --cal-accent-color: #0a84ff;
-  --cal-accent-secondary: #ff2d55;
   --cal-today-bg: #0a84ff;
-  --cal-today-text: #ffffff;
   --cal-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 
   /* Map */
@@ -305,7 +303,6 @@
   /* News */
   --news-bg-fallback: #1c1c1e; /* iOS Dark Gray */
   --news-accent: #ff375f; /* Slightly lighter/brighter accent for dark mode */
-  --news-text: #ffffff;
   --news-text-sub: rgba(255, 255, 255, 0.8);
   --news-shadow: rgba(0, 0, 0, 0.4); /* Deeper shadow */
   --news-status-text: #98989d;
@@ -329,7 +326,6 @@
   /* Weather */
   --weather-bg-start: #2c3e50;
   --weather-bg-end: #000000;
-  --weather-text-primary: #ffffff;
   --weather-text-secondary: rgba(255, 255, 255, 0.5);
   --weather-glass-bg: rgba(255, 255, 255, 0.1);
   --weather-glass-border: rgba(255, 255, 255, 0.15);
@@ -354,7 +350,6 @@
   /* Buttons */
   --btn-primary-bg-start: #0a84ff;
   --btn-primary-bg-end: #0066cc;
-  --btn-primary-color: #ffffff;
   --btn-primary-shadow: rgba(10, 132, 255, 0.4);
   --btn-secondary-bg: rgba(255, 255, 255, 0.1);
   --btn-secondary-bg-hover: rgba(255, 255, 255, 0.15);
@@ -375,17 +370,6 @@
   --selected-bg: #3b82f6;
   --selected-text: #ffffff;
   --selected-hover-bg: #60a5fa;
-
-  /* Window Controls (Traffic Lights) - (Colors are often static/non-theming) */
-  --control-close-start: #ff5f57;
-  --control-close-end: #ff3b30;
-  --control-close-icon: #4d0000;
-  --control-minimize-start: #ffbd2e;
-  --control-minimize-end: #ff9500;
-  --control-minimize-icon: #995700;
-  --control-maximize-start: #28cd41;
-  --control-maximize-end: #34c759;
-  --control-maximize-icon: #006610;
 
   /* Popover/Tooltip */
   --popover-bg: rgba(40, 40, 40, 0.95);
@@ -439,10 +423,8 @@
   --clock-border-color: rgba(255, 255, 255, 0.1);
   --clock-hand-hour: var(--system-white);
   --clock-hand-minute: var(--system-white);
-  --clock-hand-second: var(--system-red);
 
   --color-folder-bg: rgba(40, 40, 40, 0.85);
   --color-folder-shadow: rgba(0, 0, 0, 0.5);
-  --color-cell-label: var(--color-primary-text);
   --color-cell-shadow: rgba(0, 0, 0, 0.8);
 }
