@@ -109,7 +109,7 @@ layout:
       type: custom
       component: UINewsHeadlinesWidget
       props:
-        rss: "https://feeds.skynews.com/feeds/rss/home.xml"
+        rss: "https://feeds.bbci.co.uk/news/rss.xml"
         size: "medium"
 
     - name: Moon Phase
