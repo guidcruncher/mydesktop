@@ -3,7 +3,7 @@
     type="button"
     :class="['ui-dropdown-item', { 'is-selected': active }]"
     :title="title || label"
-    @click="$emit('click', $event)"
+    @click="handleClick($event)"
   >
     <div class="icon-wrapper">
       <i v-if="icon" :class="icon" />
@@ -17,14 +17,29 @@
 </template>
 
 <script setup>
-defineProps({
+import { useRoute, useRouter } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+
+const props = defineProps({
   active: { type: Boolean, default: false },
   icon: { type: String, default: '' },
   label: { type: String, default: '' },
   title: { type: String, default: '' },
+  routerlink: { type: String, default: undefined },
 })
 
-defineEmits(['click'])
+const emits = defineEmits(['click'])
+
+const handleClick = (ev) => {
+  if (props.routerlink) {
+    router.push({ path: props.routerlink, replace: true })
+    return
+  }
+
+  emit('click', ev)
+}
 </script>
 
 <style lang="scss" scoped>

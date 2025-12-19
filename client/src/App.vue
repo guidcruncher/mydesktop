@@ -16,10 +16,10 @@ const isMenuOpen = ref(false)
           />
         </template>
         <UIDropdownMenuItem
-          icon="fa-solid fa-redo"
-          label="Reset All"
-          title="Reset All (R)"
-          @click="resetManipulation"
+          icon="fa-solid fa-gear"
+          label="Configuration"
+          title="Configuration"
+          routerlink="/config"
         />
         <hr class="menu-divider" />
         <UIDropdownMenuItem
