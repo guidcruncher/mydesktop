@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "cfg": "nano ./config/desktop.yml",
     "dev": "cd .. && npm run dev",
     "dev-server": "npm run registry && NODE_PATG=. tsx watch src/index.ts --color",
     "registry": "node ./scripts/apiiregistry.ts",

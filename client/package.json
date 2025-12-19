@@ -2,6 +2,7 @@
   "name": "mydesktop-client",
   "version": "0.0.0",
   "scripts": {
+    "cfg": "cd .. && npm run cfg",
     "dev": "cd .. && npm run dev",
     "dev-client": "vite --host",
     "build": "vue-tsc && vite build",

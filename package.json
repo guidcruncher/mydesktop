@@ -7,6 +7,7 @@
     "shared"
   ],
   "scripts": {
+    "cfg": "nano ./server/config/desktop.yml",
     "install:all": "cd client && npm install && cd ../server && npm install",
     "server": "cd server && npm run dev-server",
     "client": "cd client && npm run dev-client",
