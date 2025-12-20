@@ -54,6 +54,7 @@ const validateAndEmit = (val) => {
 const updateHighlighting = () => {
   if (!editorValue.value) {
     highlightedCode.value = ''
+    syncHeight() // Ensure height syncs even on empty
     return
   }
 
@@ -72,7 +73,14 @@ const updateHighlighting = () => {
 const syncHeight = async () => {
   await nextTick()
   if (editorRef.value && highlightRef.value) {
+    // FIX: Reset height to 'auto' first so it can shrink if lines are deleted
+    editorRef.value.style.height = 'auto'
+    highlightRef.value.parentElement.style.height = 'auto'
+
+    // Now measure the true scrollHeight
     const height = editorRef.value.scrollHeight + 'px'
+
+    // Apply new height
     editorRef.value.style.height = height
     highlightRef.value.parentElement.style.height = height
   }
@@ -167,15 +175,22 @@ onMounted(() => {
 
 // Computed for line numbers
 const lineNumbers = ref([1])
-watch(editorValue, (newVal) => {
-  const lines = newVal.split('\n').length
-  lineNumbers.value = Array.from({ length: lines }, (_, i) => i + 1)
-})
+
+// FIX: Added { immediate: true }
+// Without this, lineNumbers stays [1] until the user types, causing the gutter
+// to be too short to scroll.
+watch(
+  editorValue,
+  (newVal) => {
+    const lines = newVal.split('\n').length
+    lineNumbers.value = Array.from({ length: lines }, (_, i) => i + 1)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
   <div class="ymledit-container">
-    <!-- Toolbar -->
     <div class="ymledit-toolbar">
       <div class="ymledit-title">
         <slot name="title">Editor</slot>
@@ -186,23 +201,18 @@ watch(editorValue, (newVal) => {
       </div>
     </div>
 
-    <!-- Main Editor Area -->
     <div class="ymledit-main">
-      <!-- Gutter (Line Numbers) -->
       <div class="ymledit-gutter" ref="gutterRef">
         <div v-for="n in lineNumbers" :key="n">{{ n }}</div>
       </div>
 
-      <!-- Scroll View (Code + Overlay) -->
       <div class="ymledit-scroll-view" ref="scrollViewRef" @scroll="handleScroll">
-        <!-- Highlight Layer (Visual) -->
         <pre class="ymledit-highlight"><code 
           ref="highlightRef" 
           v-html="highlightedCode" 
           class="language-yaml"
         ></code></pre>
 
-        <!-- Input Layer (Functional) -->
         <textarea
           ref="editorRef"
           class="ymledit-editor"
@@ -219,7 +229,6 @@ watch(editorValue, (newVal) => {
       </div>
     </div>
 
-    <!-- Status Bar -->
     <div class="ymledit-status-bar">
       <div class="status-indicator" :class="isValid ? 'status-valid' : 'status-error'">
         <span class="status-dot"></span>

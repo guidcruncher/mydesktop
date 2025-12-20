@@ -70,8 +70,8 @@ const closeFolder = () => {
 
   /* Background Blur & Color from Variables */
   background-color: var(--modal-overlay-bg);
-  backdrop-filter: blur(var(--weather-backdrop-blur));
-  -webkit-backdrop-filter: blur(var(--weather-backdrop-blur));
+  backdrop-filter: blur(var(--modal-overlay-bg-blur));
+  -webkit-backdrop-filter: blur(var(--modal-overlay-bg-blur));
 
   /* Center the folder in the middle of the screen */
   display: flex;

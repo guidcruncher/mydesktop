@@ -60,7 +60,7 @@
   --todo-color-yellow: #ffcc00;
   /* Light Mode Defaults */
   --todo-bg-body: var(--system-gray6);
-  --todo-text-primary: #1c1c1e;
+  --todo-text-primary: var(--color-primary-text);
   --todo-text-secondary: var(--system-gray);
   --todo-text-placeholder: var(--system-gray2);
   /* Glassmorphism - Light */
@@ -135,6 +135,7 @@
 
   /* Modal/Overlay */
   --modal-overlay-bg: rgba(0, 0, 0, 0.4);
+  --modal-overlay-bg-blur: 12px;
   --modal-container-bg: rgba(255, 255, 255, 0.95);
   --modal-shadow: rgba(0, 0, 0, 0.3);
   --modal-header-bg-start: rgba(255, 255, 255, 0.8);
@@ -238,7 +239,7 @@
   --clock-hand-minute: var(--system-black);
   --clock-hand-second: var(--system-red);
 
-  --color-folder-bg: rgba(255, 255, 255, 0.75);
+  --color-folder-bg: rgba(255, 255, 255, 0.65);
   --color-folder-shadow: rgba(31, 38, 135, 0.37);
   --color-cell-label: var(--color-primary-text);
   --color-cell-shadow: rgba(0, 0, 0, 0.12);
@@ -415,7 +416,7 @@
   --clock-hand-hour: var(--system-white);
   --clock-hand-minute: var(--system-white);
 
-  --color-folder-bg: rgba(40, 40, 40, 0.85);
+  --color-folder-bg: rgba(40, 40, 40, 0.65);
   --color-folder-shadow: rgba(0, 0, 0, 0.5);
   --color-cell-shadow: rgba(0, 0, 0, 0.8);
 

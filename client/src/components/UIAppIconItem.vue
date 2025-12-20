@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { inject, ref, computed } from 'vue'
 
 const props = defineProps({
   label: {
@@ -12,12 +12,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  color: { type: String, required: false, default: undefined },
 })
 
 const emit = defineEmits(['click'])
 
 const iconUrl = computed(() => {
-  return `http://192.168.1.202:3009/api/icon/${props.icon}/png`
+  return `${inject('API_BASE_URL')}/api/icon/${props.icon}/png`
 })
 
 const handleClick = () => {
@@ -86,7 +87,7 @@ const handleClick = () => {
 
 .cell-label {
   font-size: 13px;
-  color: var(--color-cell-label);
+  color: var(--color-primary-text);
   text-align: center;
   font-weight: 400;
   white-space: nowrap;

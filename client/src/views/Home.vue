@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue'
+import { inject, onMounted, computed, ref } from 'vue'
 import { IpInformation } from '../utils/iptools'
 
 const showDesktop = ref(false)
@@ -8,8 +8,15 @@ const bg = ref({})
 const location = ref('')
 
 onMounted(async () => {
-  var url = 'http://192.168.1.202:3009/api/desktop'
-  const response = await fetch(url)
+  var url = `${inject("API_BASE_URL")}/api/desktop`
+  const options = {
+    method: 'GET',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    }),
+  }
+  const response = await fetch(url, options)
   if (response.ok) {
     const json = await response.json()
 
