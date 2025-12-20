@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { inject, onMounted, computed, ref } from 'vue'
 import { IpInformation } from '../utils/iptools'
+import { useRoute, useRouter } from 'vue-router'
 
+const router = useRouter()
+const route = useRoute()
 const showEditor = ref(false)
 const yaml = ref('')
 
@@ -20,11 +23,22 @@ onMounted(async () => {
     showEditor.value = true
   }
 })
+
+const saveChanges = () => {
+  router.push({ path: '/', replace: true })
+}
+
+const cancelChanges = () => {
+  router.push({ path: '/', replace: true })
+}
 </script>
 
 <template>
   <div class="editor-container">
     <YamlEditor v-model="yaml" v-if="showEditor"> </YamlEditor>
+
+    <UIButton variant="primary" @click="saveChanges">Save Changes</UIButton>&nbsp;
+    <UIButton variant="secondary" @click="cancelChanges">Cancel Changes</UIButton>
   </div>
 </template>
 
