@@ -176,9 +176,7 @@ onMounted(() => {
 // Computed for line numbers
 const lineNumbers = ref([1])
 
-// FIX: Added { immediate: true }
-// Without this, lineNumbers stays [1] until the user types, causing the gutter
-// to be too short to scroll.
+// FIX: Added { immediate: true } so line numbers generate on load
 watch(
   editorValue,
   (newVal) => {
@@ -240,16 +238,15 @@ watch(
 </template>
 
 <style scoped>
-/* Scoped Styles
-   Using :deep() to target highlight.js classes injected via v-html
-*/
+/* Scoped Styles */
 
-/* Variables */
 .ymledit-container {
-  /* Layout */
+  /* Layout Variables */
+  /* We use a specific stack and force the font size/line-height to be pixels 
+     to avoid browser rounding errors (sub-pixel rendering) */
   --ymledit-font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   --ymledit-font-size: 14px;
-  --ymledit-line-height: 1.5;
+  --ymledit-line-height: 21px; /* Fixed pixel height is crucial for alignment */
   --ymledit-padding: 15px;
 
   display: flex;
@@ -260,10 +257,9 @@ watch(
   border: 1px solid var(--ymledit-border);
   border-radius: 6px;
   overflow: hidden;
-  transition: background-color 0.2s;
 }
 
-/* Toolbar */
+/* --- Toolbar --- */
 .ymledit-toolbar {
   padding: 8px 12px;
   background-color: var(--ymledit-toolbar-bg);
@@ -294,14 +290,12 @@ watch(
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
-  transition: background-color 0.2s;
 }
-
 .ymledit-btn:hover {
   background-color: var(--ymledit-toolbar-btn-hover);
 }
 
-/* Main Area */
+/* --- Main Editor Area --- */
 .ymledit-main {
   flex: 1;
   position: relative;
@@ -320,7 +314,7 @@ watch(
   line-height: var(--ymledit-line-height);
   user-select: none;
   border-right: 1px solid var(--ymledit-border);
-  overflow: hidden; /* Scrolled via JS sync */
+  overflow: hidden;
 }
 
 .ymledit-scroll-view {
@@ -330,48 +324,69 @@ watch(
   background-color: var(--ymledit-bg);
 }
 
-/* Editor Overlay Trick */
+/* --- The Core Alignment Fix --- */
+
+/* 1. Shared Base Styles for both layers */
 .ymledit-editor,
 .ymledit-highlight {
   position: absolute;
   top: 0;
   left: 0;
   margin: 0;
+  border: none;
   padding: var(--ymledit-padding);
   width: 100%;
   min-height: 100%;
   box-sizing: border-box;
-  border: none;
-  font-family: var(--ymledit-font-family);
-  font-size: var(--ymledit-font-size);
-  line-height: var(--ymledit-line-height);
+
+  /* Font Geometry - Must be identical */
+  font-family: var(--ymledit-font-family) !important; /* Force override user agent */
+  font-size: var(--ymledit-font-size) !important;
+  line-height: var(--ymledit-line-height) !important;
+  letter-spacing: 0px;
+  word-spacing: 0px;
+
+  /* Rendering - Must be identical to prevent width drift */
   tab-size: 2;
   white-space: pre;
   overflow: hidden;
-  letter-spacing: 0px;
+  -webkit-font-smoothing: antialiased; /* Ensure both layers render font weight the same */
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.ymledit-editor {
-  z-index: 2;
-  color: transparent;
-  background: transparent;
-  caret-color: var(--ymledit-caret);
-  resize: none;
-  outline: none;
-}
-
-.ymledit-editor::selection {
-  background: var(--ymledit-selection);
-  color: transparent;
-}
-
+/* 2. Highlight Layer Specifics */
 .ymledit-highlight {
   z-index: 1;
   color: var(--ymledit-fg);
   pointer-events: none;
 }
 
-/* Status Bar */
+/* 3. Textarea Layer Specifics */
+.ymledit-editor {
+  z-index: 2;
+  color: transparent; /* Hide text, show cursor */
+  background: transparent;
+  caret-color: var(--ymledit-caret);
+  resize: none;
+  outline: none;
+}
+.ymledit-editor::selection {
+  background: var(--ymledit-selection);
+  color: transparent;
+}
+
+/* 4. RESET Highlight.js inner code element 
+   (Crucial: browsers often add padding/margin/font changes to <code> tags) */
+.ymledit-highlight code {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  padding: 0;
+  margin: 0;
+  white-space: pre;
+}
+
+/* --- Status Bar --- */
 .ymledit-status-bar {
   padding: 4px 12px;
   border-top: 1px solid var(--ymledit-border);
@@ -407,13 +422,12 @@ watch(
   background-color: var(--ymledit-status-ok-bg);
   color: var(--ymledit-status-ok-fg);
 }
-
 .status-error {
   background-color: var(--ymledit-status-err-bg);
   color: var(--ymledit-status-err-fg);
 }
 
-/* Syntax Highlighting Deep Selectors */
+/* Syntax Highlighting */
 :deep(.hljs-attr) {
   color: var(--ymledit-syntax-key);
   font-weight: 600;

@@ -8,7 +8,7 @@ const bg = ref({})
 const location = ref('')
 
 onMounted(async () => {
-  var url = `${inject("API_BASE_URL")}/api/desktop`
+  var url = `${inject('API_BASE_URL')}/api/desktop`
   const options = {
     method: 'GET',
     headers: new Headers({
