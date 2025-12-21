@@ -135,11 +135,11 @@ const getStorageStats = () => {
 export async function Sysinfo(fastify: FastifyInstance) {
   fastify.get("/api/sysinfo", async (request, reply) => {
     try {
-      const [cpuPercent, storage] = await Promise.all([getCpuStats(), getStorageStats()])
-
-      const memory = getMemStats()
-      const distro = getDistroName()
-      const icon = await getDistroIcon()
+      const cpuPercent: any = (await getCpuStats()) as any
+      const storage: any = (await getStorageStats()) as any
+      const memory: any = getMemStats() as any
+      const distro: any = getDistroName() as any
+      const icon: any = (await getDistroIcon()) as any
       return {
         device: {
           platform: "Linux",
