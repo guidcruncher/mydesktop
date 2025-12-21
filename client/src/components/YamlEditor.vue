@@ -117,22 +117,10 @@ const updateCursorPos = () => {
 // -- Keyboard Handling --
 
 const handleKeydown = (e) => {
-  // Support Tab indentation (2 spaces)
+  // Tab handling now uses the shared insertText function
   if (e.key === 'Tab') {
     e.preventDefault()
-    const start = editorRef.value.selectionStart
-    const end = editorRef.value.selectionEnd
-    const spaces = '  '
-
-    // Insert spaces
-    editorValue.value =
-      editorValue.value.substring(0, start) + spaces + editorValue.value.substring(end)
-
-    // Move cursor
-    nextTick(() => {
-      editorRef.value.selectionStart = editorRef.value.selectionEnd = start + spaces.length
-      handleInput({ target: { value: editorValue.value } }) // trigger update
-    })
+    insertText('  ')
   }
 }
 
@@ -185,6 +173,42 @@ watch(
   },
   { immediate: true },
 )
+
+const insertText = (text) => {
+  if (!editorRef.value) return
+
+  const start = editorRef.value.selectionStart
+  const end = editorRef.value.selectionEnd
+
+  // Slice current value around insertion point
+  const val = editorValue.value
+  const newVal = val.substring(0, start) + text + val.substring(end)
+
+  // Update State
+  editorValue.value = newVal
+  validateAndEmit(newVal)
+  updateHighlighting()
+
+  // Move cursor to end of inserted text
+  nextTick(() => {
+    const newPos = start + text.length
+    editorRef.value.focus()
+    editorRef.value.selectionStart = newPos
+    editorRef.value.selectionEnd = newPos
+    updateCursorPos()
+  })
+}
+
+const pasteContent = async () => {
+  try {
+    const text = await navigator.clipboard.readText()
+    if (text) {
+      insertText(text)
+    }
+  } catch (err) {
+    console.error('Failed to read clipboard:', err)
+  }
+}
 </script>
 
 <template>
@@ -196,6 +220,9 @@ watch(
       <div class="ymledit-actions">
         <button class="ymledit-btn" @click="formatYaml" title="Format Document">Format</button>
         <button class="ymledit-btn" @click="copyContent">Copy</button>
+        <button class="ymledit-btn" @click="pasteContent" title="Paste from Clipboard">
+          Paste
+        </button>
       </div>
     </div>
 

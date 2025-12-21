@@ -5,6 +5,21 @@ import Module from "node:module"
 const require = Module.createRequire(import.meta.url)
 const sharp = require("sharp")
 
+const getIconUrl = (t) => {
+  let format = ""
+  if (t.PNG == "Yes") {
+    format = "/png"
+  } else if (t.SVG == "Yes") {
+    format = "/svg"
+  } else if (t.WebP == "Yes") {
+    format = "/webp"
+  } else {
+    format = ""
+  }
+
+  return `/api/icon/${t.Reference}${format}`
+}
+
 const getFilename = (uri) => {
   if (!uri) {
     return ""
@@ -16,6 +31,47 @@ const getFilename = (uri) => {
 }
 
 export async function Icon(fastify: FastifyInstance) {
+  fastify.get("/api/icon/_search", async (request, reply) => {
+    const url = "https://raw.githubusercontent.com/selfhst/icons/refs/heads/main/index.json"
+    const query = request.query["q"]
+    const ua =
+      request.headers["User-Agent"] ??
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+
+    if (!query) {
+      reply.code(400).send("Missing search query parameter.")
+      return
+    }
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: new Headers({ "User-Agent": ua }),
+    })
+
+    if (!response.ok) {
+      const text = (await response.text()) ?? response.statusText
+      return reply.code(response.status).send(text)
+    }
+
+    const data = await response.json()
+    const res = data
+      .filter((item) => {
+        return item.Name.toLowerCase().startsWith(query.toLowerCase())
+      })
+      .map((t) => {
+        return {
+          id: t.Reference,
+          label: t.Name,
+          url: getIconUrl(t),
+        }
+      })
+      .sort((a, b) => {
+        return a.label.localeCompare(b.label)
+      })
+
+    return reply.status(200).send(res)
+  })
+
   fastify.get("/api/icon/:name/:fileType?", async (request, reply) => {
     const { name, fileType } = request.params
     const iconType = (fileType ?? "png").toLowerCase()
@@ -25,8 +81,7 @@ export async function Icon(fastify: FastifyInstance) {
       "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
 
     if (!imageUrl) {
-      reply.code(400).send("Missing image URL parameter.")
-      return
+      return reply.code(400).send("Missing image URL parameter.")
     }
 
     const response = await fetch(imageUrl, {
@@ -36,12 +91,10 @@ export async function Icon(fastify: FastifyInstance) {
 
     if (!response.ok) {
       if (response.status == 403 || response.status == 404) {
-        reply.code(404).send()
-        return
+        return reply.code(404).send()
       }
       request.log.error(`Failed to fetch external image: ${response.status} ${response.statusText}`)
-      reply.code(response.status).send("Failed to fetch external image. ")
-      return
+      return reply.code(response.status).send("Failed to fetch external image. ")
     }
 
     const bytes = await response.bytes()
