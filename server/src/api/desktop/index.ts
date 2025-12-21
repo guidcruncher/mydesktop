@@ -8,6 +8,36 @@ const require = Module.createRequire(import.meta.url)
 const yaml = require("js-yaml")
 
 export async function Desktop(fastify: FastifyInstance) {
+  fastify.put("/api/desktop", async (request, reply) => {
+    const rawYaml = request.body ?? ""
+    const configFile = path.join(process.cwd(), "./config", "desktop.yml")
+    const configFileBak = path.join(process.cwd(), "./config", "desktop.yml.bak")
+
+    if (rawYaml.length == 0) {
+      return reply.status(400).send({ success: false, message: "YAML Empty" })
+    }
+
+    try {
+      const doc = yaml.load(rawYaml)
+    } catch (e) {
+      const msg = e.message ? e.message.split("\n")[0] : "Invalid YAML"
+      return reply.status(400).send({ success: false, message: msg })
+    }
+
+    try {
+      if (fs.existsSync(configFileBak)) {
+        fs.unlinkSync(configFileBak)
+      }
+      fs.copyFileSync(configFile, configFileBak)
+      fs.writeFileSync(configFile, rawYaml)
+    } catch (e) {
+      const msg = e.message ? e.message.split("\n")[0] : "Intsrnal Server Error"
+      return reply.status(500).send({ success: false, message: msg })
+    }
+
+    return reply.status(200).send({ success: true, message: "OK" })
+  })
+
   fastify.get("/api/desktop", async (request, reply) => {
     const configFile = path.join(process.cwd(), "./config", "desktop.yml")
     const raw = fs.readFileSync(configFile, "utf8")

@@ -1,119 +1,131 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { inject, ref, onMounted, onUnmounted, computed } from 'vue'
 
 // --- State ---
-const isOffline = ref(false);
-const timer = ref(null);
+const isOffline = ref(false)
+const timer = ref(null)
 
 const sysData = ref({
   device: {
     distro: 'Detecting...',
     hostname: 'Localhost',
-    platform: 'Linux'
+    platform: 'Linux',
   },
   cpu: { percent: 0 },
   memory: { percent: 0 },
   storage: {
     percent: 0,
     usedGB: '--',
-    totalGB: '--'
-  }
-});
+    totalGB: '--',
+  },
+})
 
 // --- Simulation State (Fallback) ---
-const simCpu = ref(20);
-const simRam = ref(40);
+const simCpu = ref(20)
+const simRam = ref(40)
 
 // --- API Configuration ---
-const API_URL = 'http://localhost:3000/api/sysinfo';
+const API_URL = `${inject('API_BASE_URL')}/api/sysinfo`
 
 // --- Helpers ---
 const getColorForPercent = (percent) => {
-  if (percent > 85) return 'var(--sysinfo-accent-red)';
-  if (percent > 60) return 'var(--sysinfo-accent-orange)';
-  return null; // Will fallback to default via CSS or dynamic binding logic
-};
+  if (percent > 85) return 'var(--sysinfo-accent-red)'
+  if (percent > 60) return 'var(--sysinfo-accent-orange)'
+  return null // Will fallback to default via CSS or dynamic binding logic
+}
 
 // --- Core Logic ---
 const fetchSystemData = async () => {
   try {
-    const response = await fetch(API_URL);
-    if (!response.ok) throw new Error('Network error');
-    
-    const data = await response.json();
-    
-    // Update State with Real Data
-    sysData.value = data;
-    isOffline.value = false;
+    const response = await fetch(API_URL)
+    if (!response.ok) throw new Error('Network error')
 
+    const data = await response.json()
+
+    // Update State with Real Data
+    sysData.value = data
+    isOffline.value = false
   } catch (error) {
     // Switch to Offline/Simulation Mode
-    isOffline.value = true;
-    simulateData();
+    isOffline.value = true
+    simulateData()
   }
-};
+}
 
 const simulateData = () => {
   // Random walk for CPU/RAM simulation
-  simCpu.value = Math.max(5, Math.min(95, simCpu.value + Math.floor(Math.random() * 10) - 5));
-  simRam.value = Math.max(10, Math.min(90, simRam.value + Math.floor(Math.random() * 6) - 3));
+  simCpu.value = Math.max(5, Math.min(95, simCpu.value + Math.floor(Math.random() * 10) - 5))
+  simRam.value = Math.max(10, Math.min(90, simRam.value + Math.floor(Math.random() * 6) - 3))
 
   sysData.value = {
     device: {
       distro: 'Demo Mode',
       hostname: 'No Connection',
-      platform: 'Unknown'
+      platform: 'Unknown',
     },
     cpu: { percent: simCpu.value },
     memory: { percent: simRam.value },
     storage: {
       percent: 45,
       usedGB: 120,
-      totalGB: 256
-    }
-  };
-};
+      totalGB: 256,
+    },
+  }
+}
 
 // --- Computed Props for UI Bindings ---
-const cpuColor = computed(() => getColorForPercent(sysData.value.cpu.percent) || 'var(--sysinfo-accent-blue)');
-const ramColor = computed(() => getColorForPercent(sysData.value.memory.percent) || 'var(--sysinfo-accent-orange)');
-const battColor = computed(() => getColorForPercent(sysData.value.storage.percent) || 'var(--sysinfo-accent-blue)');
-const statusText = computed(() => isOffline.value ? 'Simulation' : 'Live Feed');
-const statusColor = computed(() => isOffline.value ? 'var(--sysinfo-accent-orange)' : 'var(--sysinfo-accent-green)');
+const cpuColor = computed(
+  () => getColorForPercent(sysData.value.cpu.percent) || 'var(--sysinfo-accent-blue)',
+)
+const ramColor = computed(
+  () => getColorForPercent(sysData.value.memory.percent) || 'var(--sysinfo-accent-orange)',
+)
+const battColor = computed(
+  () => getColorForPercent(sysData.value.storage.percent) || 'var(--sysinfo-accent-blue)',
+)
+const statusText = computed(() => (isOffline.value ? 'Simulation' : 'Live Feed'))
+const statusColor = computed(() =>
+  isOffline.value ? 'var(--sysinfo-accent-orange)' : 'var(--sysinfo-accent-green)',
+)
 
 // --- Lifecycle ---
 onMounted(() => {
-  fetchSystemData(); // Initial fetch
-  timer.value = setInterval(fetchSystemData, 1500);
-});
+  fetchSystemData() // Initial fetch
+  timer.value = setInterval(fetchSystemData, 1500)
+})
 
 onUnmounted(() => {
-  if (timer.value) clearInterval(timer.value);
-});
+  if (timer.value) clearInterval(timer.value)
+})
 </script>
 
 <template>
   <div class="-sysinfo-container" :class="{ '-sysinfo-offline': isOffline }">
-    
     <!-- CARD 1: DEVICE INFO -->
     <div class="-sysinfo-card -sysinfo-card-wide">
       <div class="-sysinfo-row">
         <div class="-sysinfo-title">
-          <svg class="-sysinfo-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          <svg class="-sysinfo-icon" viewBox="0 0 24 24">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+            />
+          </svg>
           Device
         </div>
         <div class="-sysinfo-chip">{{ sysData.device.distro }}</div>
       </div>
-      
+
       <div class="-sysinfo-device-layout">
         <!-- Left: Hostname -->
         <div>
-          <div class="-sysinfo-subtext" style="margin-bottom: 2px;">Hostname</div>
-          <div class="-sysinfo-value-large" style="font-size: 24px;">{{ sysData.device.hostname }}</div>
+          <div class="-sysinfo-subtext" style="margin-bottom: 2px">Hostname</div>
+          <div class="-sysinfo-value-large" style="font-size: 24px">
+            {{ sysData.device.hostname }}
+          </div>
         </div>
 
         <!-- Right: Details -->
-        <div style="text-align:right;">
+        <div style="text-align: right">
           <div class="-sysinfo-list-detail">Web Client</div>
           <div class="-sysinfo-list-detail" :style="{ color: statusColor, marginTop: '4px' }">
             {{ statusText }}
@@ -125,25 +137,34 @@ onUnmounted(() => {
     <!-- CARD 2: CPU / MEMORY -->
     <div class="-sysinfo-card -sysinfo-card-wide">
       <div class="-sysinfo-title">
-        <svg class="-sysinfo-icon" viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm6 6h6v6H9V9z"/></svg>
-        Current Load <div class="-sysinfo-live-dot"></div>
+        <svg class="-sysinfo-icon" viewBox="0 0 24 24">
+          <path d="M3 3h18v18H3V3zm6 6h6v6H9V9z" />
+        </svg>
+        Current Load
+        <div class="-sysinfo-live-dot"></div>
       </div>
-      
+
       <div class="-sysinfo-load-layout">
-        
         <!-- CPU CIRCLE -->
         <div class="-sysinfo-stat-group">
           <div class="-sysinfo-chart-container">
             <svg viewBox="0 0 36 36" class="-sysinfo-circular-chart">
-              <path class="-sysinfo-circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-              <path class="-sysinfo-circle" 
-                    :style="{ stroke: cpuColor, strokeDasharray: `${sysData.cpu.percent}, 100` }"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              <path
+                class="-sysinfo-circle-bg"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path
+                class="-sysinfo-circle"
+                :style="{ stroke: cpuColor, strokeDasharray: `${sysData.cpu.percent}, 100` }"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
             </svg>
             <div class="-sysinfo-chart-icon">CPU</div>
           </div>
-          <div style="text-align:left;">
-            <div class="-sysinfo-value-large" style="font-size:20px;">{{ sysData.cpu.percent }}%</div>
+          <div style="text-align: left">
+            <div class="-sysinfo-value-large" style="font-size: 20px">
+              {{ sysData.cpu.percent }}%
+            </div>
             <div class="-sysinfo-subtext">Processor</div>
           </div>
         </div>
@@ -155,64 +176,85 @@ onUnmounted(() => {
         <div class="-sysinfo-stat-group">
           <div class="-sysinfo-chart-container">
             <svg viewBox="0 0 36 36" class="-sysinfo-circular-chart">
-              <path class="-sysinfo-circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-              <path class="-sysinfo-circle" 
-                    :style="{ stroke: ramColor, strokeDasharray: `${sysData.memory.percent}, 100` }"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              <path
+                class="-sysinfo-circle-bg"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path
+                class="-sysinfo-circle"
+                :style="{ stroke: ramColor, strokeDasharray: `${sysData.memory.percent}, 100` }"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
             </svg>
             <div class="-sysinfo-chart-icon">RAM</div>
           </div>
-          <div style="text-align:left;">
-            <div class="-sysinfo-value-large" style="font-size:20px;">{{ sysData.memory.percent }}%</div>
+          <div style="text-align: left">
+            <div class="-sysinfo-value-large" style="font-size: 20px">
+              {{ sysData.memory.percent }}%
+            </div>
             <div class="-sysinfo-subtext">Memory</div>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- CARD 3: STORAGE DETAILS -->
     <div class="-sysinfo-card -sysinfo-card-wide">
       <div class="-sysinfo-title">Storage</div>
-      
+
       <!-- MAIN DISK (API DATA) -->
       <div class="-sysinfo-list-item">
-        <div class="-sysinfo-icon-box" style="background-color: var(--sysinfo-accent-blue);">
-          <svg style="width:18px; height:18px; fill:white;" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        <div class="-sysinfo-icon-box" style="background-color: var(--sysinfo-accent-blue)">
+          <svg style="width: 18px; height: 18px; fill: white" viewBox="0 0 24 24">
+            <path
+              d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"
+            />
+          </svg>
         </div>
         <div class="-sysinfo-list-content">
           <span class="-sysinfo-list-label">Main Disk (/)</span>
-          <div class="-sysinfo-progress-container" style="height:4px; margin-top:4px;">
-            <div class="-sysinfo-progress-bar" 
-                 :style="{ width: `${sysData.storage.percent}%`, backgroundColor: 'var(--sysinfo-accent-blue)' }">
-            </div>
+          <div class="-sysinfo-progress-container" style="height: 4px; margin-top: 4px">
+            <div
+              class="-sysinfo-progress-bar"
+              :style="{
+                width: `${sysData.storage.percent}%`,
+                backgroundColor: 'var(--sysinfo-accent-blue)',
+              }"
+            ></div>
           </div>
         </div>
-        <div style="text-align:right; margin-left:12px;">
+        <div style="text-align: right; margin-left: 12px">
           <span class="-sysinfo-list-label">{{ sysData.storage.percent }}%</span>
-          <span class="-sysinfo-list-detail">{{ sysData.storage.usedGB }} / {{ sysData.storage.totalGB }} GB</span>
+          <span class="-sysinfo-list-detail"
+            >{{ sysData.storage.usedGB }} / {{ sysData.storage.totalGB }} GB</span
+          >
         </div>
       </div>
 
       <!-- STATIC (Media) -->
       <div class="-sysinfo-list-item">
-        <div class="-sysinfo-icon-box" style="background-color: var(--sysinfo-accent-teal);">
-          <svg style="width:18px; height:18px; fill:white;" viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+        <div class="-sysinfo-icon-box" style="background-color: var(--sysinfo-accent-teal)">
+          <svg style="width: 18px; height: 18px; fill: white" viewBox="0 0 24 24">
+            <path
+              d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"
+            />
+          </svg>
         </div>
         <div class="-sysinfo-list-content">
           <span class="-sysinfo-list-label">System Reserved</span>
-          <div class="-sysinfo-progress-container" style="height:4px; margin-top:4px;">
-            <div class="-sysinfo-progress-bar" style="width: 15%; background-color: var(--sysinfo-accent-teal);"></div>
+          <div class="-sysinfo-progress-container" style="height: 4px; margin-top: 4px">
+            <div
+              class="-sysinfo-progress-bar"
+              style="width: 15%; background-color: var(--sysinfo-accent-teal)"
+            ></div>
           </div>
         </div>
-        <div style="text-align:right; margin-left:12px;">
+        <div style="text-align: right; margin-left: 12px">
           <span class="-sysinfo-list-label">15%</span>
           <span class="-sysinfo-list-detail">Cached</span>
         </div>
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -236,7 +278,9 @@ onUnmounted(() => {
   --sysinfo-radius-lg: 26px;
   --sysinfo-radius-md: 16px;
   --sysinfo-blur: blur(35px);
-  --sysinfo-font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --sysinfo-font-stack:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -261,7 +305,7 @@ onUnmounted(() => {
   box-sizing: border-box;
   font-family: var(--sysinfo-font-stack);
   color: var(--sysinfo-text-primary);
-  
+
   background: var(--sysinfo-bg-widget);
   backdrop-filter: var(--sysinfo-blur);
   -webkit-backdrop-filter: var(--sysinfo-blur);
@@ -411,7 +455,7 @@ onUnmounted(() => {
 .-sysinfo-divider {
   width: 1px;
   height: 35px;
-  background: rgba(128,128,128,0.2);
+  background: rgba(128, 128, 128, 0.2);
 }
 
 .-sysinfo-list-item {
@@ -461,9 +505,15 @@ onUnmounted(() => {
 
 /* * ANIMATIONS */
 @keyframes -sysinfo-pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
 }
 
 .-sysinfo-live-dot {
@@ -481,4 +531,3 @@ onUnmounted(() => {
   animation: none;
 }
 </style>
-

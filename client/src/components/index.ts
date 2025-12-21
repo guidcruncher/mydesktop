@@ -46,6 +46,7 @@ import UISplitView from './UISplitView.vue'
 import UIStepper from './UIStepper.vue'
 import UISunMoonPhaseWidget from './UISunMoonPhaseWidget.vue'
 import UISwitch from './UISwitch.vue'
+import UISystemInfoWidget from './UISystemInfoWidget.vue'
 import UITabBar from './UITabBar.vue'
 import UITabItem from './UITabItem.vue'
 import UITableCell from './UITableCell.vue'
@@ -117,6 +118,7 @@ export const GlassComponents = {
   UIStepper,
   UISunMoonPhaseWidget,
   UISwitch,
+  UISystemInfoWidget,
   UITabBar,
   UITabItem,
   UITableCell,

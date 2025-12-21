@@ -10,6 +10,15 @@ const __dirname = path.dirname(__filename)
 
 const server = Fastify({ logger: true })
 
+server.addContentTypeParser(
+  ["text/yaml", "application/yaml"],
+  { parseAs: "string" },
+  (req, body, done) => {
+    // No parsing logic here, just pass the raw string through
+    done(null, body)
+  },
+)
+
 // 1. Register CORS (Useful for dev, less critical if serving from same origin)
 server.register(cors)
 
