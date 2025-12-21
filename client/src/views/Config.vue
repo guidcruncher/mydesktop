@@ -8,8 +8,10 @@ const route = useRoute()
 const showEditor = ref(false)
 const yaml = ref('')
 
+const apiBase = inject('API_BASE_URL')
+
 onMounted(async () => {
-  var url = `${inject('API_BASE_URL')}/api/desktop`
+  var url = `${apiBase}/api/desktop`
   const options = {
     method: 'GET',
     headers: new Headers({
@@ -24,7 +26,25 @@ onMounted(async () => {
   }
 })
 
-const saveChanges = () => {
+const saveChanges = async () => {
+  var url = `${apiBase}/api/desktop`
+
+  const options = {
+    method: 'PUT',
+    body: yaml.value,
+    headers: new Headers({
+      'Content-Type': 'application/yaml',
+    }),
+  }
+
+  const response = await fetch(url, options)
+  const json = await response.json()
+
+  if (!json.success) {
+    alert(json.message)
+    return
+  }
+
   router.push({ path: '/', replace: true })
 }
 

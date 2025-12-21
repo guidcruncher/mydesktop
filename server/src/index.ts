@@ -20,7 +20,10 @@ server.addContentTypeParser(
 )
 
 // 1. Register CORS (Useful for dev, less critical if serving from same origin)
-server.register(cors)
+server.register(cors, {
+  origin: "*",
+  methods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"],
+})
 
 // 2. Register API Routes first (so they take precedence)
 server.register(routes)
