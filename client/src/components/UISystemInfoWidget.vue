@@ -91,7 +91,7 @@ const statusColor = computed(() =>
 // --- Lifecycle ---
 onMounted(() => {
   fetchSystemData() // Initial fetch
-  timer.value = setInterval(fetchSystemData, 1500)
+  timer.value = setInterval(fetchSystemData, 5000)
 })
 
 onUnmounted(() => {

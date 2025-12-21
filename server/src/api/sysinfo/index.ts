@@ -5,6 +5,37 @@ import fs from "node:fs"
 import os from "node:os"
 import { exec } from "node:child_process"
 
+const getDistroIcon = async () => {
+  const osReleasePath = "/etc/os-release"
+  const aliasMap = {
+    arch: "arch-linux",
+    "opensuse-leap": "opensuse",
+    "opensuse-tumbleweed": "opensuse",
+    raspbian: "raspberry-pi",
+    rhel: "red-hat",
+    linuxmint: "linux-mint",
+    pop: "pop-os",
+    elementary: "elementary-os",
+  }
+
+  try {
+    if (!fs.existsSync(osReleasePath)) return null
+
+    const fileContent = await fs.promises.readFile(osReleasePath, "utf8")
+    const idMatch = fileContent.match(/^ID=["']?([^"'\n]+)["']?/m)
+
+    if (idMatch && idMatch[1]) {
+      let distroId = idMatch[1].toLowerCase()
+      const iconName = aliasMap[distroId] || distroId
+      return `https://raw.githubusercontent.com/haroeris01/walkxcode-dashboard-icons/refs/heads/main/png/${iconName}.png`
+      return `https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/master/png/${iconName}.png`
+    }
+  } catch (err) {
+    return ""
+  }
+  return ""
+}
+
 const getDistroName = () => {
   try {
     const content = fs.readFileSync("/etc/os-release", "utf8")
@@ -108,11 +139,12 @@ export async function Sysinfo(fastify: FastifyInstance) {
 
       const memory = getMemStats()
       const distro = getDistroName()
-
+      const icon = await getDistroIcon()
       return {
         device: {
           platform: "Linux",
           distro: distro,
+          icon: icon,
           kernel: os.release(),
           hostname: os.hostname(),
         },
