@@ -15,12 +15,12 @@ export function ApiRegistry(options = {}) {
 
     const capitalize = ((string) => {return string.charAt(0).toUpperCase() + string.slice(1)})
 
-    const imports = (() => {  return dirs.map(name => `import { ${capitalize(name)} } from './api/${name}/index.ts'`).join('\n') })
+    const imports = (() => {  return dirs.map(name => `import { ${capitalize(name)} } from './api/${name}/index'`).join('\n') })
     const inits = (() => { return dirs.map(name => `  ${capitalize(name)}(fastify)` ).join('\n') })
 
     return `${imports()}
 
-export async function routes(fastify) {
+export async function routes(fastify: any) {
 ${inits()}
 }
 `

@@ -98,7 +98,7 @@ const getMemStats = () => {
       percent: Math.round((used / total) * 100),
       usedGB: (used / 1024 ** 3).toFixed(1),
       totalGB: (total / 1024 ** 3).toFixed(1),
-    }
+    } as any
   } catch (e) {
     return { percent: 0, usedGB: 0, totalGB: 0 }
   }
@@ -130,42 +130,42 @@ const getStorageStats = () => {
       })
     })
   })
-}
 
-export async function Sysinfo(fastify: FastifyInstance) {
-  fastify.get("/api/sysinfo", async (request, reply) => {
-    try {
-      const [cpuPercent, storage] = await Promise.all([getCpuStats(), getStorageStats()])
+  export async function Sysinfo(fastify: FastifyInstance) {
+    fastify.get("/api/sysinfo", async (request, reply) => {
+      try {
+        const [cpuPercent, storage] = await Promise.all([getCpuStats(), getStorageStats()])
 
-      const memory = getMemStats()
-      const distro = getDistroName()
-      const icon = await getDistroIcon()
-      return {
-        device: {
-          platform: "Linux",
-          distro: distro,
-          icon: icon,
-          kernel: os.release(),
-          hostname: os.hostname(),
-        },
-        cpu: {
-          percent: cpuPercent,
-          load: cpuPercent,
-        },
-        memory: {
-          percent: memory.percent,
-          usedGB: memory.usedGB,
-          totalGB: memory.totalGB,
-        },
-        storage: {
-          percent: storage.percent,
-          usedGB: storage.usedGB,
-          totalGB: storage.totalGB,
-        },
+        const memory = getMemStats()
+        const distro = getDistroName()
+        const icon = await getDistroIcon()
+        return {
+          device: {
+            platform: "Linux",
+            distro: distro,
+            icon: icon,
+            kernel: os.release(),
+            hostname: os.hostname(),
+          },
+          cpu: {
+            percent: cpuPercent,
+            load: cpuPercent,
+          },
+          memory: {
+            percent: memory.percent,
+            usedGB: memory.usedGB,
+            totalGB: memory.totalGB,
+          },
+          storage: {
+            percent: storage.percent,
+            usedGB: storage.usedGB,
+            totalGB: storage.totalGB,
+          },
+        }
+      } catch (error) {
+        fastify.log.error(error)
+        reply.code(500).send({ error: "Internal Server Error" })
       }
-    } catch (error) {
-      fastify.log.error(error)
-      reply.code(500).send({ error: "Internal Server Error" })
-    }
-  })
+    })
+  }
 }
