@@ -259,41 +259,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* * SYSTEM VARIABLES & THEME SETUP
- * Prefix: -sysinfo
- * Note: :root in scoped style works but is best practice to define variables at app root level.
- * However, we include them here to ensure the widget works standalone.
- */
-:root {
-  --sysinfo-bg-widget: rgba(255, 255, 255, 0.65);
-  --sysinfo-bg-element: rgba(0, 0, 0, 0.05);
-  --sysinfo-text-primary: #1c1c1e;
-  --sysinfo-text-secondary: #8e8e93;
-  --sysinfo-accent-blue: #007aff;
-  --sysinfo-accent-green: #34c759;
-  --sysinfo-accent-orange: #ff9500;
-  --sysinfo-accent-red: #ff3b30;
-  --sysinfo-accent-teal: #30b0c7;
-  --sysinfo-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-  --sysinfo-radius-lg: 26px;
-  --sysinfo-radius-md: 16px;
-  --sysinfo-blur: blur(35px);
-  --sysinfo-font-stack:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --sysinfo-bg-widget: rgba(30, 30, 30, 0.75);
-    --sysinfo-bg-element: rgba(255, 255, 255, 0.08);
-    --sysinfo-text-primary: #ffffff;
-    --sysinfo-text-secondary: #98989d;
-    --sysinfo-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-  }
-}
-
-/* * CONTAINER */
 .-sysinfo-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -306,10 +271,8 @@ onUnmounted(() => {
   font-family: var(--sysinfo-font-stack);
   color: var(--sysinfo-text-primary);
 
-  background: var(--sysinfo-bg-widget);
-  backdrop-filter: var(--sysinfo-blur);
-  -webkit-backdrop-filter: var(--sysinfo-blur);
-  border-radius: var(--sysinfo-radius-lg);
+  background: var(--bg-widget);
+  border-radius: 22px;
   box-shadow: var(--sysinfo-shadow);
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
@@ -320,7 +283,7 @@ onUnmounted(() => {
 
 .-sysinfo-card {
   background: var(--sysinfo-bg-element);
-  border-radius: var(--sysinfo-radius-md);
+  border-radius: 16px;
   padding: 16px;
   display: flex;
   flex-direction: column;

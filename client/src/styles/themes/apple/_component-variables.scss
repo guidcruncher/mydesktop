@@ -269,6 +269,24 @@
   --ymledit-toolbar-btn-bg: #ffffff;
   --ymledit-toolbar-btn-border: #d1d5da;
   --ymledit-toolbar-btn-hover: #f3f4f6;
+
+  /* Sysinfo *
+  --sysinfo-bg-widget: rgba(255, 255, 255, 0.65);
+  --sysinfo-bg-element: rgba(0, 0, 0, 0.05);
+  --sysinfo-text-primary: #1c1c1e;
+  --sysinfo-text-secondary: #8e8e93;
+  --sysinfo-accent-blue: #007aff;
+  --sysinfo-accent-green: #34c759;
+  --sysinfo-accent-orange: #ff9500;
+  --sysinfo-accent-red: #ff3b30;
+  --sysinfo-accent-teal: #30b0c7;
+  --sysinfo-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --sysinfo-radius-lg: 26px;
+  --sysinfo-radius-md: 16px;
+  --sysinfo-blur: blur(35px);
+  --sysinfo-font-stack:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;  
 }
 
 .dark-mode {
@@ -443,4 +461,12 @@
   --ymledit-toolbar-btn-bg: #21262d;
   --ymledit-toolbar-btn-border: #30363d;
   --ymledit-toolbar-btn-hover: #30363d;
+
+  /* SysInfo */
+  --sysinfo-bg-widget: rgba(30, 30, 30, 0.75);
+    --sysinfo-bg-element: rgba(255, 255, 255, 0.08);
+    --sysinfo-text-primary: #ffffff;
+    --sysinfo-text-secondary: #98989d;
+    --sysinfo-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+
 }
