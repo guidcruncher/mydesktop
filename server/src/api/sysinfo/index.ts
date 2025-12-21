@@ -101,8 +101,8 @@ const getStorageStats = () => {
   })
 }
 
-export async function Proxy(fastify: FastifyInstance) {
-  fastify.get("/api/#sysinfo", async (request, reply) => {
+export async function Sysinfo(fastify: FastifyInstance) {
+  fastify.get("/api/sysinfo", async (request, reply) => {
     try {
       const [cpuPercent, storage] = await Promise.all([getCpuStats(), getStorageStats()])
 
