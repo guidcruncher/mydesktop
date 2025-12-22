@@ -1,7 +1,15 @@
-<script setup>
+<script lang="ts" setup>
 import { inject, ref, onMounted, onUnmounted, computed } from 'vue'
 
 const API_URL = `${inject('API_BASE_URL', '')}/api/sysinfo`
+
+interface Props {
+  refreshinterval?: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  refreshinterval: 5000,
+})
 
 // --- State ---
 const isOffline = ref(false)
@@ -111,7 +119,7 @@ const statusColor = computed(() => (isOffline.value ? '#ff9500' : '#34c759'))
 // --- Lifecycle ---
 onMounted(() => {
   fetchSystemData() // Initial fetch
-  timer.value = setInterval(fetchSystemData, 5000)
+  timer.value = setInterval(fetchSystemData, props.refreshinterval)
 })
 
 onUnmounted(() => {

@@ -47,7 +47,7 @@ server.setNotFoundHandler((req, reply) => {
 })
 
 const start = async () => {
-  server.listen({ port: 3009, host: "0.0.0.0" }, function (err, address) {
+  server.listen({ port: process.env.PORT ?? 3009, host: "0.0.0.0" }, function (err, address) {
     if (err) {
       server.log.error(err)
       process.exit(1)
