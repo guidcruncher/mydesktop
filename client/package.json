@@ -4,6 +4,7 @@
   "scripts": {
     "cfg": "cd .. && npm run cfg",
     "dev": "cd .. && npm run dev",
+    "prod": "cd .. && npm run prod",
     "dev-client": "vite --host",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
