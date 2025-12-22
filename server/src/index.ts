@@ -15,6 +15,7 @@ server.addContentTypeParser(
   { parseAs: "string" },
   (req, body, done) => {
     // No parsing logic here, just pass the raw string through
+    req=req
     done(null, body)
   },
 )
@@ -46,8 +47,16 @@ server.setNotFoundHandler((req, reply) => {
   reply.sendFile("index.html")
 })
 
+const getPort = () => {
+  if (process.env.PORT) {
+    return parseInt((process.env.PORT) as string)
+  }
+
+  return 3000
+}
+
 const start = async () => {
-  server.listen({ port: process.env.PORT ?? 3009, host: "0.0.0.0" }, function (err, address) {
+  server.listen({ port: getPort(), host: "0.0.0.0" }, function (err, address) {
     if (err) {
       server.log.error(err)
       process.exit(1)
