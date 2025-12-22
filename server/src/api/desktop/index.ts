@@ -7,11 +7,18 @@ import * as path from "path"
 const require = Module.createRequire(import.meta.url)
 const yaml = require("js-yaml")
 
+const configBase = () => {
+  if (process.env.CONTAINER && process.env.CONTAINER == "true") {
+    return "/config"
+  }
+  return path.join(process.cwd(), "./config")
+}
+
 export async function Desktop(fastify: FastifyInstance) {
   fastify.put("/api/desktop", async (request, reply) => {
     const rawYaml = request.body ?? ""
-    const configFile = path.join(process.cwd(), "./config", "desktop.yml")
-    const configFileBak = path.join(process.cwd(), "./config", "desktop.yml.bak")
+    const configFile = path.join(configBase(), "desktop.yml")
+    const configFileBak = path.join(configBsse(), "desktop.yml.bak")
 
     if (rawYaml.length == 0) {
       return reply.status(400).send({ success: false, message: "YAML Empty" })
@@ -39,7 +46,7 @@ export async function Desktop(fastify: FastifyInstance) {
   })
 
   fastify.get("/api/desktop", async (request, reply) => {
-    const configFile = path.join(process.cwd(), "./config", "desktop.yml")
+    const configFile = path.join(configBase(), "desktop.yml")
     const raw = fs.readFileSync(configFile, "utf8")
     const accept = request.headers["accept"] ?? ""
 

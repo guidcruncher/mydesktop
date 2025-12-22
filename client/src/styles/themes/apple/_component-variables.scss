@@ -8,6 +8,35 @@
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.6);
 
+  /* Image Browser*/
+--imgbrws-app-bg: #ffffff;
+  --imgbrws-sidebar-bg: rgba(242, 242, 247, 0.85);
+  --imgbrws-content-bg: #ffffff;
+  --imgbrws-text-primary: #000000;
+  --imgbrws-text-secondary: #8e8e93;
+  --imgbrws-accent-blue: #007aff;
+  --imgbrws-separator: rgba(60, 60, 67, 0.18);
+  --imgbrws-top-bar-bg: rgba(255, 255, 255, 0.85);
+  --imgbrws-top-bar-border: rgba(0, 0, 0, 0.1);
+  --imgbrws-grid-item-bg: #e5e5ea;
+  --imgbrws-lightbox-bg: #000000;
+  --imgbrws-lightbox-text: #ffffff;
+  --imgbrws-sidebar-border: rgba(0, 0, 0, 0.1);
+
+  /* Stocks */
+  --stocks-bg-app: #f2f2f7;
+  --stocks-bg-widget: rgba(255, 255, 255, 0.65);
+  --stocks-bg-item: rgba(0, 0, 0, 0.03);
+  --stocks-bg-item-active: rgba(0, 0, 0, 0.08);
+  --stocks-bg-pill: rgba(0, 0, 0, 0.05);
+  --stocks-bg-pill-active: #000000;
+  --stocks-text-primary: #000000;
+  --stocks-text-secondary: #86868b;
+  --stocks-text-inverse: #ffffff;
+  --stocks-border-subtle: rgba(0, 0, 0, 0.05);
+  --stocks-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  --stocks-blur: blur(60px);
+  
   /* Calendar widget */
   /* Backgrounds */
   --cal-bg-body: var(--system-gray6);
@@ -290,6 +319,33 @@
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.1);
 
+/* Image browser */
+--imgbrws-app-bg: #000000;
+  --imgbrws-sidebar-bg: rgba(30, 30, 30, 0.75);
+  --imgbrws-content-bg: #000000;
+  --imgbrws-text-primary: #ffffff;
+  --imgbrws-text-secondary: #8e8e93;
+  --imgbrws-accent-blue: #0a84ff;
+  --imgbrws-separator: rgba(84, 84, 88, 0.65);
+  --imgbrws-top-bar-bg: rgba(0, 0, 0, 0.8);
+  --imgbrws-top-bar-border: rgba(255, 255, 255, 0.1);
+  --imgbrws-grid-item-bg: #2c2c2e;
+  --imgbrws-sidebar-border: rgba(255, 255, 255, 0.1);
+
+/* Stocks */
+--stocks-bg-app: #000000;
+  --stocks-bg-widget: rgba(28, 28, 30, 0.75);
+  --stocks-bg-item: rgba(255, 255, 255, 0.05);
+  --stocks-bg-item-active: rgba(255, 255, 255, 0.15);
+  --stocks-bg-pill: rgba(255, 255, 255, 0.1);
+  --stocks-bg-pill-active: #ffffff;
+  --stocks-text-primary: #ffffff;
+  --stocks-text-secondary: #98989d;
+  --stocks-text-inverse: #000000;
+  --stocks-border-subtle: rgba(255, 255, 255, 0.12);
+  --stocks-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+  --stocks-blur: blur(50px);
+  
   /* calendar widget */
   --cal-bg-widget: rgba(30, 30, 30, 0.8);
   --cal-bg-widget-border: rgba(255, 255, 255, 0.1);
