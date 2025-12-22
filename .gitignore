@@ -7,10 +7,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+desktop.yml.bak
 
 node_modules
 .DS_Store
 dist
+lib
 dist-ssr
 coverage
 *.local
