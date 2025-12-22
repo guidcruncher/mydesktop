@@ -122,7 +122,7 @@ const isWeekend = (date) => {
 onMounted(() => {})
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .cal-wrapper {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;

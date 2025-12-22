@@ -276,7 +276,7 @@ watch(
 )
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .news-widget-container {
   /* Layout Vars */
   --news-radius: 22px;

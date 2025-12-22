@@ -87,7 +87,7 @@ watch(
       border-left: 10px solid transparent;
       border-right: 10px solid transparent;
       border-bottom: 10px solid var(--popover-bg);
-      z-imdex: 9000;
+      z-index: 9000;
     }
 
     p {

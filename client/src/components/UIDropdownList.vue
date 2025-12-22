@@ -168,7 +168,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Scoped styles to match the iOS UI Kit */
 
 /* --- UI Dropdown List Root Container --- */

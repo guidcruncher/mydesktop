@@ -192,7 +192,7 @@ const bottomTextY = computed(() => 0 + props.textOffsetY)
 
 // CSS inline styles for reactive dimensions
 const flipCardStyle = computed(() => ({
-  // Define CSS variables here to be consumed by the <style> block
+  // Define CSS variables here to be consumed by the <style lang="scss"> block
   '--card-width': `${props.cardWidth}px`,
   '--card-height': `${props.cardHeight}px`,
   '--total-height': `${totalHeight.value}px`,

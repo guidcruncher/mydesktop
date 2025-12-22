@@ -62,7 +62,7 @@ const itemStyles = computed(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .grid-cell {
   /* Dynamic Mode Defaults */
   min-width: 80px;

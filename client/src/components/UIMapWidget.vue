@@ -274,7 +274,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
+<style lang="scss">
 .dark-mode {
   .map-standard-mode .leaflet-tile-pane {
     filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
@@ -282,7 +282,7 @@ onMounted(() => {
 }
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Wrapper to handle positioning */
 .map-wrapper {
   display: flex;

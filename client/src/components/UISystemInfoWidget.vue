@@ -285,7 +285,7 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .sysinfo-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

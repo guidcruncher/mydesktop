@@ -98,7 +98,7 @@ function increment() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .ui-stepper {
   display: inline-flex;
   align-items: center;

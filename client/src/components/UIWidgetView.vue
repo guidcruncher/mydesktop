@@ -10,7 +10,7 @@
 import { ref } from 'vue'
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .widget-container {
   display: flex;
   align-items: center;

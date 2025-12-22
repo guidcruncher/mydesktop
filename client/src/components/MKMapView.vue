@@ -157,7 +157,7 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .mk-map-view {
   display: block;
   max-width: 100%;

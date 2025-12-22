@@ -36,7 +36,7 @@ const handleSelect = (index) => {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .segmented-control {
   display: inline-flex;
   background-color: var(--segment-background);

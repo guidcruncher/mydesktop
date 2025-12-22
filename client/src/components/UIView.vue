@@ -8,7 +8,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .uiview-container {
   background: var(--bg-primary);
   border-radius: var(--radius-medium);

@@ -58,7 +58,7 @@ const closeFolder = () => {
   </Teleport>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Full screen overlay settings */
 .widget-overlay {
   position: fixed;

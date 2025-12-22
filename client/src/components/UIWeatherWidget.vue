@@ -363,7 +363,7 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .weather-wrapper {
   color: var(--weather-text-primary);
   font-family: var(--font-family);

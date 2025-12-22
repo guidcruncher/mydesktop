@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { ref, provide, readonly } from 'vue'
-import { TabBarContext, TabBarContextKey } from '@/utils/TabBarContext'
+import { type TabBarContext, TabBarContextKey } from '@/utils/TabBarContext'
 
 interface Props {
   initialIndex?: number

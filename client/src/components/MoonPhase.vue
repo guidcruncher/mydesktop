@@ -43,7 +43,7 @@ const styleVars = computed(() => ({
   <div class="moon-phase" :data-phase="phase.toLowerCase()" :style="styleVars"></div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Container 
 */
 .moon-phase {

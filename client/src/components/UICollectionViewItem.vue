@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .collection-view {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));

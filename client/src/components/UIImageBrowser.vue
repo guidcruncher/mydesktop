@@ -134,7 +134,7 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Theme Variables Definition with Prefix */
 .imgbrws-ios-browser {
   /* Layout & Fonts */

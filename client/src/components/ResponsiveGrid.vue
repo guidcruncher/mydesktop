@@ -38,7 +38,7 @@ const gridStyles = computed(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .responsive-grid {
   gap: 16px;
   padding: 16px;

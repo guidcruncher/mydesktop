@@ -62,7 +62,7 @@ const cancelChanges = () => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .editor-container {
   width: 100vw;
   height: 90%;

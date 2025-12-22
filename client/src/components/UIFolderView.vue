@@ -27,7 +27,7 @@ const props = defineProps({
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .folder-view-container {
   margin: 20px auto;
   padding: 10px 10px 20px 10px;

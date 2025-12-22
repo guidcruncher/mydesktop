@@ -322,7 +322,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* * CSS VARIABLES - Scoped via specific selector 
  * The .sunmoon-widget-container class wraps the whole template
  */

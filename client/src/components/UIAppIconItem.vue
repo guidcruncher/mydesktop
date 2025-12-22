@@ -41,7 +41,7 @@ const handleClick = () => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .cell {
   display: flex;
   flex-direction: column;

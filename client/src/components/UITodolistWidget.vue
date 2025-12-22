@@ -233,7 +233,7 @@ const onTouchEnd = (e, taskId) => {
   </div>
 </template>
 
-<style>
+<style lang="scss">
 /* --- WIDGET CARD --- */
 .todo-widget-card {
   width: 100%;

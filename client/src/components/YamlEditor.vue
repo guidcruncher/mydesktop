@@ -264,7 +264,7 @@ const pasteContent = async () => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Scoped Styles */
 
 .ymledit-container {

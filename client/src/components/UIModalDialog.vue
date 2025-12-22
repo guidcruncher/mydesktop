@@ -128,7 +128,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Modal Container */
 .modal-container {
   background: var(--modal-container-bg);
