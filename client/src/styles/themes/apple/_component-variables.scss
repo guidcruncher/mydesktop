@@ -116,9 +116,6 @@
   --weather-backdrop-color: rgba(0, 0, 0, 0.45);
 
   --weather-accent: #0a84ff;
-  --weather-font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif;
 
   --weather-transition-spring: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 
@@ -284,9 +281,6 @@
   --sysinfo-radius-lg: 26px;
   --sysinfo-radius-md: 16px;
   --sysinfo-blur: blur(35px);
-  --sysinfo-font-stack:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif;  
 }
 
 .dark-mode {

@@ -366,14 +366,14 @@ onUnmounted(() => {
 <style scoped>
 .weather-wrapper {
   color: var(--weather-text-primary);
-  font-family: var(--weather-font-family);
+  font-family: var(--font-family);
   display: inline-block; /* Wraps compact widget size */
 }
 
 /* Ensure font/color variables pass to Teleport container */
 .weather-teleport-container {
   color: var(--weather-text-primary);
-  font-family: var(--weather-font-family);
+  font-family: var(--font-family);
   position: absolute; /* Non-intrusive container */
   top: 0;
   left: 0;
