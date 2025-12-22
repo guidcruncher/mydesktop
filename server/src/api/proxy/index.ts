@@ -4,6 +4,11 @@ import Module from "node:module"
 const require = Module.createRequire(import.meta.url)
 const sharp = require("sharp")
 
+// 1. Define the shape of the query string
+interface ProxyQuery {
+  url: string
+}
+
 const getFilename = (uri: string) => {
   if (!uri) {
     return ""
@@ -15,7 +20,9 @@ const getFilename = (uri: string) => {
 }
 
 export async function Proxy(fastify: FastifyInstance) {
-  fastify.get("/api/proxy/rss", async (request, reply) => {
+  // 2. Pass <{ Querystring: ProxyQuery }> to the route handler
+  fastify.get<{ Querystring: ProxyQuery }>("/api/proxy/rss", async (request, reply) => {
+    // request.query is now typed, so accessing .url is valid
     const rssUrl: string = request.query.url
 
     if (!rssUrl) {
@@ -42,7 +49,8 @@ export async function Proxy(fastify: FastifyInstance) {
       .send(feed)
   })
 
-  fastify.get("/api/proxy", async (request, reply) => {
+  // 3. Apply the same type to the second route
+  fastify.get<{ Querystring: ProxyQuery }>("/api/proxy", async (request, reply) => {
     const imageUrl = request.query.url
 
     if (!imageUrl) {

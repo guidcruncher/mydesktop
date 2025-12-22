@@ -4,6 +4,16 @@ import Module from "node:module"
 const require = Module.createRequire(import.meta.url)
 const sharp = require("sharp")
 
+// 1. Define interfaces for your Request types
+interface SearchQuery {
+  q: string
+}
+
+interface IconParams {
+  name: string
+  fileType?: string
+}
+
 const getIconUrl = (t: any) => {
   let format = ""
   if (t.PNG == "Yes") {
@@ -30,7 +40,8 @@ const getFilename = (uri: string) => {
 }
 
 export async function Icon(fastify: FastifyInstance) {
-  fastify.get("/api/icon/_index", async (request, reply) => {
+  // Fix 1: Rename 'request' to '_request' to silence the "unused variable" error
+  fastify.get("/api/icon/_index", async (_request, reply) => {
     const url: string = "https://raw.githubusercontent.com/selfhst/icons/refs/heads/main/index.json"
 
     const response = await fetch(url, {
@@ -58,9 +69,12 @@ export async function Icon(fastify: FastifyInstance) {
     return reply.status(200).send(res)
   })
 
-  fastify.get("/api/icon/_search", async (request, reply) => {
+  // Fix 2: Add <{ Querystring: SearchQuery }> to type the query string
+  fastify.get<{ Querystring: SearchQuery }>("/api/icon/_search", async (request, reply) => {
     const url: string = "https://raw.githubusercontent.com/selfhst/icons/refs/heads/main/index.json"
-    const query: string = request.query["q"] as string
+    
+    // Now request.query is typed, so accessing .q is safe
+    const query: string = request.query.q
 
     if (!query) {
       reply.code(400).send("Missing search query parameter.")
@@ -95,9 +109,12 @@ export async function Icon(fastify: FastifyInstance) {
     return reply.status(200).send(res)
   })
 
-  fastify.get("/api/icon/:name/:fileType?", async (request, reply) => {
-    const name: string = request.params["name"]
-    const fileType: string = request.params["fileType"]
+  // Fix 3: Add <{ Params: IconParams }> to type the URL parameters
+  fastify.get<{ Params: IconParams }>("/api/icon/:name/:fileType?", async (request, reply) => {
+    // Now request.params is typed
+    const name: string = request.params.name
+    const fileType: string | undefined = request.params.fileType
+    
     const iconType: string = (fileType ?? "png").toLowerCase()
     const imageUrl: string = `https://cdn.jsdelivr.net/gh/selfhst/icons@main/${iconType}/${name}.${iconType}`
 
