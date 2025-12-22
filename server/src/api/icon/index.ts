@@ -31,6 +31,38 @@ const getFilename = (uri) => {
 }
 
 export async function Icon(fastify: FastifyInstance) {
+  fastify.get("/api/icon/_index", async (request, reply) => {
+    const url = "https://raw.githubusercontent.com/selfhst/icons/refs/heads/main/index.json"
+    const ua =
+      request.headers["User-Agent"] ??
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: new Headers({ "User-Agent": ua }),
+    })
+
+    if (!response.ok) {
+      const text = (await response.text()) ?? response.statusText
+      return reply.code(response.status).send(text)
+    }
+
+    const data = await response.json()
+    const res = data
+      .map((t) => {
+        return {
+          id: t.Reference,
+          label: t.Name,
+          url: getIconUrl(t),
+        }
+      })
+      .sort((a, b) => {
+        return a.label.localeCompare(b.label)
+      })
+
+    return reply.status(200).send(res)
+  })
+
   fastify.get("/api/icon/_search", async (request, reply) => {
     const url = "https://raw.githubusercontent.com/selfhst/icons/refs/heads/main/index.json"
     const query = request.query["q"]
