@@ -13,11 +13,7 @@ fetch(import.meta.env.BASE_URL + 'config.json')
   .then((response) => response.json())
   .then((config) => {
     for (const key in config) {
-      if (process.env[key]) {
-        app.provide(key, process.env[key])
-      } else {
         app.provide(key, config[key])
-      }
     }
     app.mount('#app')
   })

@@ -9,7 +9,7 @@
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.6);
 
   /* Image Browser*/
---imgbrws-app-bg: #ffffff;
+  --imgbrws-app-bg: #ffffff;
   --imgbrws-sidebar-bg: rgba(242, 242, 247, 0.85);
   --imgbrws-content-bg: #ffffff;
   --imgbrws-text-primary: #000000;
@@ -36,7 +36,7 @@
   --stocks-border-subtle: rgba(0, 0, 0, 0.05);
   --stocks-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   --stocks-blur: blur(60px);
-  
+
   /* Calendar widget */
   /* Backgrounds */
   --cal-bg-body: var(--system-gray6);
@@ -319,8 +319,8 @@
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.1);
 
-/* Image browser */
---imgbrws-app-bg: #000000;
+  /* Image browser */
+  --imgbrws-app-bg: #000000;
   --imgbrws-sidebar-bg: rgba(30, 30, 30, 0.75);
   --imgbrws-content-bg: #000000;
   --imgbrws-text-primary: #ffffff;
@@ -332,8 +332,8 @@
   --imgbrws-grid-item-bg: #2c2c2e;
   --imgbrws-sidebar-border: rgba(255, 255, 255, 0.1);
 
-/* Stocks */
---stocks-bg-app: #000000;
+  /* Stocks */
+  --stocks-bg-app: #000000;
   --stocks-bg-widget: rgba(28, 28, 30, 0.75);
   --stocks-bg-item: rgba(255, 255, 255, 0.05);
   --stocks-bg-item-active: rgba(255, 255, 255, 0.15);
@@ -345,7 +345,7 @@
   --stocks-border-subtle: rgba(255, 255, 255, 0.12);
   --stocks-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
   --stocks-blur: blur(50px);
-  
+
   /* calendar widget */
   --cal-bg-widget: rgba(30, 30, 30, 0.8);
   --cal-bg-widget-border: rgba(255, 255, 255, 0.1);

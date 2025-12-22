@@ -28,9 +28,11 @@ import UIFlipClock from './UIFlipClock.vue'
 import UIFolderView from './UIFolderView.vue'
 import UIFolderViewWidget from './UIFolderViewWidget.vue'
 import UIImage from './UIImage.vue'
+import UIImageBrowser from './UIImageBrowser.vue'
 import UIImageView from './UIImageView.vue'
 import UIListPicker from './UIListPicker.vue'
 import UIMapWidget from './UIMapWidget.vue'
+import UIMarketWidget from './UIMarketWidget.vue'
 import UIMenubar from './UIMenubar.vue'
 import UIModalDialog from './UIModalDialog.vue'
 import UINavigationBar from './UINavigationBar.vue'
@@ -100,9 +102,11 @@ export const GlassComponents = {
   UIFolderView,
   UIFolderViewWidget,
   UIImage,
+  UIImageBrowser,
   UIImageView,
   UIListPicker,
   UIMapWidget,
+  UIMarketWidget,
   UIMenubar,
   UIModalDialog,
   UINavigationBar,

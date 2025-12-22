@@ -1,57 +1,57 @@
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 // Props
 const props = defineProps({
-  // The list of images to display. 
+  // The list of images to display.
   modelValue: {
     type: Array,
-    default: () => []
-  }
-});
+    default: () => [],
+  },
+})
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue'])
 
 // State
-const isSidebarOpen = ref(true);
-const activeImage = ref(null);
-const lightboxVisible = ref(false);
+const isSidebarOpen = ref(true)
+const activeImage = ref(null)
+const lightboxVisible = ref(false)
 
 // Methods
 const toggleSidebar = () => {
-  isSidebarOpen.value = !isSidebarOpen.value;
-};
+  isSidebarOpen.value = !isSidebarOpen.value
+}
 
 const openLightbox = (image) => {
-  activeImage.value = image;
-  lightboxVisible.value = true;
-  document.body.style.overflow = 'hidden';
-};
+  activeImage.value = image
+  lightboxVisible.value = true
+  document.body.style.overflow = 'hidden'
+}
 
 const closeLightbox = () => {
-  lightboxVisible.value = false;
+  lightboxVisible.value = false
   setTimeout(() => {
-    activeImage.value = null;
-    document.body.style.overflow = '';
-  }, 300);
-};
+    activeImage.value = null
+    document.body.style.overflow = ''
+  }, 300)
+}
 
 const handleKeydown = (e) => {
   if (e.key === 'Escape' && lightboxVisible.value) {
-    closeLightbox();
+    closeLightbox()
   }
-};
+}
 
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown);
+  window.addEventListener('keydown', handleKeydown)
   if (window.innerWidth <= 768) {
-    isSidebarOpen.value = false;
+    isSidebarOpen.value = false
   }
-});
+})
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown);
-});
+  window.removeEventListener('keydown', handleKeydown)
+})
 </script>
 
 <template>
@@ -64,7 +64,7 @@ onUnmounted(() => {
           <div class="imgbrws-default-sidebar-msg">
             <h2 class="imgbrws-sidebar-title">Library</h2>
             <div class="imgbrws-placeholder-nav">
-              No sidebar content provided.<br>
+              No sidebar content provided.<br />
               Use &lt;template #sidebar&gt;
             </div>
           </div>
@@ -77,8 +77,14 @@ onUnmounted(() => {
       <!-- Top Bar -->
       <header class="imgbrws-top-bar">
         <div class="imgbrws-top-left">
-          <button class="imgbrws-icon-btn imgbrws-sidebar-toggle" @click="toggleSidebar" aria-label="Toggle Sidebar">
-            <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+          <button
+            class="imgbrws-icon-btn imgbrws-sidebar-toggle"
+            @click="toggleSidebar"
+            aria-label="Toggle Sidebar"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+            </svg>
           </button>
           <span class="imgbrws-view-title">Photos</span>
         </div>
@@ -90,19 +96,17 @@ onUnmounted(() => {
       <!-- Photo Grid -->
       <div class="imgbrws-scroll-container">
         <div class="imgbrws-photo-grid" v-if="modelValue.length > 0">
-          <div 
-            v-for="image in modelValue" 
-            :key="image.id" 
+          <div
+            v-for="image in modelValue"
+            :key="image.id"
             class="imgbrws-grid-item"
             @click="openLightbox(image)"
           >
             <img loading="lazy" :src="image.url" :alt="image.title || 'Photo'" />
           </div>
         </div>
-        
-        <div v-else class="imgbrws-empty-state">
-          No Photos
-        </div>
+
+        <div v-else class="imgbrws-empty-state">No Photos</div>
       </div>
     </main>
 
@@ -110,12 +114,16 @@ onUnmounted(() => {
     <Transition name="imgbrws-fade">
       <div v-if="lightboxVisible" class="imgbrws-lightbox" @click.self="closeLightbox">
         <button class="imgbrws-lightbox-close" @click="closeLightbox">
-          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
         </button>
-        
+
         <div class="imgbrws-lightbox-content">
-          <img :src="activeImage?.fullUrl || activeImage?.url" class="imgbrws-lightbox-img" alt="Fullscreen view">
-          
+          <img
+            :src="activeImage?.fullUrl || activeImage?.url"
+            class="imgbrws-lightbox-img"
+            alt="Fullscreen view"
+          />
+
           <div class="imgbrws-lightbox-details" v-if="activeImage">
             <h3>{{ activeImage.title || 'Untitled' }}</h3>
             <p v-if="activeImage.date">{{ activeImage.date }}</p>
@@ -138,7 +146,9 @@ onUnmounted(() => {
   position: relative;
   background-color: var(--imgbrws-app-bg);
   color: var(--imgbrws-text-primary);
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 /* --- Sidebar --- */
@@ -149,7 +159,9 @@ onUnmounted(() => {
   -webkit-backdrop-filter: blur(25px);
   border-right: 1px solid var(--imgbrws-sidebar-border);
   flex-shrink: 0;
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), margin-left 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  transition:
+    transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    margin-left 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -396,8 +408,12 @@ onUnmounted(() => {
 }
 
 @keyframes imgbrws-zoomIn {
-  from { transform: scale(0.9); }
-  to { transform: scale(1); }
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 /* --- Mobile Breakpoints --- */
@@ -408,19 +424,17 @@ onUnmounted(() => {
     margin-left: 0;
     transform: translateX(0);
     width: 85%;
-    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
   }
 
   .imgbrws-sidebar.imgbrws-closed {
     transform: translateX(-100%);
     margin-left: 0;
   }
-  
+
   .imgbrws-photo-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
   }
 }
 </style>
-
-
