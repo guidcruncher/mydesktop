@@ -6,7 +6,7 @@
     "cfg": "nano ./config/desktop.yml",
     "dev": "cd .. && npm run dev",
     "prod": "cd .. && npm run prod",
-    "dev-server": "npm run registry && NODE_PATG=. tsx watch src/index.ts --color",
+    "dev-server": "npm run registry && NODE_PATH=. tsx watch src/index.ts --color",
     "registry": "node ./scripts/apiiregistry.ts",
     "build": "npm run registry && NODE_ENV=development rm -rf ./dist && tsc --build . --pretty && tsc-alias",
     "start": "NODE_PATH=. node dist/index.js",
