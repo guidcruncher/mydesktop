@@ -1,6 +1,4 @@
 import { FastifyInstance } from "fastify"
-import { Readable } from "node:stream"
-import Module from "node:module"
 import fs from "node:fs"
 import os from "node:os"
 import { exec } from "node:child_process"
@@ -25,10 +23,9 @@ const getDistroIcon = async () => {
     const idMatch = fileContent.match(/^ID=["']?([^"'\n]+)["']?/m)
 
     if (idMatch && idMatch[1]) {
-      let distroId = idMatch[1].toLowerCase()
+      let distroId: any = idMatch[1].toLowerCase()
       const iconName = aliasMap[distroId] || distroId
       return `https://raw.githubusercontent.com/haroeris01/walkxcode-dashboard-icons/refs/heads/main/png/${iconName}.png`
-      return `https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/master/png/${iconName}.png`
     }
   } catch (err) {
     return ""
@@ -54,6 +51,10 @@ const getCpuStats = () => {
     const content = fs.readFileSync("/proc/stat", "utf8")
     const lines = content.split("\n")
     // 'cpu' line: cpu  user nice system idle iowait irq softirq steal guest guest_nice
+    if (!lines[0]) {
+      return { idle: 0, total: 0 }
+    }
+
     const parts = lines[0].replace(/\s+/g, " ").split(" ")
 
     const idle = parseInt(parts[4]) + parseInt(parts[5]) // idle + iowait

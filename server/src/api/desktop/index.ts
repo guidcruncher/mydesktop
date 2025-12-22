@@ -1,5 +1,4 @@
 import { FastifyInstance } from "fastify"
-import { Readable } from "node:stream"
 import Module from "node:module"
 import * as fs from "fs"
 import * as path from "path"
@@ -16,16 +15,19 @@ const configBase = () => {
 
 export async function Desktop(fastify: FastifyInstance) {
   fastify.put("/api/desktop", async (request, reply) => {
-    const rawYaml = request.body ?? ""
+    const rawYaml: any = request.body ?? ""
     const configFile = path.join(configBase(), "desktop.yml")
-    const configFileBak = path.join(configBsse(), "desktop.yml.bak")
+    const configFileBak = path.join(configBase(), "desktop.yml.bak")
 
-    if (rawYaml.length == 0) {
+    if (rawYaml == "") {
       return reply.status(400).send({ success: false, message: "YAML Empty" })
     }
 
     try {
       const doc = yaml.load(rawYaml)
+      if (!doc) {
+        return reply.status(400).send({ success: false, message: "Bad document" })
+      }
     } catch (e) {
       const msg = e.message ? e.message.split("\n")[0] : "Invalid YAML"
       return reply.status(400).send({ success: false, message: msg })

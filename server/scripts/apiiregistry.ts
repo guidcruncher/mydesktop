@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-export function ApiRegistry(options = {}) {
+export function ApiRegistry(options:any = {}) {
   const sourceDirectory = options.directory || 'src/api'
   const outputFile = options.outputFile || 'src/routes.ts'
 
