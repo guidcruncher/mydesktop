@@ -25,7 +25,7 @@ COPY --from=builder /app/server/package.json ./package.json
 
 COPY --from=builder /app/client/dist ./dist/public
 
-ENV COMTAINER=true
+ENV CONTAINER=true
 ENV NODE_ENV=production
 ENV PORT=3000
 
