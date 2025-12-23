@@ -8,9 +8,13 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  dataurlfield: { type: String, default: 'url' },
+  datafullurlfield: { type: String, default: 'fullUrl' },
+  dataidfield: { type: String, default: 'id' },
+  datatitlefield: { type: String, default: 'title' },
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'click', 'selected'])
 
 // State
 const isSidebarOpen = ref(true)
@@ -20,6 +24,11 @@ const lightboxVisible = ref(false)
 // Methods
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
+}
+
+const handleClick = (image) => {
+  emit('selected', image)
+  openLightbox(image)
 }
 
 const openLightbox = (image) => {
@@ -98,11 +107,15 @@ onUnmounted(() => {
         <div class="imgbrws-photo-grid" v-if="modelValue.length > 0">
           <div
             v-for="image in modelValue"
-            :key="image.id"
+            :key="image[dataidfield]"
             class="imgbrws-grid-item"
-            @click="openLightbox(image)"
+            @click="handleClick(image)"
           >
-            <img loading="lazy" :src="image.url" :alt="image.title || 'Photo'" />
+            <img
+              loading="lazy"
+              :src="image[dataurlfield]"
+              :alt="image[datatitlefield] || 'Photo'"
+            />
           </div>
         </div>
 
@@ -119,8 +132,8 @@ onUnmounted(() => {
 
         <div class="imgbrws-lightbox-content">
           <img
-            :src="activeImage?.fullUrl || activeImage?.url"
-            class="imgbrws-lightbox-img"
+            :src="activeImage[datafullurlfield]"
+             class="imgbrws-lightbox-img"
             alt="Fullscreen view"
           />
 

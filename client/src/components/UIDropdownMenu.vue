@@ -1,12 +1,20 @@
 <template>
   <div class="ui-dropdown-wrapper" ref="triggerContainer">
-    <div class="dropdown-trigger-wrapper" @click.stop="handleTriggerClick">
+    <div
+      class="dropdown-trigger-wrapper"
+      @click.stop="handleTriggerClick"
+    >
       <slot name="trigger" :isOpen="modelValue"></slot>
     </div>
 
     <Teleport to="body">
       <transition name="dropdown-fade">
-        <div v-if="modelValue" class="dropdown-menu" :style="menuStyles" @click.stop>
+        <div
+          v-if="modelValue"
+          class="dropdown-menu"
+          :style="menuStyles"
+          @click.stop
+        >
           <slot></slot>
         </div>
       </transition>
@@ -15,19 +23,38 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, provide, toRef } from 'vue'
 
 const props = defineProps({
-  modelValue: { type: Boolean, default: false },
+  modelValue: { type: Boolean, default: false }, // Controls Visibility
+  selected: { type: [String, Number, Object], default: undefined }, // Controls Selected Item
   align: { type: String, default: 'left' },
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'update:selected', 'select'])
 
 const triggerContainer = ref(null)
 const position = ref({ top: 0, left: null, right: null })
 const lastOpenedTime = ref(0)
 
+// --- PROVIDE CONTEXT TO ITEMS ---
+const closeMenu = () => emit('update:modelValue', false)
+
+const handleSelect = (value) => {
+  if (value !== undefined) {
+    emit('update:selected', value)
+    emit('select', value)
+  }
+  closeMenu()
+}
+
+provide('dropdownContext', {
+  selected: toRef(props, 'selected'),
+  closeMenu,
+  handleSelect
+})
+
+// --- POSITIONING LOGIC ---
 const menuStyles = computed(() => {
   const styles = { top: `${position.value.top}px` }
   if (position.value.left !== null) styles.left = `${position.value.left}px`
@@ -40,26 +67,17 @@ const updatePosition = () => {
   const rect = triggerContainer.value.getBoundingClientRect()
   const gap = 4
 
-  // --- SMART ALIGNMENT LOGIC ---
-  // 1. Estimate if left-alignment would cause overflow
-  //    (We assume a safe min-width for the menu, e.g., 200px)
   const spaceOnRight = window.innerWidth - rect.left
   const wouldOverflow = spaceOnRight < 220
-
-  // 2. Determine effective alignment
-  //    Force 'right' if it would overflow, otherwise use prop
   const effectiveAlign = props.align === 'right' || wouldOverflow ? 'right' : 'left'
 
   if (effectiveAlign === 'right') {
-    // RIGHT ALIGN: Menu Right == Trigger Right
-    // CSS Right = Window Width - Trigger Right
     position.value = {
       top: rect.bottom + gap,
       left: null,
       right: window.innerWidth - rect.right,
     }
   } else {
-    // LEFT ALIGN: Menu Left == Trigger Left
     position.value = {
       top: rect.bottom + gap,
       left: rect.left,
@@ -76,12 +94,10 @@ const handleTriggerClick = () => {
     emit('update:modelValue', true)
   } else {
     if (now - lastOpenedTime.value > 300) {
-      emit('update:modelValue', false)
+      closeMenu()
     }
   }
 }
-
-const closeMenu = () => emit('update:modelValue', false)
 
 const handleClickOutside = (event) => {
   if (!props.modelValue) return
@@ -125,7 +141,7 @@ onUnmounted(() => {
 .dropdown-menu {
   position: fixed;
   min-width: 200px;
-  max-width: 90vw; /* Safety cap for very small screens */
+  max-width: 90vw;
   background: rgba(40, 40, 40, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);

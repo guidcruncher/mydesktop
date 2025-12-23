@@ -6,65 +6,38 @@ import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 const showEditor = ref(false)
-const yaml = ref('')
+const images = ref([])
+const results = ref([])
 
 const apiBase = inject('API_BASE_URL')
 
+const searchIcons = () => {
+  results = imasges
+  showEditor = true
+}
+
 onMounted(async () => {
-  var url = `${apiBase}/api/desktop`
+  var url = `${apiBase}/api/icon/_index`
   const options = {
     method: 'GET',
-    headers: new Headers({
-      'Content-Type': 'application/yaml',
-      Accept: 'application/yaml',
-    }),
   }
   const response = await fetch(url, options)
   if (response.ok) {
-    yaml.value = await response.text()
+    images = await response.json()
     showEditor.value = true
   }
 })
-
-const saveChanges = async () => {
-  var url = `${apiBase}/api/desktop`
-
-  const options = {
-    method: 'PUT',
-    body: yaml.value,
-    headers: new Headers({
-      'Content-Type': 'application/yaml',
-    }),
-  }
-
-  const response = await fetch(url, options)
-  const json = await response.json()
-
-  if (!json.success) {
-    alert(json.message)
-    return
-  }
-
-  router.push({ path: '/', replace: true })
-}
-
-const cancelChanges = () => {
-  router.push({ path: '/', replace: true })
-}
 </script>
 
 <template>
-  <div class="editor-container">
-    <YamlEditor v-model="yaml" v-if="showEditor"> </YamlEditor>
-
-    <UIButton variant="primary" @click="saveChanges">Save Changes</UIButton>&nbsp;
-    <UIButton variant="secondary" @click="cancelChanges">Cancel Changes</UIButton>
-  </div>
+  <UIImageBrowser
+    v-if="showEditor"
+    v-model="results"
+    dataurlfield="src"
+    dataidfield="id"
+    datatitlefield="label"
+  >
+  </UIImageBrowser>
 </template>
 
-<style lang="scss" scoped>
-.editor-container {
-  width: 100vw;
-  height: 90%;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -23,11 +23,10 @@ const isMenuOpen = ref(false)
         />
         <hr class="menu-divider" />
         <UIDropdownMenuItem
-          :active="isGrayscale"
           icon="fa-solid fa-palette"
-          label="Grayscale"
-          title="Grayscale (G)"
-          @click="toggleGrayscale"
+          label="Icons"
+          title="Icons"
+          routerlink="/icons"
         />
       </UIDropdownMenu>
     </template>

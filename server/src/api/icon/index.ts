@@ -15,18 +15,32 @@ interface IconParams {
 }
 
 const getIconUrl = (t: any) => {
-  let format = ""
+  let iconType = ""
   if (t.PNG == "Yes") {
-    format = "/png"
+    iconType = "/png"
   } else if (t.SVG == "Yes") {
-    format = "/svg"
+    iconType = "/svg"
   } else if (t.WebP == "Yes") {
-    format = "/webp"
+    iconType = "/webp"
   } else {
-    format = ""
+    iconType = ""
   }
 
-  return `/api/icon/${t.Reference}${format}`
+  return `/api/icon/${t.Reference}${iconType}`
+}
+
+const getIconRawUrl = (t: any) => {
+  let iconType = ""
+  if (t.PNG == "Yes") {
+    iconType = "png"
+  } else if (t.SVG == "Yes") {
+    iconType = "svg"
+  } else if (t.WebP == "Yes") {
+    iconType = "webp"
+  } else {
+    iconType = ""
+  }
+  return `https://cdn.jsdelivr.net/gh/selfhst/icons@main/${iconType}/${t.Reference}.${iconType}`
 }
 
 const getFilename = (uri: string) => {
@@ -60,6 +74,7 @@ export async function Icon(fastify: FastifyInstance) {
           id: t.Reference,
           label: t.Name,
           url: getIconUrl(t),
+          src: getIconRawUrl(t),
         }
       })
       .sort((a: any, b: any) => {
@@ -72,7 +87,7 @@ export async function Icon(fastify: FastifyInstance) {
   // Fix 2: Add <{ Querystring: SearchQuery }> to type the query string
   fastify.get<{ Querystring: SearchQuery }>("/api/icon/_search", async (request, reply) => {
     const url: string = "https://raw.githubusercontent.com/selfhst/icons/refs/heads/main/index.json"
-    
+
     // Now request.query is typed, so accessing .q is safe
     const query: string = request.query.q
 
@@ -100,6 +115,7 @@ export async function Icon(fastify: FastifyInstance) {
           id: t.Reference,
           label: t.Name,
           url: getIconUrl(t),
+          src: getIconRawUrl(t),
         }
       })
       .sort((a: any, b: any) => {
@@ -114,7 +130,7 @@ export async function Icon(fastify: FastifyInstance) {
     // Now request.params is typed
     const name: string = request.params.name
     const fileType: string | undefined = request.params.fileType
-    
+
     const iconType: string = (fileType ?? "png").toLowerCase()
     const imageUrl: string = `https://cdn.jsdelivr.net/gh/selfhst/icons@main/${iconType}/${name}.${iconType}`
 

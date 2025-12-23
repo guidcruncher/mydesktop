@@ -1,43 +1,65 @@
 <template>
   <button
     type="button"
-    :class="['ui-dropdown-item', { 'is-selected': active }]"
+    :class="['ui-dropdown-item', { 'is-selected': isSelected }]"
     :title="title || label"
-    @click="handleClick($event)"
+    @click="handleClick"
   >
     <div class="icon-wrapper">
       <i v-if="icon" :class="icon" />
     </div>
-    <span class="label-text"
-      ><slot>{{ label }}</slot></span
-    >
+    <span class="label-text">
+      <slot>{{ label }}</slot>
+    </span>
 
-    <i v-if="active" class="fa-solid fa-check check-icon" />
+    <i v-if="isSelected" class="fa-solid fa-check check-icon" />
   </button>
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
+import { computed, inject } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const route = useRoute()
 
 const props = defineProps({
-  active: { type: Boolean, default: false },
+  active: { type: Boolean, default: false }, // Manual override
+  value: { type: [String, Number, Object], default: null }, // Unique ID for selection
   icon: { type: String, default: '' },
   label: { type: String, default: '' },
   title: { type: String, default: '' },
   routerlink: { type: String, default: undefined },
 })
 
-const emits = defineEmits(['click'])
+const emit = defineEmits(['click', 'navigate'])
+
+// Inject context from parent UIDropdownMenu
+const dropdownContext = inject('dropdownContext', null)
+
+const isSelected = computed(() => {
+  // Return true if manually active OR if matches parent's selected value
+  if (props.active) return true
+  if (dropdownContext && dropdownContext.selected.value !== undefined) {
+    return dropdownContext.selected.value === props.value
+  }
+  return false
+})
 
 const handleClick = (ev) => {
+  // 1. Handle Navigation
   if (props.routerlink) {
+    emit('navigate', props)
     router.push({ path: props.routerlink, replace: true })
+    if (dropdownContext) dropdownContext.closeMenu()
     return
   }
 
+  // 2. Handle Selection (Updates parent model and closes menu)
+  if (dropdownContext) {
+    dropdownContext.handleSelect(props.value)
+  }
+
+  // 3. Emit standard click
   emit('click', ev)
 }
 </script>

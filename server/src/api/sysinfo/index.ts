@@ -52,7 +52,7 @@ const getCpuStats = () => {
     const content = fs.readFileSync("/proc/stat", "utf8")
     const lines = content.split("\n")
     // 'cpu' line: cpu  user nice system idle iowait irq softirq steal guest guest_nice
-    
+
     // Fix 2: Check if line exists before accessing properties on it
     if (!lines || !lines[0]) {
       return { idle: 0, total: 0 }
@@ -77,7 +77,7 @@ const getCpuStats = () => {
       const end = readStat()
       const idleDiff = end.idle - start.idle
       const totalDiff = end.total - start.total
-      
+
       // Prevent division by zero
       if (totalDiff === 0) {
         resolve(0)
@@ -101,7 +101,7 @@ const getMemStats = () => {
     const parse = (key: string) => {
       const match = content.match(new RegExp(`${key}:\\s+(\\d+)`))
       // Fix 5: Ensure match[1] exists before passing to parseInt
-      return (match && match[1]) ? parseInt(match[1]) * 1024 : 0 // Convert kB to Bytes
+      return match && match[1] ? parseInt(match[1]) * 1024 : 0 // Convert kB to Bytes
     }
 
     const total = parse("MemTotal")
@@ -132,7 +132,7 @@ const getStorageStats = () => {
         return
       }
       const lines = stdout.trim().split("\n")
-      
+
       // Fix 6: Ensure lines[1] exists
       if (!lines[1]) {
         resolve({ percent: 0, usedGB: 0, totalGB: 0 })
@@ -165,7 +165,7 @@ export async function Sysinfo(fastify: FastifyInstance) {
       const memory: any = getMemStats() as any
       const distro: any = getDistroName() as any
       const icon: any = (await getDistroIcon()) as any
-      
+
       return {
         device: {
           platform: "Linux",

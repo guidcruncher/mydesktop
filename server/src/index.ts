@@ -15,7 +15,7 @@ server.addContentTypeParser(
   { parseAs: "string" },
   (req, body, done) => {
     // No parsing logic here, just pass the raw string through
-    req=req
+    req = req
     done(null, body)
   },
 )
@@ -49,10 +49,14 @@ server.setNotFoundHandler((req, reply) => {
 
 const getPort = () => {
   if (process.env.PORT) {
-    return parseInt((process.env.PORT) as string)
+    return parseInt(process.env.PORT as string)
   }
 
-  return 3000
+  if (process.env.NODE_ENV == "production") {
+    return 3000
+  }
+
+  return 3009
 }
 
 const start = async () => {
