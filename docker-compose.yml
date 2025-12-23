@@ -8,7 +8,7 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - ./server/config:/app/config
+      - ./server/config:/config
     environment:
       - NODE_ENV=production
       - PORT=4000
