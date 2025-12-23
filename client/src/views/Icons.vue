@@ -37,7 +37,7 @@ const searchIcons = (limit: Number) => {
     }
   }
 
-  showEditor = true
+  showEditor.value = true
 }
 
 onMounted(async () => {
