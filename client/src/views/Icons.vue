@@ -8,11 +8,35 @@ const route = useRoute()
 const showEditor = ref(false)
 const images = ref([])
 const results = ref([])
+const query = ref('')
 
 const apiBase = inject('API_BASE_URL')
 
-const searchIcons = () => {
-  results = imasges
+const searchIcons = (limit: Number) => {
+  if (limit) {
+    if (query.value == '') {
+      results.value = images.value.slice(0, limit)
+    } else {
+      results.value = images.value
+        .filter((t: any) => {
+          return t.label.toLowerCase().startsWith(query.value.toLowerCase())
+        })
+        .slice(0, limit)
+    }
+    if (query.value == '') {
+      results.value = images.value.slice(0, limit)
+    } else {
+    }
+  } else {
+    if (query.value == '') {
+      results.value = images.value
+    } else {
+      results.value = images.value.filter((t: any) => {
+        return t.label.toLowerCase().startsWith(query.value.toLowerCase())
+      })
+    }
+  }
+
   showEditor = true
 }
 
@@ -23,8 +47,9 @@ onMounted(async () => {
   }
   const response = await fetch(url, options)
   if (response.ok) {
-    images = await response.json()
+    images.value = await response.json()
     showEditor.value = true
+    searchIcons(100)
   }
 })
 </script>
@@ -37,6 +62,11 @@ onMounted(async () => {
     dataidfield="id"
     datatitlefield="label"
   >
+    <template #sidebar>
+      <UITextField v-model="query" />
+
+      <UIButton variant="primary" @click="searchIcons(100)">Search</UIButton>&nbsp;
+    </template>
   </UIImageBrowser>
 </template>
 

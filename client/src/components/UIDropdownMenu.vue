@@ -1,20 +1,12 @@
 <template>
   <div class="ui-dropdown-wrapper" ref="triggerContainer">
-    <div
-      class="dropdown-trigger-wrapper"
-      @click.stop="handleTriggerClick"
-    >
+    <div class="dropdown-trigger-wrapper" @click.stop="handleTriggerClick">
       <slot name="trigger" :isOpen="modelValue"></slot>
     </div>
 
     <Teleport to="body">
       <transition name="dropdown-fade">
-        <div
-          v-if="modelValue"
-          class="dropdown-menu"
-          :style="menuStyles"
-          @click.stop
-        >
+        <div v-if="modelValue" class="dropdown-menu" :style="menuStyles" @click.stop>
           <slot></slot>
         </div>
       </transition>
@@ -51,7 +43,7 @@ const handleSelect = (value) => {
 provide('dropdownContext', {
   selected: toRef(props, 'selected'),
   closeMenu,
-  handleSelect
+  handleSelect,
 })
 
 // --- POSITIONING LOGIC ---

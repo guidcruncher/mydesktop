@@ -133,7 +133,7 @@ onUnmounted(() => {
         <div class="imgbrws-lightbox-content">
           <img
             :src="activeImage[datafullurlfield]"
-             class="imgbrws-lightbox-img"
+            class="imgbrws-lightbox-img"
             alt="Fullscreen view"
           />
 

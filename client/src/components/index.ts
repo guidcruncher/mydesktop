@@ -139,19 +139,18 @@ export const GlassComponents = {
   UIWheelListView,
   UIWidgetView,
   YamlEditor,
-};
+}
 
+export function UseGlassUi(app) {
+  const pinia = createPinia()
+  app.directive('click-outside', ClickOutside)
+  app.directive('visual-effect', VisualEffect)
+  app.directive('background', Background)
 
-export function  UseGlassUi(app) {
-    const pinia = createPinia()
-    app.directive('click-outside', ClickOutside);
-    app.directive('visual-effect', VisualEffect);
-    app.directive('background', Background);
-
-    app.use(pinia);
-    Object.keys(GlassComponents).forEach((name) => {
-      app.component(name, GlassComponents[name]);
-    });
-    const themeStore = useThemeStore()
-    themeStore.restoreTheme()
-};
+  app.use(pinia)
+  Object.keys(GlassComponents).forEach((name) => {
+    app.component(name, GlassComponents[name])
+  })
+  const themeStore = useThemeStore()
+  themeStore.restoreTheme()
+}
