@@ -6,7 +6,7 @@
     "dev": "cd .. && npm run dev",
     "prod": "cd .. && npm run prod",
     "dev-client": "vite --host",
-    "build": "vue-tsc && vite build",
+    "build": "NODE_ENV=production vue-tsc && vite build",
     "preview": "vite preview",
     "sass": "sass ./src/styles/styles-full.scss",
     "lint": "eslint . --fix --cache",

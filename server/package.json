@@ -8,7 +8,7 @@
     "prod": "cd .. && npm run prod",
     "dev-server": "npm run registry && NODE_PATH=. tsx watch src/index.ts --color",
     "registry": "node ./scripts/apiiregistry.ts",
-    "build": "npm run registry && NODE_ENV=development rm -rf ./dist && tsc --build . --pretty false && tsc-alias",
+    "build": "npm run registry && NODE_ENV=production rm -rf ./dist && tsc --build . --pretty false && tsc-alias",
     "start": "NODE_PATH=. node dist/index.js",
     "lint": "eslint . --fix --cache",
     "format": "prettier --write src/"

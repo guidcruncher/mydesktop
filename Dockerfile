@@ -1,5 +1,5 @@
 FROM node:22-alpine AS builder
-
+	
 WORKDIR /app
 
 COPY package*.json ./
@@ -20,7 +20,7 @@ WORKDIR /app
 COPY ./entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/server/dist ./dist
+COPY --from=builder /app/server/lib/src ./dist
 COPY --from=builder /app/server/package.json ./package.json
 
 COPY --from=builder /app/client/dist ./dist/public
