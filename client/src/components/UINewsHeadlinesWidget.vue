@@ -61,7 +61,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, inject, watch } from 'vue'
+
+const API_BASE_URL = `${inject('API_BASE_URL')}`
 
 // --- Props ---
 const props = defineProps({
@@ -131,7 +133,7 @@ const fetchNews = async () => {
   error.value = false
 
   try {
-    const proxyBase = 'http://192.168.1.202:3009/api/proxy/rss'
+    const proxyBase = `${API_BASE_URL}/api/proxy/rss`
     const targetUrl = `${proxyBase}?url=${encodeURIComponent(props.rss)}`
 
     const response = await fetch(targetUrl)
