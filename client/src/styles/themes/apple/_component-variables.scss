@@ -310,6 +310,67 @@
   --sysinfo-radius-lg: 26px;
   --sysinfo-radius-md: 16px;
   --sysinfo-blur: blur(35px);
+
+ /* Audio Player */
+  --audio-bg: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  
+  --audio-player-bg: rgba(255, 255, 255, 0.7);
+  --audio-player-border: rgba(0, 0, 0, 0.1);
+  --audio-player-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+  
+  /* Audio Gradient Colors */
+  --audio-gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --audio-gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --audio-gradient-tertiary: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --audio-gradient-quaternary: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  
+  /* Audio Visualizer Colors */
+  --audio-bar-gradient: linear-gradient(to top, #667eea, #764ba2, #f093fb);
+  --audio-waveform-gradient: linear-gradient(to top, #667eea, #764ba2);
+  --audio-progress-gradient: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  --audio-volume-gradient: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  
+  /* Audio Text Colors */
+  --audio-text-primary: #1a1a1a;
+  --audio-text-secondary: rgba(0, 0, 0, 0.6);
+  --audio-text-tertiary: rgba(0, 0, 0, 0.5);
+  --audio-text-quaternary: rgba(0, 0, 0, 0.4);
+  
+  /* Audio Control Colors */
+  --audio-control-bg: rgba(0, 0, 0, 0.08);
+  --audio-control-border: rgba(0, 0, 0, 0.1);
+  --audio-control-hover: rgba(0, 0, 0, 0.12);
+  --audio-control-text: #1a1a1a;
+  
+  /* Audio Play Button */
+  --audio-play-btn-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --audio-play-btn-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+  --audio-play-btn-shadow-hover: 0 20px 40px rgba(102, 126, 234, 0.6);
+  --audio-play-btn-shadow-playing: 0 0 40px rgba(102, 126, 234, 0.8);
+  
+  /* Audio Glow Effects */
+  --audio-glow-ring: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+  --audio-glow-opacity: 0.6;
+  
+  /* Audio Progress Bar */
+  --audio-progress-bg: rgba(0, 0, 0, 0.1);
+  --audio-progress-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+  --audio-progress-handle-bg: white;
+  --audio-progress-handle-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
+  
+  /* Audio Container Backgrounds */
+  --audio-container-bg: rgba(0, 0, 0, 0.05);
+  
+  /* Audio Accent Color */
+  --audio-accent-color: #667eea;
+  
+  /* Audio Particle Colors */
+  --audio-particle-color: rgba(255, 255, 255, 0.3);
+  
+  /* Audio Theme Toggle */
+  --audio-theme-bg: rgba(0, 0, 0, 0.08);
+  --audio-theme-border: rgba(0, 0, 0, 0.1);
+  --audio-theme-hover: rgba(0, 0, 0, 0.12);
 }
 
 .dark-mode {
@@ -518,4 +579,67 @@
   --sysinfo-text-primary: #ffffff;
   --sysinfo-text-secondary: #98989d;
   --sysinfo-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+
+  /* Audio player */
+  /* Audio Player - Dark Theme Colors */
+  --audio-bg: #0a0a0a;
+  
+  --audio-player-bg: rgba(20, 20, 20, 0.7);
+  --audio-player-border: rgba(255, 255, 255, 0.1);
+  --audio-player-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  
+  /* Audio Gradient Colors - Same for both themes */
+  --audio-gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --audio-gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --audio-gradient-tertiary: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --audio-gradient-quaternary: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  
+  /* Audio Visualizer Colors - Same for both themes */
+  --audio-bar-gradient: linear-gradient(to top, #667eea, #764ba2, #f093fb);
+  --audio-waveform-gradient: linear-gradient(to top, #667eea, #764ba2);
+  --audio-progress-gradient: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  --audio-volume-gradient: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  
+  /* Audio Text Colors */
+  --audio-text-primary: white;
+  --audio-text-secondary: rgba(255, 255, 255, 0.6);
+  --audio-text-tertiary: rgba(255, 255, 255, 0.5);
+  --audio-text-quaternary: rgba(255, 255, 255, 0.4);
+  
+  /* Audio Control Colors */
+  --audio-control-bg: rgba(255, 255, 255, 0.1);
+  --audio-control-border: rgba(255, 255, 255, 0.15);
+  --audio-control-hover: rgba(255, 255, 255, 0.2);
+  --audio-control-text: white;
+  
+  /* Audio Play Button - Same for both themes */
+  --audio-play-btn-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --audio-play-btn-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+  --audio-play-btn-shadow-hover: 0 20px 40px rgba(102, 126, 234, 0.6);
+  --audio-play-btn-shadow-playing: 0 0 40px rgba(102, 126, 234, 0.8);
+  
+  /* Audio Glow Effects - Same for both themes */
+  --audio-glow-ring: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+  --audio-glow-opacity: 0.6;
+  
+  /* Audio Progress Bar */
+  --audio-progress-bg: rgba(255, 255, 255, 0.1);
+  --audio-progress-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+  --audio-progress-handle-bg: white;
+  --audio-progress-handle-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
+  
+  /* Audio Container Backgrounds */
+  --audio-container-bg: rgba(255, 255, 255, 0.05);
+  
+  /* Audio Accent Color - Same for both themes */
+  --audio-accent-color: #667eea;
+  
+  /* Audio Particle Colors */
+  --audio-particle-color: rgba(102, 126, 234, 0.02);
+  
+  /* Audio Theme Toggle */
+  --audio-theme-bg: rgba(255, 255, 255, 0.1);
+  --audio-theme-border: rgba(255, 255, 255, 0.15);
+  --audio-theme-hover: rgba(255, 255, 255, 0.2);
 }
+
