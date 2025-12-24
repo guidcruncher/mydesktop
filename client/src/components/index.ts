@@ -12,6 +12,7 @@ import UIAlert from './UIAlert.vue'
 import UIAnalogClock from './UIAnalogClock.vue'
 import UIAppIconItem from './UIAppIconItem.vue'
 import UIAppIconLink from './UIAppIconLink.vue'
+import UIAudioPlayer from './UIAudioPlayer.vue'
 import UIButton from './UIButton.vue'
 import UICalendarWidget from './UICalendarWidget.vue'
 import UICollectionView from './UICollectionView.vue'
@@ -86,6 +87,7 @@ export const GlassComponents = {
   UIAnalogClock,
   UIAppIconItem,
   UIAppIconLink,
+  UIAudioPlayer,
   UIButton,
   UICalendarWidget,
   UICollectionView,
@@ -139,18 +141,19 @@ export const GlassComponents = {
   UIWheelListView,
   UIWidgetView,
   YamlEditor,
-}
+};
 
-export function UseGlassUi(app) {
-  const pinia = createPinia()
-  app.directive('click-outside', ClickOutside)
-  app.directive('visual-effect', VisualEffect)
-  app.directive('background', Background)
 
-  app.use(pinia)
-  Object.keys(GlassComponents).forEach((name) => {
-    app.component(name, GlassComponents[name])
-  })
-  const themeStore = useThemeStore()
-  themeStore.restoreTheme()
-}
+export function  UseGlassUi(app) {
+    const pinia = createPinia()
+    app.directive('click-outside', ClickOutside);
+    app.directive('visual-effect', VisualEffect);
+    app.directive('background', Background);
+
+    app.use(pinia);
+    Object.keys(GlassComponents).forEach((name) => {
+      app.component(name, GlassComponents[name]);
+    });
+    const themeStore = useThemeStore()
+    themeStore.restoreTheme()
+};

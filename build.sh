@@ -2,15 +2,11 @@
 
 rm -rf ./dist
 mkdir -p ./dist/client ./dist/server
-cd dist
 
 npm run format
 
-cd ./client
-npm run build
-
-cd ../server
-npm run  build
+npm run build --workspace=client
+npm run build --workspace=server
 
 
 
