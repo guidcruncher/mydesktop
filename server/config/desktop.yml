@@ -141,6 +141,6 @@ layout:
       component: UIAudioPlayer
       props:
         track:
-          title: "Get Lucky"
-          artist: "Daft Punk"
+          artist: "Queen"
+          title: "One Vision"
           src: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/WFMU/Broke_For_Free/Directionless_EP/Broke_For_Free_-_01_-_Night_Owl.mp3"

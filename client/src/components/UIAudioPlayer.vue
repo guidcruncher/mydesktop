@@ -202,10 +202,9 @@ const fetchAlbumArt = async (track) => {
 
     const response = await fetch(url)
     const data = await response.json()
-
     // Check Deezer data structure (usually data[0].album.cover_xl)
-    if (data.data && data.data.length > 0 && data.data[0].album) {
-      currentCover.value = data.data[0].album.cover_xl
+    if (data) {
+      currentCover.value = data.album.cover_xl
     } else {
       console.warn('No art found for:', track.title)
     }

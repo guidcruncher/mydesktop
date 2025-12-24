@@ -90,7 +90,8 @@ export async function Proxy(fastify: FastifyInstance) {
 
   fastify.get("/api/proxy/deezer", async (request, reply) => {
     // 1. Extract parameters from the query string
-    const { artist, track } = request.query
+    const artist = request.query.artist
+    const track = request.query.track
 
     // Basic validation
     if (!artist || !track) {
@@ -102,13 +103,9 @@ export async function Proxy(fastify: FastifyInstance) {
 
     try {
       // 2. Construct the Deezer API URL with the specific query format
-      const deezerUrl = new URL("https://api.deezer.com/search")
-      // This creates the format: q=artist:"NAME" track:"TITLE"
-      deezerUrl.searchParams.append("q", `artist:"${artist}" track:"${track}"`)
-
+      const deezerUrl = `https://api.deezer.com/search?q=artist:"${encodeURIComponent(artist.toUpperCase())}"%20track:"${encodeURIComponent(track.toUpperCase())}"`
       // 3. Call the Deezer API
       const response = await fetch(deezerUrl)
-
       if (!response.ok) {
         return reply.status(response.status).send(response.statusText)
       }
