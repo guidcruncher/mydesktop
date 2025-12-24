@@ -87,4 +87,49 @@ export async function Proxy(fastify: FastifyInstance) {
         .send(bytes)
     })
   })
+
+  fastify.get("/api/proxy/deezer", async (request, reply) => {
+    // 1. Extract parameters from the query string
+    const { artist, track } = request.query
+
+    // Basic validation
+    if (!artist || !track) {
+      return reply.code(400).send({
+        error: "Bad Request",
+        message: 'Both "artist" and "track" query parameters are required.',
+      })
+    }
+
+    try {
+      // 2. Construct the Deezer API URL with the specific query format
+      const deezerUrl = new URL("https://api.deezer.com/search")
+      // This creates the format: q=artist:"NAME" track:"TITLE"
+      deezerUrl.searchParams.append("q", `artist:"${artist}" track:"${track}"`)
+
+      // 3. Call the Deezer API
+      const response = await fetch(deezerUrl)
+
+      if (!response.ok) {
+        return reply.status(response.status).send(response.statusText)
+      }
+
+      const data = await response.json()
+
+      // 4. Check for results and return the first one
+      if (data.data && data.data.length > 0) {
+        // Return the first result directly
+        return reply.status(200).send(data.data[0])
+      } else {
+        // No results found
+        return reply.status(404).send({
+          error: "Not Found",
+          success: false,
+          message: "No track found for this artist and title.",
+        })
+      }
+    } catch (error) {
+      request.log.error(error)
+      return reply.status(500).send({ error: "Internal Server Error" })
+    }
+  })
 }

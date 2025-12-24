@@ -135,3 +135,9 @@ layout:
       component: UICalendarWidget
       props:
         location: "current"
+
+    - name: AudioPlayer
+      type: custom
+      component: UIAudioPlayer
+      props:
+        location: "current"

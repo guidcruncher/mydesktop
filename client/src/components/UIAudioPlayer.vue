@@ -2,90 +2,113 @@
   <div class="audio-player-wrapper">
     <canvas ref="visualizerCanvas" class="visualizer"></canvas>
 
-    <div class="player-container" :class="{ playing: isPlaying }">
-      <div class="album-art-container">
-        <div class="glow-ring"></div>
-        <div class="album-art" :style="{ background: track.gradient || defaultGradient }">
-          <img v-if="track.cover" :src="track.cover" :alt="track.title" crossorigin="anonymous" />
-          <span v-else class="album-art-placeholder">{{ track.emoji || '🎵' }}</span>
-        </div>
-        <div class="visualizer-bars">
-          <div
-            v-for="i in 8"
-            :key="i"
-            class="bar"
-            :ref="
-              (el) => {
-                if (el) albumBars[i - 1] = el
-              }
-            "
-          ></div>
-        </div>
-      </div>
+    <audio
+      ref="audioElement"
+      :src="track.src"
+      crossorigin="anonymous"
+      @ended="handleEnded"
+      @timeupdate="handleTimeUpdate"
+      @loadedmetadata="handleMetadata"
+    ></audio>
 
-      <div class="track-info">
-        <div class="track-title">{{ track.title || 'No Track Selected' }}</div>
-        <div class="track-artist">{{ track.artist || 'Unknown Artist' }}</div>
-      </div>
-
-      <div class="waveform-container">
-        <div
-          v-for="i in 60"
-          :key="i"
-          class="waveform-bar"
-          :ref="
-            (el) => {
-              if (el) waveformBars[i - 1] = el
-            }
-          "
-        ></div>
-      </div>
-
-      <div class="progress-section">
-        <div class="progress-bar" @click="handleSeek">
-          <div class="progress-fill" :style="{ width: progress + '%' }">
-            <div class="progress-handle"></div>
+    <div class="player-container" :class="{ 'compact-mode': !showArt }">
+      
+      <div v-if="showArt" class="display-section">
+        <div class="album-art-container">
+          <div class="glow-ring" :class="{ active: isPlaying }"></div>
+          
+          <div class="album-art" :style="{ background: track.gradient || defaultGradient }">
+            <img 
+              v-if="currentCover" 
+              :src="currentCover" 
+              :alt="track.title" 
+              crossorigin="anonymous"
+              class="fade-in" 
+            />
+            <span v-else class="album-art-placeholder">
+              {{ isLoadingArt ? '⏳' : (track.emoji || '🎵') }}
+            </span>
+          </div>
+          
+          <div class="visualizer-bars">
+            <div
+              v-for="i in 8"
+              :key="i"
+              class="bar"
+              :ref="(el) => { if (el) albumBars[i - 1] = el }"
+            ></div>
           </div>
         </div>
-        <div class="time-display">
-          <span>{{ formatTime(currentTime) }}</span>
-          <span>{{ formatTime(track.duration || 0) }}</span>
+
+        <div class="track-info">
+          <div class="track-title" :title="track.title">{{ track.title || 'No Track Selected' }}</div>
+          <div class="track-artist">{{ track.artist || 'Unknown Artist' }}</div>
         </div>
       </div>
 
-      <div class="controls">
-        <div class="control-btn" @click="emit('prev')">⏮</div>
-        <div class="control-btn play-btn" @click="togglePlay">{{ isPlaying ? '⏸' : '▶' }}</div>
-        <div class="control-btn" @click="emit('next')">⏭</div>
+      <div class="controls-section">
+        <div v-if="showWaveform" class="waveform-container">
+          <div
+            v-for="i in 60"
+            :key="i"
+            class="waveform-bar"
+            :ref="(el) => { if (el) waveformBars[i - 1] = el }"
+          ></div>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-bar" @click="handleSeek">
+            <div class="progress-fill" :style="{ width: progress + '%' }">
+              <div class="progress-handle"></div>
+            </div>
+          </div>
+          <div class="time-display">
+            <span>{{ formatTime(currentTime) }}</span>
+            <span>{{ formatTime(duration) }}</span>
+          </div>
+        </div>
+
+        <div class="playback-controls">
+          <button class="control-btn" @click="emit('prev')" title="Previous">⏮</button>
+          <button class="control-btn play-btn" @click="togglePlay">
+            {{ isPlaying ? '⏸' : '▶' }}
+          </button>
+          <button class="control-btn" @click="emit('next')" title="Next">⏭</button>
+        </div>
+
+        <div class="volume-section">
+          <div class="volume-icon" @click="toggleMute">{{ volume > 0 ? '🔊' : '🔇' }}</div>
+          <div class="volume-bar" @click="handleVolume">
+            <div class="volume-fill" :style="{ width: volume + '%' }"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="volume-section">
-        <div class="volume-icon">🔊</div>
-        <div class="volume-bar" @click="handleVolume">
-          <div class="volume-fill" :style="{ width: volume + '%' }"></div>
+      <div v-if="showStats" class="stats-section">
+        <div class="frequency-display">
+          <div class="freq-label">
+            <div class="freq-value">{{ bassValue }}</div>
+            <div class="freq-name">Bass</div>
+          </div>
+          <div class="freq-label">
+            <div class="freq-value">{{ midValue }}</div>
+            <div class="freq-name">Mid</div>
+          </div>
+          <div class="freq-label">
+            <div class="freq-value">{{ trebleValue }}</div>
+            <div class="freq-name">Treble</div>
+          </div>
         </div>
       </div>
 
-      <div class="frequency-display">
-        <div class="freq-label">
-          <div class="freq-value">{{ bassValue }}</div>
-          <div class="freq-name">Bass</div>
-        </div>
-        <div class="freq-label">
-          <div class="freq-value">{{ midValue }}</div>
-          <div class="freq-name">Mid</div>
-        </div>
-        <div class="freq-label">
-          <div class="freq-value">{{ trebleValue }}</div>
-          <div class="freq-name">Treble</div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { inject, ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
+
+const API_BASE_URL = `${inject('API_BASE_URL')}`
 
 const props = defineProps({
   track: {
@@ -94,16 +117,26 @@ const props = defineProps({
     default: () => ({
       title: 'Select a Track',
       artist: '...',
-      duration: 0,
+      src: '', 
+      cover: null,
       gradient: 'linear-gradient(135deg, #ccc 0%, #eee 100%)',
     }),
   },
   initialVolume: { type: Number, default: 70 },
+  showArt: { type: Boolean, default: true },
+  showWaveform: { type: Boolean, default: true },
+  showStats: { type: Boolean, default: true }
 })
 
 const emit = defineEmits(['play', 'pause', 'stop', 'prev', 'next', 'seek', 'volume'])
 
-// --- State ---
+// --- Audio & Visualizer State ---
+const audioContext = ref(null)
+const analyser = ref(null)
+const dataArray = ref(null)
+const sourceNode = ref(null)
+const gainNode = ref(null)
+const audioElement = ref(null)
 const visualizerCanvas = ref(null)
 const albumBars = ref([])
 const waveformBars = ref([])
@@ -111,59 +144,131 @@ const waveformBars = ref([])
 const isDarkTheme = ref(false)
 const isPlaying = ref(false)
 const currentTime = ref(0)
+const duration = ref(0)
 const volume = ref(props.initialVolume)
-const defaultGradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+const previousVolume = ref(props.initialVolume)
 
 // Stats
 const bassValue = ref(0)
 const midValue = ref(0)
 const trebleValue = ref(0)
 
-// Animation / Performance
+// Art Fetching State
+const currentCover = ref(props.track.cover)
+const isLoadingArt = ref(false)
+
+// Animation
+const defaultGradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
 const cachedParticleColor = ref('rgba(255, 255, 255, 0.3)')
 let animationId = null
-let ctx = null
-let lastTime = 0
+let canvasCtx = null
 let themeObserver = null
 
 // --- Computed ---
 const progress = computed(() => {
-  if (!props.track.duration) return 0
-  return (currentTime.value / props.track.duration) * 100
+  if (!duration.value) return 0
+  return (currentTime.value / duration.value) * 100
 })
 
-// --- Theme Detection Logic ---
-const updateThemeState = () => {
-  // Check if body has the class "dark-mode"
-  isDarkTheme.value = document.body.classList.contains('dark-mode')
+// --- API: Fetch Album Art ---
+const fetchAlbumArt = async (track) => {
+  // 1. If cover is explicitly provided in the object, use it.
+  if (track.cover) {
+    currentCover.value = track.cover
+    return
+  }
 
-  // Update internal JS colors that CSS variables can't reach (Canvas drawing)
-  cachedParticleColor.value = isDarkTheme.value
-    ? 'rgba(102, 126, 234, 0.05)' // Dark mode particle
-    : 'rgba(255, 255, 255, 0.3)' // Light mode particle
+  // 2. Otherwise, fetch from proxy
+  if (!track.artist || !track.title) {
+    currentCover.value = null
+    return
+  }
 
-  // Force a redraw so color changes happen immediately even if paused
-  if (!isPlaying.value) drawVisualizer()
+  isLoadingArt.value = true
+  currentCover.value = null // Reset while loading
+
+  try {
+    const artist = encodeURIComponent(track.artist)
+    const title = encodeURIComponent(track.title)
+    const url = `${API_BASE_URL}/api/proxy/deezer?artist=${artist}&track=${title}`
+    
+    const response = await fetch(url)
+    const data = await response.json()
+    
+    // Check Deezer data structure (usually data[0].album.cover_xl)
+    if (data.data && data.data.length > 0 && data.data[0].album) {
+      currentCover.value = data.data[0].album.cover_xl
+    } else {
+      console.warn('No art found for:', track.title)
+    }
+  } catch (err) {
+    console.error('Failed to fetch album art:', err)
+  } finally {
+    isLoadingArt.value = false
+  }
 }
 
-// --- Actions ---
-const togglePlay = () => {
-  isPlaying.value = !isPlaying.value
-  if (isPlaying.value) {
-    lastTime = performance.now()
-    startProgress()
-    emit('play', currentTime.value)
+// Watch for track changes to trigger fetch
+watch(() => props.track, (newTrack) => {
+  isPlaying.value = false
+  if(audioElement.value) audioElement.value.pause()
+  fetchAlbumArt(newTrack)
+}, { deep: true, immediate: true })
+
+
+// --- Web Audio Initialization ---
+const initAudioContext = () => {
+  if (audioContext.value) return
+  const AudioContext = window.AudioContext || window.webkitAudioContext
+  audioContext.value = new AudioContext()
+
+  analyser.value = audioContext.value.createAnalyser()
+  analyser.value.fftSize = 256
+  
+  gainNode.value = audioContext.value.createGain()
+  gainNode.value.gain.value = volume.value / 100
+
+  sourceNode.value = audioContext.value.createMediaElementSource(audioElement.value)
+  sourceNode.value.connect(analyser.value)
+  analyser.value.connect(gainNode.value)
+  gainNode.value.connect(audioContext.value.destination)
+
+  const bufferLength = analyser.value.frequencyBinCount
+  dataArray.value = new Uint8Array(bufferLength)
+}
+
+// --- Player Actions ---
+const togglePlay = async () => {
+  if (!props.track.src) return
+
+  if (!audioContext.value) initAudioContext()
+  if (audioContext.value.state === 'suspended') {
+    await audioContext.value.resume()
+  }
+
+  if (audioElement.value.paused) {
+    try {
+      await audioElement.value.play()
+      isPlaying.value = true
+      startVisualizerLoop()
+      emit('play', currentTime.value)
+    } catch (e) {
+      console.error("Playback failed:", e)
+    }
   } else {
+    audioElement.value.pause()
+    isPlaying.value = false
     cancelAnimationFrame(animationId)
     emit('pause', currentTime.value)
   }
 }
 
 const handleSeek = (e) => {
-  if (!props.track.duration) return
+  if (!duration.value || !audioElement.value) return
   const rect = e.currentTarget.getBoundingClientRect()
   const percent = (e.clientX - rect.left) / rect.width
-  const newTime = Math.max(0, Math.min(percent, 1)) * props.track.duration
+  const newTime = Math.max(0, Math.min(percent, 1)) * duration.value
+  audioElement.value.currentTime = newTime
   currentTime.value = newTime
   emit('seek', newTime)
 }
@@ -172,100 +277,18 @@ const handleVolume = (e) => {
   const rect = e.currentTarget.getBoundingClientRect()
   const newVol = Math.max(0, Math.min(((e.clientX - rect.left) / rect.width) * 100, 100))
   volume.value = newVol
+  if (gainNode.value) gainNode.value.gain.value = newVol / 100
   emit('volume', newVol)
 }
 
-// Watch for track changes to reset
-watch(
-  () => props.track,
-  () => {
-    currentTime.value = 0
-    drawVisualizer()
-  },
-  { deep: true },
-)
-
-// --- Visualization Loop ---
-const simulateAudioData = () => {
-  const bars = 64
-  const data = new Array(bars)
-  for (let i = 0; i < bars; i++) {
-    const base = Math.sin(currentTime.value * 2 + i * 0.5) * 50 + 80
-    const variation = Math.random() * 70
-    data[i] = Math.max(20, base + variation)
+const toggleMute = () => {
+  if (volume.value > 0) {
+    previousVolume.value = volume.value
+    volume.value = 0
+  } else {
+    volume.value = previousVolume.value
   }
-  return data
-}
-
-const drawVisualizer = () => {
-  if (!ctx || !visualizerCanvas.value) return
-  const width = visualizerCanvas.value.width
-  const height = visualizerCanvas.value.height
-  ctx.clearRect(0, 0, width, height)
-
-  const audioData = simulateAudioData()
-  const barWidth = width / audioData.length
-
-  // Particles
-  ctx.fillStyle = cachedParticleColor.value
-  for (let i = 0; i < 50; i++) {
-    const x = (currentTime.value * 50 + i * 100) % width
-    const y = Math.sin(currentTime.value + i) * 100 + height / 2
-    ctx.beginPath()
-    ctx.arc(x, y, 2, 0, Math.PI * 2)
-    ctx.fill()
-  }
-
-  // Canvas Bars
-  audioData.forEach((value, i) => {
-    const x = i * barWidth
-    const barHeight = (value / 255) * height * 0.6
-    const hue = (i / audioData.length) * 60 + 240
-    const gradient = ctx.createLinearGradient(0, height, 0, height - barHeight)
-    const opacity = isDarkTheme.value ? 0.8 : 0.6
-
-    gradient.addColorStop(0, `hsla(${hue}, 70%, 60%, ${opacity})`)
-    gradient.addColorStop(1, `hsla(${hue}, 70%, 70%, ${opacity * 0.4})`)
-    ctx.fillStyle = gradient
-    ctx.fillRect(x, height - barHeight, barWidth - 2, barHeight)
-  })
-
-  // DOM Bars (Album & Waveform)
-  const updateDOMBars = (refs) => {
-    refs.value.forEach((bar, i) => {
-      if (bar) {
-        const index = Math.floor((i / refs.value.length) * audioData.length)
-        bar.style.height = (audioData[index] / 255) * 100 + '%'
-      }
-    })
-  }
-  updateDOMBars(waveformBars)
-  updateDOMBars(albumBars)
-
-  // Stats
-  bassValue.value = Math.floor(audioData.slice(0, 4).reduce((a, b) => a + b) / 4)
-  midValue.value = Math.floor(audioData.slice(20, 35).reduce((a, b) => a + b) / 15)
-  trebleValue.value = Math.floor(audioData.slice(50, 64).reduce((a, b) => a + b) / 14)
-}
-
-const startProgress = () => {
-  const animate = (timestamp) => {
-    if (!isPlaying.value) return
-    const delta = (timestamp - lastTime) / 1000
-    lastTime = timestamp
-
-    if (currentTime.value < props.track.duration) {
-      if (!isNaN(delta) && delta > 0 && delta < 0.5) currentTime.value += delta
-      drawVisualizer()
-      animationId = requestAnimationFrame(animate)
-    } else {
-      currentTime.value = props.track.duration
-      isPlaying.value = false
-      emit('stop')
-      emit('next')
-    }
-  }
-  animationId = requestAnimationFrame(animate)
+  if (gainNode.value) gainNode.value.gain.value = volume.value / 100
 }
 
 const formatTime = (s) => {
@@ -274,34 +297,123 @@ const formatTime = (s) => {
   return `${m}:${sec.toString().padStart(2, '0')}`
 }
 
+// --- Audio Events ---
+const handleTimeUpdate = () => { currentTime.value = audioElement.value.currentTime }
+const handleMetadata = () => { duration.value = audioElement.value.duration }
+const handleEnded = () => {
+  isPlaying.value = false
+  currentTime.value = 0
+  cancelAnimationFrame(animationId)
+  emit('next')
+}
+
+// --- Visualizer ---
+const drawVisualizer = () => {
+  if (!canvasCtx || !visualizerCanvas.value) return
+  const width = visualizerCanvas.value.width
+  const height = visualizerCanvas.value.height
+  canvasCtx.clearRect(0, 0, width, height)
+
+  if (analyser.value && isPlaying.value) {
+    analyser.value.getByteFrequencyData(dataArray.value)
+  }
+
+  const getAverage = (start, end) => {
+    if (!dataArray.value) return 0
+    let sum = 0
+    for(let i=start; i<end; i++) sum += dataArray.value[i] || 0
+    return sum / (end - start)
+  }
+
+  // Draw Background Bars
+  const barCount = 64
+  const binSize = Math.floor((dataArray.value ? dataArray.value.length : 0) / barCount) || 1
+  const barWidth = width / barCount
+
+  for (let i = 0; i < barCount; i++) {
+    const value = dataArray.value ? dataArray.value[i * binSize] : 0
+    const x = i * barWidth
+    const barHeight = (value / 255) * height * 0.6
+    
+    const hue = (i / barCount) * 60 + 240
+    const gradient = canvasCtx.createLinearGradient(0, height, 0, height - barHeight)
+    const opacity = isDarkTheme.value ? 0.8 : 0.6
+
+    gradient.addColorStop(0, `hsla(${hue}, 70%, 60%, ${opacity})`)
+    gradient.addColorStop(1, `hsla(${hue}, 70%, 70%, ${opacity * 0.4})`)
+    canvasCtx.fillStyle = gradient
+    canvasCtx.fillRect(x, height - barHeight, barWidth - 2, barHeight)
+  }
+
+  // Draw DOM Bars (Overlay & Waveform)
+  if (dataArray.value) {
+    albumBars.value.forEach((bar, i) => {
+      if (!bar) return
+      const idx = Math.floor(i * 2) 
+      const val = dataArray.value[idx]
+      bar.style.height = Math.max(10, (val / 255) * 100) + '%'
+    })
+    waveformBars.value.forEach((bar, i) => {
+      if (!bar) return
+      const idx = Math.floor((i / 60) * (dataArray.value.length * 0.8))
+      const val = dataArray.value[idx]
+      bar.style.height = Math.max(5, (val / 255) * 100) + '%'
+    })
+    bassValue.value = Math.floor(getAverage(0, 5))
+    midValue.value = Math.floor(getAverage(10, 25))
+    trebleValue.value = Math.floor(getAverage(40, 60))
+  }
+
+  // Particles
+  const volFactor = (bassValue.value / 255)
+  canvasCtx.fillStyle = cachedParticleColor.value
+  for (let i = 0; i < 30; i++) {
+    const x = (currentTime.value * (50 + i) + i * 100) % width
+    const offset = Math.sin(currentTime.value + i) * (50 + volFactor * 100)
+    const y = (height / 2) + offset
+    canvasCtx.beginPath()
+    canvasCtx.arc(x, y, 2 + volFactor * 2, 0, Math.PI * 2)
+    canvasCtx.fill()
+  }
+}
+
+const startVisualizerLoop = () => {
+  const animate = () => {
+    if (!isPlaying.value) return
+    drawVisualizer()
+    animationId = requestAnimationFrame(animate)
+  }
+  animationId = requestAnimationFrame(animate)
+}
+
+// --- Lifecycle & Resize ---
+const updateThemeState = () => {
+  isDarkTheme.value = document.body.classList.contains('dark-mode')
+  cachedParticleColor.value = isDarkTheme.value
+    ? 'rgba(102, 126, 234, 0.05)'
+    : 'rgba(255, 255, 255, 0.3)'
+  if (!isPlaying.value) drawVisualizer()
+}
+
 const resizeCanvas = () => {
   if (visualizerCanvas.value) {
     visualizerCanvas.value.width = window.innerWidth
     visualizerCanvas.value.height = window.innerHeight
-    drawVisualizer() // Redraw on resize to prevent blank canvas
+    drawVisualizer()
   }
 }
 
 onMounted(async () => {
   await nextTick()
   if (visualizerCanvas.value) {
-    ctx = visualizerCanvas.value.getContext('2d')
+    canvasCtx = visualizerCanvas.value.getContext('2d')
     resizeCanvas()
   }
   window.addEventListener('resize', resizeCanvas)
-
-  // --- Initialize Theme Observer ---
-  updateThemeState() // Initial check
-
-  // Create a MutationObserver to watch for class changes on <body>
+  updateThemeState()
   themeObserver = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName === 'class') {
-        updateThemeState()
-      }
-    })
+    mutations.forEach((m) => { if (m.attributeName === 'class') updateThemeState() })
   })
-
   themeObserver.observe(document.body, { attributes: true })
 })
 
@@ -309,158 +421,140 @@ onUnmounted(() => {
   cancelAnimationFrame(animationId)
   window.removeEventListener('resize', resizeCanvas)
   if (themeObserver) themeObserver.disconnect()
+  if (audioContext.value) audioContext.value.close()
 })
 </script>
 
 <style scoped>
 /* COMPONENT STYLES */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 .audio-player-wrapper {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--audio-bg);
+  background: var(--audio-bg, #eef2f7);
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  overflow: hidden;
   position: relative;
-  transition: background 0.5s ease;
+  overflow: hidden;
 }
 
 .visualizer {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   z-index: 1;
+  pointer-events: none;
 }
 
+/* CONTAINER */
 .player-container {
-  background: var(--audio-player-bg);
+  background: var(--audio-player-bg, rgba(255, 255, 255, 0.8));
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border-radius: 35px;
-  border: 1px solid var(--audio-player-border);
-  box-shadow: var(--audio-player-shadow);
-  width: 100%;
-  max-width: 450px;
-  padding: 40px 35px;
+  border: 1px solid var(--audio-player-border, rgba(255, 255, 255, 0.5));
+  box-shadow: var(--audio-player-shadow, 0 10px 40px rgba(0,0,0,0.1));
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: fit-content;
+  min-width: 300px;
+  max-width: 100%;
+  padding: 35px;
   position: relative;
   z-index: 2;
-  transition: all 0.5s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+.player-container.compact-mode { padding: 25px; }
 
-/* Album Art & Bars */
+/* VISUAL DISPLAY */
+.display-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .album-art-container {
-  width: 100%;
+  width: 320px; 
   aspect-ratio: 1;
   border-radius: 25px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 .visualizer-bars {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
+  bottom: 0; left: 0; right: 0;
+  height: 40%;
   display: flex;
   align-items: flex-end;
-  justify-content: space-around;
-  padding: 20px;
+  justify-content: center;
   gap: 4px;
   z-index: 2;
   pointer-events: none;
 }
 .bar {
-  flex: 1;
-  background: var(--audio-bar-gradient);
+  width: 12%;
+  background: var(--audio-bar-gradient, linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,255,255,0.2)));
   border-radius: 4px 4px 0 0;
-  height: 20%;
-  transition: height 0.1s ease;
-  opacity: 0.9;
+  height: 10%;
+  transition: height 0.05s ease;
+  backdrop-filter: blur(4px);
 }
 .album-art {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-size: cover;
-  background-position: center;
-  transition: all 0.5s ease;
+  align-items: center; justify-content: center;
+  background-size: cover; background-position: center;
 }
-.album-art img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.album-art-placeholder {
-  font-size: 80px;
-}
+.album-art img { width: 100%; height: 100%; object-fit: cover; }
+.fade-in { animation: fadeIn 0.5s ease-in; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* Glow Ring */
+.album-art-placeholder { font-size: 80px; user-select: none; }
 .glow-ring {
-  position: absolute;
-  inset: -20px;
-  border-radius: 25px;
-  background: var(--audio-glow-ring);
-  filter: blur(30px);
+  position: absolute; inset: -20px;
+  border-radius: 35px;
+  background: var(--audio-glow-ring, radial-gradient(circle, rgba(100,100,255,0.4) 0%, transparent 70%));
+  filter: blur(20px);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
 }
-.playing .glow-ring {
-  opacity: 0.6;
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.8;
-  }
-}
+.glow-ring.active { opacity: 0.8; animation: pulse 3s infinite; }
 
-/* Track Info */
-.track-info {
-  text-align: center;
-  margin-bottom: 25px;
+.track-info { 
+  text-align: center; 
+  width: 100%; 
+  max-width: 320px; 
+  overflow: hidden; 
 }
 .track-title {
-  color: var(--audio-text-primary);
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: var(--audio-text-primary, #2d3748);
+  font-size: 24px; font-weight: 700;
+  margin-bottom: 5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .track-artist {
-  color: var(--audio-text-secondary);
-  font-size: 16px;
-  font-weight: 500;
+  color: var(--audio-text-secondary, #718096);
+  font-size: 16px; font-weight: 500;
 }
 
-/* Waveform */
+/* CONTROLS */
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 280px; 
+}
 .waveform-container {
-  height: 80px;
-  margin-bottom: 20px;
-  background: var(--audio-container-bg);
-  border-radius: 15px;
-  padding: 10px;
+  height: 60px;
+  background: var(--audio-container-bg, rgba(255,255,255,0.5));
+  border-radius: 12px;
+  padding: 8px 15px;
   display: flex;
   align-items: center;
   gap: 2px;
@@ -468,139 +562,108 @@ onUnmounted(() => {
 }
 .waveform-bar {
   flex: 1;
-  background: var(--audio-waveform-gradient);
+  background: var(--audio-waveform-gradient, #a0aec0);
   border-radius: 2px;
-  height: 40%;
-  transition: height 0.15s ease;
+  height: 10%;
+  min-height: 4px;
+  transition: height 0.05s linear;
 }
-
-/* Progress */
-.progress-section {
-  margin-bottom: 30px;
-}
+.progress-section { margin-top: 5px; }
 .progress-bar {
-  background: var(--audio-progress-bg);
-  height: 6px;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-bottom: 12px;
+  background: var(--audio-progress-bg, #cbd5e0);
+  height: 6px; border-radius: 10px;
+  cursor: pointer; margin-bottom: 8px;
   position: relative;
 }
 .progress-fill {
   height: 100%;
-  background: var(--audio-progress-gradient);
+  background: var(--audio-progress-gradient, linear-gradient(90deg, #667eea 0%, #764ba2 100%));
   border-radius: 10px;
   position: relative;
-  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
 }
 .progress-handle {
-  position: absolute;
-  right: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-  background: white;
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.2s;
+  position: absolute; right: -6px; top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px;
+  background: #fff; border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  opacity: 0; transition: opacity 0.2s;
 }
-.progress-bar:hover .progress-handle {
-  opacity: 1;
-}
+.progress-bar:hover .progress-handle { opacity: 1; }
 .time-display {
-  display: flex;
-  justify-content: space-between;
-  color: var(--audio-text-tertiary);
-  font-size: 13px;
-  font-weight: 500;
+  display: flex; justify-content: space-between;
+  color: var(--audio-text-tertiary, #a0aec0);
+  font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
 }
-
-/* Controls */
-.controls {
+.playback-controls {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 25px;
+  align-items: center; justify-content: center;
+  gap: 25px;
 }
 .control-btn {
-  background: var(--audio-control-bg);
-  border: 1px solid var(--audio-control-border);
+  background: var(--audio-control-bg, #fff);
+  border: 1px solid var(--audio-control-border, #e2e8f0);
   border-radius: 50%;
-  width: 55px;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 50px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  color: var(--audio-control-text);
-  font-size: 22px;
+  color: var(--audio-control-text, #4a5568);
+  font-size: 20px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-.control-btn:hover {
-  background: var(--audio-control-hover);
-  transform: scale(1.05);
-}
+.control-btn:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 .play-btn {
-  width: 70px;
-  height: 70px;
-  background: var(--audio-play-btn-bg);
-  box-shadow: var(--audio-play-btn-shadow);
-  color: white;
-  font-size: 28px;
+  width: 65px; height: 65px;
+  background: var(--audio-play-btn-bg, #667eea);
+  border: none; color: white; font-size: 24px;
+  box-shadow: var(--audio-play-btn-shadow, 0 4px 15px rgba(102, 126, 234, 0.4));
 }
-.play-btn:hover {
-  box-shadow: var(--audio-play-btn-shadow-hover);
-}
-
-/* Volume */
+.play-btn:hover { background: var(--audio-play-btn-bg-hover, #5a67d8); }
 .volume-section {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  display: flex; align-items: center; gap: 15px;
   padding: 0 10px;
 }
-.volume-icon {
-  color: var(--audio-text-secondary);
-  font-size: 20px;
-}
+.volume-icon { font-size: 18px; cursor: pointer; user-select: none; width: 24px; text-align: center; }
 .volume-bar {
-  flex: 1;
-  height: 6px;
-  background: var(--audio-progress-bg);
-  border-radius: 10px;
-  cursor: pointer;
+  flex: 1; height: 5px;
+  background: var(--audio-progress-bg, #cbd5e0);
+  border-radius: 10px; cursor: pointer;
 }
 .volume-fill {
   height: 100%;
-  background: var(--audio-volume-gradient);
+  background: var(--audio-volume-gradient, #718096);
   border-radius: 10px;
 }
 
-/* Stats */
+/* STATS */
+.stats-section {
+  border-top: 1px solid var(--audio-border-light, rgba(0,0,0,0.05));
+  padding-top: 20px;
+}
 .frequency-display {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  padding: 15px;
-  background: var(--audio-container-bg);
-  border-radius: 15px;
+  display: flex; justify-content: space-between;
+  background: var(--audio-container-bg, rgba(255,255,255,0.5));
+  border-radius: 15px; padding: 15px;
 }
-.freq-label {
-  text-align: center;
-  flex: 1;
-}
+.freq-label { text-align: center; flex: 1; }
 .freq-value {
-  color: var(--audio-accent-color);
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 4px;
+  color: var(--audio-accent-color, #667eea);
+  font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums;
 }
 .freq-name {
-  color: var(--audio-text-quaternary);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--audio-text-quaternary, #a0aec0);
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;
 }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.02); opacity: 0.8; }
+}
+
+:global(.dark-mode) .player-container {
+  background: rgba(30, 30, 40, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+:global(.dark-mode) .track-title { color: #fff; }
+:global(.dark-mode) .control-btn { background: #2d3748; border-color: #4a5568; color: #fff; }
 </style>
