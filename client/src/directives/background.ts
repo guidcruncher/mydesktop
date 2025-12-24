@@ -1,6 +1,8 @@
 import { BackgroundMesh } from '../utils/BackgroundMesh'
 import { inject } from 'vue'
 
+const API_BASE_URL = `${inject('API_BASE_URL')}`
+
 const colors = [
   'hsla(280, 80%, 70%, 1)',
   'hsla(200, 90%, 65%, 1)',
@@ -25,10 +27,10 @@ const apply = (el, binding) => {
       ctl.style.backgroundColor = config.color
       break
     case 'image':
-      const url = `${inject('API_BASE_URL')}/api/proxy?url=${encodeURIComponent(config.src ?? '')}`
+      const url = `${API_BASE_URL}/api/proxy?url=${encodeURIComponent(config.src ?? '')}`
       ctl.style.backgroundImage = `url("${url}")`
       ctl.style.backgroundSize = 'cover'
-      ctl.style.backgroundRepeat = 'no-repeatk'
+      ctl.style.backgroundRepeat = 'no-repeat'
       ctl.style.backgroundPosition = 'center'
       break
   }

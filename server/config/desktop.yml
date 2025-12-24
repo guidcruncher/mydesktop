@@ -1,7 +1,7 @@
 
 desktop:
   background:
-    style: mesh
+    style: image
     colors:
       - "hsla(280, 80%, 70%, 1)"
       - "hsla(200, 90%, 65%, 1)"
