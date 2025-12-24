@@ -13,7 +13,8 @@
     "client": "cd client && npm run dev-client",
     "format": "cd client && prettier ./src --write && cd ../server && prettier ./src --write",
     "dev": "npm run format && concurrently \"npm run server\" \"npm run client\"",
-    "prod": "docker compose -f ./docker-compose.yml up --build"
+    "prod": "docker compose -f ./docker-compose.yml up --build",
+    "build": "bash ./build.sh"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
