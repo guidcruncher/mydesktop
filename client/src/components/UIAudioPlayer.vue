@@ -12,36 +12,41 @@
     ></audio>
 
     <div class="player-container" :class="{ 'compact-mode': !showArt }">
-      
       <div v-if="showArt" class="display-section">
         <div class="album-art-container">
           <div class="glow-ring" :class="{ active: isPlaying }"></div>
-          
+
           <div class="album-art" :style="{ background: track.gradient || defaultGradient }">
-            <img 
-              v-if="currentCover" 
-              :src="currentCover" 
-              :alt="track.title" 
+            <img
+              v-if="currentCover"
+              :src="currentCover"
+              :alt="track.title"
               crossorigin="anonymous"
-              class="fade-in" 
+              class="fade-in"
             />
             <span v-else class="album-art-placeholder">
-              {{ isLoadingArt ? '⏳' : (track.emoji || '🎵') }}
+              {{ isLoadingArt ? '⏳' : track.emoji || '🎵' }}
             </span>
           </div>
-          
+
           <div class="visualizer-bars">
             <div
               v-for="i in 8"
               :key="i"
               class="bar"
-              :ref="(el) => { if (el) albumBars[i - 1] = el }"
+              :ref="
+                (el) => {
+                  if (el) albumBars[i - 1] = el
+                }
+              "
             ></div>
           </div>
         </div>
 
         <div class="track-info">
-          <div class="track-title" :title="track.title">{{ track.title || 'No Track Selected' }}</div>
+          <div class="track-title" :title="track.title">
+            {{ track.title || 'No Track Selected' }}
+          </div>
           <div class="track-artist">{{ track.artist || 'Unknown Artist' }}</div>
         </div>
       </div>
@@ -52,7 +57,11 @@
             v-for="i in 60"
             :key="i"
             class="waveform-bar"
-            :ref="(el) => { if (el) waveformBars[i - 1] = el }"
+            :ref="
+              (el) => {
+                if (el) waveformBars[i - 1] = el
+              }
+            "
           ></div>
         </div>
 
@@ -100,7 +109,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -117,7 +125,7 @@ const props = defineProps({
     default: () => ({
       title: 'Select a Track',
       artist: '...',
-      src: '', 
+      src: '',
       cover: null,
       gradient: 'linear-gradient(135deg, #ccc 0%, #eee 100%)',
     }),
@@ -125,7 +133,7 @@ const props = defineProps({
   initialVolume: { type: Number, default: 70 },
   showArt: { type: Boolean, default: true },
   showWaveform: { type: Boolean, default: true },
-  showStats: { type: Boolean, default: true }
+  showStats: { type: Boolean, default: true },
 })
 
 const emit = defineEmits(['play', 'pause', 'stop', 'prev', 'next', 'seek', 'volume'])
@@ -191,10 +199,10 @@ const fetchAlbumArt = async (track) => {
     const artist = encodeURIComponent(track.artist)
     const title = encodeURIComponent(track.title)
     const url = `${API_BASE_URL}/api/proxy/deezer?artist=${artist}&track=${title}`
-    
+
     const response = await fetch(url)
     const data = await response.json()
-    
+
     // Check Deezer data structure (usually data[0].album.cover_xl)
     if (data.data && data.data.length > 0 && data.data[0].album) {
       currentCover.value = data.data[0].album.cover_xl
@@ -209,12 +217,15 @@ const fetchAlbumArt = async (track) => {
 }
 
 // Watch for track changes to trigger fetch
-watch(() => props.track, (newTrack) => {
-  isPlaying.value = false
-  if(audioElement.value) audioElement.value.pause()
-  fetchAlbumArt(newTrack)
-}, { deep: true, immediate: true })
-
+watch(
+  () => props.track,
+  (newTrack) => {
+    isPlaying.value = false
+    if (audioElement.value) audioElement.value.pause()
+    fetchAlbumArt(newTrack)
+  },
+  { deep: true, immediate: true },
+)
 
 // --- Web Audio Initialization ---
 const initAudioContext = () => {
@@ -224,7 +235,7 @@ const initAudioContext = () => {
 
   analyser.value = audioContext.value.createAnalyser()
   analyser.value.fftSize = 256
-  
+
   gainNode.value = audioContext.value.createGain()
   gainNode.value.gain.value = volume.value / 100
 
@@ -253,7 +264,7 @@ const togglePlay = async () => {
       startVisualizerLoop()
       emit('play', currentTime.value)
     } catch (e) {
-      console.error("Playback failed:", e)
+      console.error('Playback failed:', e)
     }
   } else {
     audioElement.value.pause()
@@ -298,8 +309,12 @@ const formatTime = (s) => {
 }
 
 // --- Audio Events ---
-const handleTimeUpdate = () => { currentTime.value = audioElement.value.currentTime }
-const handleMetadata = () => { duration.value = audioElement.value.duration }
+const handleTimeUpdate = () => {
+  currentTime.value = audioElement.value.currentTime
+}
+const handleMetadata = () => {
+  duration.value = audioElement.value.duration
+}
 const handleEnded = () => {
   isPlaying.value = false
   currentTime.value = 0
@@ -321,7 +336,7 @@ const drawVisualizer = () => {
   const getAverage = (start, end) => {
     if (!dataArray.value) return 0
     let sum = 0
-    for(let i=start; i<end; i++) sum += dataArray.value[i] || 0
+    for (let i = start; i < end; i++) sum += dataArray.value[i] || 0
     return sum / (end - start)
   }
 
@@ -334,7 +349,7 @@ const drawVisualizer = () => {
     const value = dataArray.value ? dataArray.value[i * binSize] : 0
     const x = i * barWidth
     const barHeight = (value / 255) * height * 0.6
-    
+
     const hue = (i / barCount) * 60 + 240
     const gradient = canvasCtx.createLinearGradient(0, height, 0, height - barHeight)
     const opacity = isDarkTheme.value ? 0.8 : 0.6
@@ -349,7 +364,7 @@ const drawVisualizer = () => {
   if (dataArray.value) {
     albumBars.value.forEach((bar, i) => {
       if (!bar) return
-      const idx = Math.floor(i * 2) 
+      const idx = Math.floor(i * 2)
       const val = dataArray.value[idx]
       bar.style.height = Math.max(10, (val / 255) * 100) + '%'
     })
@@ -365,12 +380,12 @@ const drawVisualizer = () => {
   }
 
   // Particles
-  const volFactor = (bassValue.value / 255)
+  const volFactor = bassValue.value / 255
   canvasCtx.fillStyle = cachedParticleColor.value
   for (let i = 0; i < 30; i++) {
     const x = (currentTime.value * (50 + i) + i * 100) % width
     const offset = Math.sin(currentTime.value + i) * (50 + volFactor * 100)
-    const y = (height / 2) + offset
+    const y = height / 2 + offset
     canvasCtx.beginPath()
     canvasCtx.arc(x, y, 2 + volFactor * 2, 0, Math.PI * 2)
     canvasCtx.fill()
@@ -412,7 +427,9 @@ onMounted(async () => {
   window.addEventListener('resize', resizeCanvas)
   updateThemeState()
   themeObserver = new MutationObserver((mutations) => {
-    mutations.forEach((m) => { if (m.attributeName === 'class') updateThemeState() })
+    mutations.forEach((m) => {
+      if (m.attributeName === 'class') updateThemeState()
+    })
   })
   themeObserver.observe(document.body, { attributes: true })
 })
@@ -427,7 +444,9 @@ onUnmounted(() => {
 
 <style scoped>
 /* COMPONENT STYLES */
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 .audio-player-wrapper {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -443,8 +462,10 @@ onUnmounted(() => {
 
 .visualizer {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
   pointer-events: none;
 }
@@ -456,7 +477,7 @@ onUnmounted(() => {
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border-radius: 35px;
   border: 1px solid var(--audio-player-border, rgba(255, 255, 255, 0.5));
-  box-shadow: var(--audio-player-shadow, 0 10px 40px rgba(0,0,0,0.1));
+  box-shadow: var(--audio-player-shadow, 0 10px 40px rgba(0, 0, 0, 0.1));
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -468,7 +489,9 @@ onUnmounted(() => {
   z-index: 2;
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-.player-container.compact-mode { padding: 25px; }
+.player-container.compact-mode {
+  padding: 25px;
+}
 
 /* VISUAL DISPLAY */
 .display-section {
@@ -477,17 +500,19 @@ onUnmounted(() => {
   align-items: center;
 }
 .album-art-container {
-  width: 320px; 
+  width: 320px;
   aspect-ratio: 1;
   border-radius: 25px;
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 .visualizer-bars {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 40%;
   display: flex;
   align-items: flex-end;
@@ -498,49 +523,82 @@ onUnmounted(() => {
 }
 .bar {
   width: 12%;
-  background: var(--audio-bar-gradient, linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,255,255,0.2)));
+  background: var(
+    --audio-bar-gradient,
+    linear-gradient(to top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2))
+  );
   border-radius: 4px 4px 0 0;
   height: 10%;
   transition: height 0.05s ease;
   backdrop-filter: blur(4px);
 }
 .album-art {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center; justify-content: center;
-  background-size: cover; background-position: center;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
 }
-.album-art img { width: 100%; height: 100%; object-fit: cover; }
-.fade-in { animation: fadeIn 0.5s ease-in; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.album-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
-.album-art-placeholder { font-size: 80px; user-select: none; }
+.album-art-placeholder {
+  font-size: 80px;
+  user-select: none;
+}
 .glow-ring {
-  position: absolute; inset: -20px;
+  position: absolute;
+  inset: -20px;
   border-radius: 35px;
-  background: var(--audio-glow-ring, radial-gradient(circle, rgba(100,100,255,0.4) 0%, transparent 70%));
+  background: var(
+    --audio-glow-ring,
+    radial-gradient(circle, rgba(100, 100, 255, 0.4) 0%, transparent 70%)
+  );
   filter: blur(20px);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
 }
-.glow-ring.active { opacity: 0.8; animation: pulse 3s infinite; }
+.glow-ring.active {
+  opacity: 0.8;
+  animation: pulse 3s infinite;
+}
 
-.track-info { 
-  text-align: center; 
-  width: 100%; 
-  max-width: 320px; 
-  overflow: hidden; 
+.track-info {
+  text-align: center;
+  width: 100%;
+  max-width: 320px;
+  overflow: hidden;
 }
 .track-title {
   color: var(--audio-text-primary, #2d3748);
-  font-size: 24px; font-weight: 700;
+  font-size: 24px;
+  font-weight: 700;
   margin-bottom: 5px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .track-artist {
   color: var(--audio-text-secondary, #718096);
-  font-size: 16px; font-weight: 500;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 /* CONTROLS */
@@ -548,11 +606,11 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  min-width: 280px; 
+  min-width: 280px;
 }
 .waveform-container {
   height: 60px;
-  background: var(--audio-container-bg, rgba(255,255,255,0.5));
+  background: var(--audio-container-bg, rgba(255, 255, 255, 0.5));
   border-radius: 12px;
   padding: 8px 15px;
   display: flex;
@@ -568,11 +626,15 @@ onUnmounted(() => {
   min-height: 4px;
   transition: height 0.05s linear;
 }
-.progress-section { margin-top: 5px; }
+.progress-section {
+  margin-top: 5px;
+}
 .progress-bar {
   background: var(--audio-progress-bg, #cbd5e0);
-  height: 6px; border-radius: 10px;
-  cursor: pointer; margin-bottom: 8px;
+  height: 6px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 8px;
   position: relative;
 }
 .progress-fill {
@@ -582,52 +644,85 @@ onUnmounted(() => {
   position: relative;
 }
 .progress-handle {
-  position: absolute; right: -6px; top: 50%; transform: translateY(-50%);
-  width: 14px; height: 14px;
-  background: #fff; border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  opacity: 0; transition: opacity 0.2s;
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.2s;
 }
-.progress-bar:hover .progress-handle { opacity: 1; }
+.progress-bar:hover .progress-handle {
+  opacity: 1;
+}
 .time-display {
-  display: flex; justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
   color: var(--audio-text-tertiary, #a0aec0);
-  font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 .playback-controls {
   display: flex;
-  align-items: center; justify-content: center;
+  align-items: center;
+  justify-content: center;
   gap: 25px;
 }
 .control-btn {
   background: var(--audio-control-bg, #fff);
   border: 1px solid var(--audio-control-border, #e2e8f0);
   border-radius: 50%;
-  width: 50px; height: 50px;
-  display: flex; align-items: center; justify-content: center;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   color: var(--audio-control-text, #4a5568);
   font-size: 20px;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
-.control-btn:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.control-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
 .play-btn {
-  width: 65px; height: 65px;
+  width: 65px;
+  height: 65px;
   background: var(--audio-play-btn-bg, #667eea);
-  border: none; color: white; font-size: 24px;
+  border: none;
+  color: white;
+  font-size: 24px;
   box-shadow: var(--audio-play-btn-shadow, 0 4px 15px rgba(102, 126, 234, 0.4));
 }
-.play-btn:hover { background: var(--audio-play-btn-bg-hover, #5a67d8); }
+.play-btn:hover {
+  background: var(--audio-play-btn-bg-hover, #5a67d8);
+}
 .volume-section {
-  display: flex; align-items: center; gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
   padding: 0 10px;
 }
-.volume-icon { font-size: 18px; cursor: pointer; user-select: none; width: 24px; text-align: center; }
+.volume-icon {
+  font-size: 18px;
+  cursor: pointer;
+  user-select: none;
+  width: 24px;
+  text-align: center;
+}
 .volume-bar {
-  flex: 1; height: 5px;
+  flex: 1;
+  height: 5px;
   background: var(--audio-progress-bg, #cbd5e0);
-  border-radius: 10px; cursor: pointer;
+  border-radius: 10px;
+  cursor: pointer;
 }
 .volume-fill {
   height: 100%;
@@ -637,33 +732,56 @@ onUnmounted(() => {
 
 /* STATS */
 .stats-section {
-  border-top: 1px solid var(--audio-border-light, rgba(0,0,0,0.05));
+  border-top: 1px solid var(--audio-border-light, rgba(0, 0, 0, 0.05));
   padding-top: 20px;
 }
 .frequency-display {
-  display: flex; justify-content: space-between;
-  background: var(--audio-container-bg, rgba(255,255,255,0.5));
-  border-radius: 15px; padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  background: var(--audio-container-bg, rgba(255, 255, 255, 0.5));
+  border-radius: 15px;
+  padding: 15px;
 }
-.freq-label { text-align: center; flex: 1; }
+.freq-label {
+  text-align: center;
+  flex: 1;
+}
 .freq-value {
   color: var(--audio-accent-color, #667eea);
-  font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums;
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 .freq-name {
   color: var(--audio-text-quaternary, #a0aec0);
-  font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.02); opacity: 0.8; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.8;
+  }
 }
 
 :global(.dark-mode) .player-container {
   background: rgba(30, 30, 40, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
 }
-:global(.dark-mode) .track-title { color: #fff; }
-:global(.dark-mode) .control-btn { background: #2d3748; border-color: #4a5568; color: #fff; }
+:global(.dark-mode) .track-title {
+  color: #fff;
+}
+:global(.dark-mode) .control-btn {
+  background: #2d3748;
+  border-color: #4a5568;
+  color: #fff;
+}
 </style>
