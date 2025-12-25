@@ -9,8 +9,8 @@ interface ProxyQuery {
   url: string
 }
 
-interface ArtistQuery { 
-  artist: string,
+interface ArtistQuery {
+  artist: string
   track: string
 }
 
@@ -93,7 +93,7 @@ export async function Proxy(fastify: FastifyInstance) {
     })
   })
 
-    fastify.get<{ Querystring: ArtistQuery }>("/api/proxy/deezer", async (request, reply) => {
+  fastify.get<{ Querystring: ArtistQuery }>("/api/proxy/deezer", async (request, reply) => {
     // 1. Extract parameters from the query string
     const artist = request.query.artist
     const track = request.query.track

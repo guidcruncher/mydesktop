@@ -12,6 +12,7 @@ app.use(router)
 fetch(import.meta.env.BASE_URL + 'config.json')
   .then((response) => response.json())
   .then((config) => {
+    localStorage.setItem('_cfg', JSON.stringify(config))
     for (const key in config) {
       app.provide(key, config[key])
     }

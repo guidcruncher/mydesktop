@@ -1,7 +1,6 @@
 import { BackgroundMesh } from '../utils/BackgroundMesh'
 import { inject } from 'vue'
-
-const API_BASE_URL = `${inject('API_BASE_URL')}`
+import { Configuration } from '../config'
 
 const colors = [
   'hsla(280, 80%, 70%, 1)',
@@ -10,7 +9,7 @@ const colors = [
   'hsla(40, 90%, 70%, 1)',
 ]
 
-const apply = (el, binding) => {
+const apply = (el, binding, API_BASE_URL) => {
   if (!binding.value) {
     return
   }
@@ -38,10 +37,10 @@ const apply = (el, binding) => {
 
 export const Background = {
   beforeMount(el, binding) {
-    apply(el, binding)
+    apply(el, binding, Configuration().API_BASE_URL)
   },
   updated(el, binding, vnode) {
-    apply(el, binding)
+    apply(el, binding, Configuration().API_BASE_URL)
   },
   unmounted(el) {},
 }
