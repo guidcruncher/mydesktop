@@ -1,168 +1,293 @@
-<template>
-  <div class="ui-dropdown-wrapper" ref="triggerContainer">
-    <div class="dropdown-trigger-wrapper" @click.stop="handleTriggerClick">
-      <slot name="trigger" :isOpen="modelValue"></slot>
-    </div>
-
-    <Teleport to="body">
-      <transition name="dropdown-fade">
-        <div v-if="modelValue" class="dropdown-menu" :style="menuStyles" @click.stop>
-          <slot></slot>
-        </div>
-      </transition>
-    </Teleport>
-  </div>
-</template>
-
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch, provide, toRef } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps({
-  modelValue: { type: Boolean, default: false }, // Controls Visibility
-  selected: { type: [String, Number, Object], default: undefined }, // Controls Selected Item
-  align: { type: String, default: 'left' },
-})
-
-const emit = defineEmits(['update:modelValue', 'update:selected', 'select'])
-
-const triggerContainer = ref(null)
-const position = ref({ top: 0, left: null, right: null })
-const lastOpenedTime = ref(0)
-
-// --- PROVIDE CONTEXT TO ITEMS ---
-const closeMenu = () => emit('update:modelValue', false)
-
-const handleSelect = (value) => {
-  if (value !== undefined) {
-    emit('update:selected', value)
-    emit('select', value)
-  }
-  closeMenu()
-}
-
-provide('dropdownContext', {
-  selected: toRef(props, 'selected'),
-  closeMenu,
-  handleSelect,
-})
-
-// --- POSITIONING LOGIC ---
-const menuStyles = computed(() => {
-  const styles = { top: `${position.value.top}px` }
-  if (position.value.left !== null) styles.left = `${position.value.left}px`
-  else if (position.value.right !== null) styles.right = `${position.value.right}px`
-  return styles
-})
-
-const updatePosition = () => {
-  if (!triggerContainer.value) return
-  const rect = triggerContainer.value.getBoundingClientRect()
-  const gap = 4
-
-  const spaceOnRight = window.innerWidth - rect.left
-  const wouldOverflow = spaceOnRight < 220
-  const effectiveAlign = props.align === 'right' || wouldOverflow ? 'right' : 'left'
-
-  if (effectiveAlign === 'right') {
-    position.value = {
-      top: rect.bottom + gap,
-      left: null,
-      right: window.innerWidth - rect.right,
-    }
-  } else {
-    position.value = {
-      top: rect.bottom + gap,
-      left: rect.left,
-      right: null,
-    }
-  }
-}
-
-const handleTriggerClick = () => {
-  const now = Date.now()
-  if (!props.modelValue) {
-    updatePosition()
-    lastOpenedTime.value = now
-    emit('update:modelValue', true)
-  } else {
-    if (now - lastOpenedTime.value > 300) {
-      closeMenu()
-    }
-  }
-}
-
-const handleClickOutside = (event) => {
-  if (!props.modelValue) return
-  if (triggerContainer.value && triggerContainer.value.contains(event.target)) return
-  closeMenu()
-}
-
-const handleResize = () => {
-  if (props.modelValue) closeMenu()
-}
-
-watch(
-  () => props.modelValue,
-  (isOpen) => {
-    if (isOpen) {
-      updatePosition()
-      lastOpenedTime.value = Date.now()
-    }
+  /**
+   * Menu structure: Array of sections
+   * Section: { id, label, isLogo, items: [] }
+   * Item: { label, id, shortcut, disabled, to, name, type: 'separator' }
+   */
+  menu: {
+    type: Array,
+    required: true,
+    default: () => [],
   },
-)
+})
+
+const emit = defineEmits(['item-click', 'route-change'])
+
+const activeIndex = ref(null)
+const isDarkMode = ref(props.initialDarkMode)
+
+// Handle menu scrubbing (switching menus on hover if one is already open)
+const handleMouseEnter = (index) => {
+  if (activeIndex.value !== null) {
+    activeIndex.value = index
+  }
+}
+
+const toggleMenu = (index, event) => {
+  event.stopPropagation()
+  activeIndex.value = activeIndex.value === index ? null : index
+}
+
+const handleItemClick = (item) => {
+  if (item.disabled || item.type === 'separator') return
+
+  // Navigation Logic
+  if (item.to || item.name) {
+    emit('route-change', item)
+    if (item.to) {
+      router.push({ path: item.to, replace: true, query: item.params })
+    } else {
+      router.push({ name: item.name, replace: true, query: item.params })
+    }
+  } else {
+    // Standard Click Event
+    emit('item-click', item)
+  }
+
+  activeIndex.value = null
+}
+
+const closeMenus = () => {
+  activeIndex.value = null
+}
 
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-  window.addEventListener('resize', handleResize)
-  window.addEventListener('scroll', handleResize, true)
+  window.addEventListener('click', closeMenus)
 })
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-  window.removeEventListener('resize', handleResize)
-  window.removeEventListener('scroll', handleResize, true)
+  window.removeEventListener('click', closeMenus)
 })
 </script>
 
-<style lang="scss" scoped>
-.ui-dropdown-wrapper {
-  position: relative;
-  display: inline-block;
+<template>
+  <div class="mnu-root">
+    <nav class="mnu-navbar">
+      <!-- Slot 1: Menus Origin Left (Prop-driven) -->
+      <div class="mnu-section mnu-left">
+        <div
+          v-for="(section, idx) in menu"
+          :key="section.id"
+          class="mnu-trigger"
+          :class="{ 'mnu-active': activeIndex === idx, 'mnu-logo': section.isLogo }"
+          @click="toggleMenu(idx, $event)"
+          @mouseenter="handleMouseEnter(idx)"
+        >
+          <!-- Label or Apple Logo -->
+          <template v-if="section.isLogo">
+            <svg class="mnu-apple-svg" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17.5 13c-.01 3.1 2.58 4.14 2.61 4.15-.02.06-.41 1.41-1.37 2.81-.83 1.21-1.69 2.41-3.05 2.44-1.33.02-1.76-.79-3.28-.79s-2.01.77-3.26.81c-1.31.05-2.27-1.28-3.11-2.49-1.71-2.47-3.02-6.98-1.26-10.03.88-1.51 2.43-2.47 4.12-2.5 1.29-.02 2.5.87 3.29.87.79 0 2.26-1.07 3.8-0.91 0.65.03 2.47.26 3.64 1.97-.09.06-2.18 1.27-2.15 3.82zM15.03 4.41c.69-.84 1.15-2.01.02-3.41-1.12.05-2.48.75-3.28 1.69-.72.83-1.35 2.03-.6 3.37 1.25.1 2.51-.77 3.86-1.65z"
+              />
+            </svg>
+          </template>
+          <template v-else>
+            {{ section.label }}
+          </template>
+
+          <!-- Dropdown -->
+          <Transition name="mnu-dropdown-fade">
+            <div v-if="activeIndex === idx" class="mnu-dropdown" @click.stop>
+              <template v-for="(item, i) in section.items" :key="item.id || i">
+                <div v-if="item.type === 'separator'" class="mnu-separator" />
+                <div
+                  v-else
+                  class="mnu-item"
+                  :class="{ 'mnu-disabled': item.disabled }"
+                  @click="handleItemClick(item)"
+                >
+                  <span class="mnu-item-label">{{ item.label }}</span>
+                  <span v-if="item.shortcut" class="mnu-item-shortcut">{{ item.shortcut }}</span>
+                </div>
+              </template>
+            </div>
+          </Transition>
+        </div>
+      </div>
+
+      <!-- Slot 2: App Title (Center Slot) -->
+      <div class="mnu-section mnu-center">
+        <slot name="app-title">
+          <span class="mnu-default-title">Untitled App</span>
+        </slot>
+      </div>
+
+      <!-- Slot 3: Right Toolbar (Right Slot) -->
+      <div class="mnu-section mnu-right">
+        <slot name="right-toolbar">
+          <!-- Default content if no slot provided -->
+          <div class="mnu-default-status">
+            <span class="mnu-time">8:20 PM</span>
+          </div>
+        </slot>
+      </div>
+    </nav>
+  </div>
+</template>
+
+<style scoped>
+/* Base Variables - Light Mode */
+.mnu-root {
+  --mnu-bg: rgba(255, 255, 255, 0.75);
+  --mnu-border: rgba(0, 0, 0, 0.1);
+  --mnu-text: #1d1d1f;
+  --mnu-text-dim: #86868b;
+  --mnu-hover: rgba(0, 0, 0, 0.05);
+  --mnu-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  --mnu-accent: #007aff;
+  --mnu-disabled: #c5c5c7;
+  --mnu-blur: 20px;
+  --mnu-font: var(--font-family);
+
+  font-family: var(--mnu-font);
+  color: var(--mnu-text);
 }
 
-.dropdown-menu {
+/* Dark Mode Scoping */
+.mnu-root.dark-mode {
+  --mnu-bg: rgba(28, 28, 30, 0.75);
+  --mnu-border: rgba(255, 255, 255, 0.1);
+  --mnu-text: #f5f5f7;
+  --mnu-text-dim: #a1a1a6;
+  --mnu-hover: rgba(255, 255, 255, 0.1);
+  --mnu-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --mnu-accent: #0a84ff;
+  --mnu-disabled: #48484a;
+}
+
+.mnu-navbar {
   position: fixed;
-  min-width: 200px;
-  max-width: 90vw;
-  background: rgba(40, 40, 40, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 16px;
+  background: var(--mnu-bg);
+  backdrop-filter: blur(var(--mnu-blur));
+  -webkit-backdrop-filter: blur(var(--mnu-blur));
+  border-bottom: 1px solid var(--mnu-border);
+  z-index: 9999;
+  user-select: none;
+}
+
+.mnu-section {
+  display: flex;
+  align-items: center;
+}
+.mnu-left {
+  gap: 2px;
+}
+.mnu-center {
+  font-weight: 600;
+  font-size: 15px;
+}
+.mnu-right {
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Triggers */
+.mnu-trigger {
+  position: relative;
+  padding: 6px 12px;
   border-radius: 8px;
+  cursor: default;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s ease;
+}
+
+.mnu-trigger:hover,
+.mnu-trigger.mnu-active {
+  background: var(--mnu-hover);
+}
+
+.mnu-logo {
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+}
+.mnu-apple-svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Dropdown */
+.mnu-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 240px;
+  background: var(--mnu-bg);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid var(--mnu-border);
+  border-radius: 12px;
+  box-shadow: var(--mnu-shadow);
   padding: 6px;
-  z-index: 2147483647;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  text-align: left;
+  z-index: 10000;
 }
 
-.dropdown-fade-enter-active,
-.dropdown-fade-leave-active {
-  transition: all 0.2s ease-out;
+.mnu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: background 0.05s;
 }
 
-.dropdown-fade-enter-from,
-.dropdown-fade-leave-to {
+.mnu-item:hover:not(.mnu-disabled) {
+  background: var(--mnu-accent);
+  color: white;
+}
+
+.mnu-disabled {
+  color: var(--mnu-disabled);
+  pointer-events: none;
+}
+.mnu-separator {
+  height: 1px;
+  background: var(--mnu-border);
+  margin: 6px 10px;
+}
+.mnu-item-shortcut {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-left: 20px;
+}
+
+/* Transitions */
+.mnu-dropdown-fade-enter-active,
+.mnu-dropdown-fade-leave-active {
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mnu-dropdown-fade-enter-from,
+.mnu-dropdown-fade-leave-to {
   opacity: 0;
-  transform: translateY(-10px);
-  visibility: hidden;
+  transform: translateY(-8px) scale(0.98);
 }
 
-.dropdown-fade-enter-to,
-.dropdown-fade-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
+/* Default Slot Styles */
+.mnu-default-title {
+  opacity: 0.8;
+}
+.mnu-time {
+  font-size: 13px;
+  font-weight: 600;
 }
 </style>

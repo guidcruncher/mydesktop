@@ -1,39 +1,29 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-const isMenuOpen = ref(false)
+
+const menuData = [
+  {
+    id: 'sys',
+    isLogo: true,
+    items: [
+      { label: 'Desktop', id: 'about', to: '/' },
+      { type: 'separator' },
+      { label: 'System Settings...', id: 'settings', to: '/config' },
+      { label: 'Icons', id: 'store', to: '/icons' },
+      { type: 'separator' },
+    ],
+  },
+]
 </script>
 
 <template>
-  <UINavigationBar title="Desktop">
-    <template #left>
-      <UIDropdownMenu v-model="isMenuOpen">
-        <template #trigger="{ isOpen }">
-          <UIDropdownMenuTrigger
-            class="control-btn"
-            icon="fa-solid fa-grip-lines"
-            title="Desk"
-            :active="isOpen"
-          />
-        </template>
-        <UIDropdownMenuItem
-          icon="fa-solid fa-gear"
-          label="Configuration"
-          title="Configuration"
-          routerlink="/config"
-        />
-        <hr class="menu-divider" />
-        <UIDropdownMenuItem
-          icon="fa-solid fa-palette"
-          label="Icons"
-          title="Icons"
-          routerlink="/icons"
-        />
-      </UIDropdownMenu>
-    </template>
-    <template #right>
+  <UIDropdownMenu :menu="menuData">
+    <template #app-title>My Desktop</template>
+    <template #right-toolbar>
       <UIThemeChooser />
     </template>
-  </UINavigationBar>
+  </UIDropdownMenu>
+
   <Container>
     <router-view></router-view>
   </Container>
