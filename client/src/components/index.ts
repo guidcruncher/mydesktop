@@ -23,8 +23,6 @@ import UIDatePicker from './UIDatePicker.vue'
 import UIDesktopRenderer from './UIDesktopRenderer.vue'
 import UIDropdownList from './UIDropdownList.vue'
 import UIDropdownMenu from './UIDropdownMenu.vue'
-import UIDropdownMenuItem from './UIDropdownMenuItem.vue'
-import UIDropdownMenuTrigger from './UIDropdownMenuTrigger.vue'
 import UIFlipClock from './UIFlipClock.vue'
 import UIFolderView from './UIFolderView.vue'
 import UIFolderViewWidget from './UIFolderViewWidget.vue'
@@ -34,9 +32,7 @@ import UIImageView from './UIImageView.vue'
 import UIListPicker from './UIListPicker.vue'
 import UIMapWidget from './UIMapWidget.vue'
 import UIMarketWidget from './UIMarketWidget.vue'
-import UIMenubar from './UIMenubar.vue'
 import UIModalDialog from './UIModalDialog.vue'
-import UINavMenuBar from './UINavMenuBar.vue'
 import UINavigationBar from './UINavigationBar.vue'
 import UINewsHeadlinesWidget from './UINewsHeadlinesWidget.vue'
 import UINotificationBar from './UINotificationBar.vue'
@@ -99,8 +95,6 @@ export const GlassComponents = {
   UIDesktopRenderer,
   UIDropdownList,
   UIDropdownMenu,
-  UIDropdownMenuItem,
-  UIDropdownMenuTrigger,
   UIFlipClock,
   UIFolderView,
   UIFolderViewWidget,
@@ -110,9 +104,7 @@ export const GlassComponents = {
   UIListPicker,
   UIMapWidget,
   UIMarketWidget,
-  UIMenubar,
   UIModalDialog,
-  UINavMenuBar,
   UINavigationBar,
   UINewsHeadlinesWidget,
   UINotificationBar,
@@ -143,18 +135,19 @@ export const GlassComponents = {
   UIWheelListView,
   UIWidgetView,
   YamlEditor,
-}
+};
 
-export function UseGlassUi(app) {
-  const pinia = createPinia()
-  app.directive('click-outside', ClickOutside)
-  app.directive('visual-effect', VisualEffect)
-  app.directive('background', Background)
 
-  app.use(pinia)
-  Object.keys(GlassComponents).forEach((name) => {
-    app.component(name, GlassComponents[name])
-  })
-  const themeStore = useThemeStore()
-  themeStore.restoreTheme()
-}
+export function  UseGlassUi(app) {
+    const pinia = createPinia()
+    app.directive('click-outside', ClickOutside);
+    app.directive('visual-effect', VisualEffect);
+    app.directive('background', Background);
+
+    app.use(pinia);
+    Object.keys(GlassComponents).forEach((name) => {
+      app.component(name, GlassComponents[name]);
+    });
+    const themeStore = useThemeStore()
+    themeStore.restoreTheme()
+};

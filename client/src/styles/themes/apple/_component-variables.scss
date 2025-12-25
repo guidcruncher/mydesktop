@@ -336,6 +336,17 @@
   --audio-play-btn-shadow-hover: 0 20px 40px rgba(102, 126, 234, 0.6);
   --audio-glow-ring: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
   --audio-accent-color: #667eea;
+
+  /* Dropdown menu */
+  --mnu-bg: rgba(255, 255, 255, 0.75);
+  --mnu-border: rgba(0, 0, 0, 0.1);
+  --mnu-text: #1d1d1f;
+  --mnu-text-dim: #86868b;
+  --mnu-hover: rgba(0, 0, 0, 0.05);
+  --mnu-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  --mnu-accent: #007aff;
+  --mnu-disabled: #c5c5c7;
+  --mnu-blur: 20px;
 }
 
 .dark-mode {
@@ -561,4 +572,15 @@
   --audio-control-text: white;
   --audio-progress-bg: rgba(255, 255, 255, 0.1);
   --audio-container-bg: rgba(255, 255, 255, 0.05);
+
+  /* Dropdown menu */
+  --mnu-bg: rgba(28, 28, 30, 0.75);
+  --mnu-border: rgba(255, 255, 255, 0.1);
+  --mnu-text: #f5f5f7;
+  --mnu-text-dim: #a1a1a6;
+  --mnu-hover: rgba(255, 255, 255, 0.1);
+  --mnu-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --mnu-accent: #0a84ff;
+  --mnu-disabled: #48484a;
+
 }

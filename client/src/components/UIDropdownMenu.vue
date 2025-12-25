@@ -134,31 +134,11 @@ onUnmounted(() => {
 <style scoped>
 /* Base Variables - Light Mode */
 .mnu-root {
-  --mnu-bg: rgba(255, 255, 255, 0.75);
-  --mnu-border: rgba(0, 0, 0, 0.1);
-  --mnu-text: #1d1d1f;
-  --mnu-text-dim: #86868b;
-  --mnu-hover: rgba(0, 0, 0, 0.05);
-  --mnu-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  --mnu-accent: #007aff;
-  --mnu-disabled: #c5c5c7;
   --mnu-blur: 20px;
   --mnu-font: var(--font-family);
 
   font-family: var(--mnu-font);
   color: var(--mnu-text);
-}
-
-/* Dark Mode Scoping */
-.mnu-root.dark-mode {
-  --mnu-bg: rgba(28, 28, 30, 0.75);
-  --mnu-border: rgba(255, 255, 255, 0.1);
-  --mnu-text: #f5f5f7;
-  --mnu-text-dim: #a1a1a6;
-  --mnu-hover: rgba(255, 255, 255, 0.1);
-  --mnu-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-  --mnu-accent: #0a84ff;
-  --mnu-disabled: #48484a;
 }
 
 .mnu-navbar {
@@ -175,7 +155,7 @@ onUnmounted(() => {
   backdrop-filter: blur(var(--mnu-blur));
   -webkit-backdrop-filter: blur(var(--mnu-blur));
   border-bottom: 1px solid var(--mnu-border);
-  z-index: 9999;
+  z-index: 7999;
   user-select: none;
 }
 
@@ -236,7 +216,7 @@ onUnmounted(() => {
   padding: 6px;
   display: flex;
   flex-direction: column;
-  z-index: 10000;
+  z-index: 8000;
 }
 
 .mnu-item {

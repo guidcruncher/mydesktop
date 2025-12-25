@@ -25,7 +25,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100vw;
-  height: 100%0%;
+  height: 100%;
   overflow: hidden; /* Disables scrolling on the root window */
   overscroll-behavior: none; /* Disables the "bounce" effect on Mac/iOS */
   touch-action: none;
@@ -45,5 +45,6 @@ body {
   width: 100vw;
   height: 100%;
   padding-bottom: 120px;
+  padding-top:53px;
 }
 </style>
