@@ -5,7 +5,6 @@
   /* UI Palette (Mapped to System Colors) */
   --ui-background: var(--system-gray6);
   --ui-card-bg: var(--system-white);
-  --ui-text-primary: var(--color-primary-text);
   --ui-text-secondary: var(--system-gray);
   --ui-text-tertiary: var(--system-gray3);
   --ui-separator: var(--system-gray3);
@@ -41,7 +40,6 @@
   /* UI Palette */
   --ui-background: #000000;
   --ui-card-bg: var(--system-gray6);
-  --ui-text-primary: #ffffff;
   --ui-text-secondary: var(--system-gray);
   --ui-text-tertiary: var(--system-gray2);
   --ui-separator: var(--system-gray4);
@@ -50,7 +48,6 @@
   /* General Backgrounds/Text */
   --bg-primary: var(--system-gray6);
   --bg-secondary: #000000;
-  --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.6);
   --text-tertiary: rgba(255, 255, 255, 0.85);
 

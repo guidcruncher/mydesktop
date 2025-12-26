@@ -13,7 +13,6 @@
   --imgbrws-app-bg: #ffffff;
   --imgbrws-sidebar-bg: var(--system-gray6);
   --imgbrws-content-bg: #ffffff;
-  --imgbrws-text-primary: #000000;
   --imgbrws-text-secondary: #8e8e93;
   --imgbrws-accent-blue: var(--system-blue);
   --imgbrws-separator: rgba(60, 60, 67, 0.18);
@@ -31,7 +30,6 @@
   --stocks-bg-item-active: rgba(0, 0, 0, 0.08);
   --stocks-bg-pill: rgba(0, 0, 0, 0.05);
   --stocks-bg-pill-active: #000000;
-  --stocks-text-primary: #000000;
   --stocks-text-secondary: #86868b;
   --stocks-text-inverse: #ffffff;
   --stocks-border-subtle: rgba(0, 0, 0, 0.08);
@@ -43,7 +41,6 @@
   --cal-bg-widget-border: rgba(0, 0, 0, 0.1);
   --cal-hover-bg: rgba(0, 0, 0, 0.05);
   --cal-nav-btn-bg: rgba(128, 128, 128, 0.1);
-  --cal-text-primary: var(--color-primary-text);
   --cal-text-secondary: var(--system-gray);
   --cal-text-weekend: var(--system-gray);
   --cal-accent-color: var(--system-blue);
@@ -56,7 +53,6 @@
   /* Map */
   --map-body-bg: var(--system-gray6);
   --map-widget-bg: var(--system-white);
-  --map-text-primary: var(--color-primary-text);
   --map-text-secondary: #6e6e73;
   --map-overlay-bg: #ffffff; /* Solid instead of 0.75 */
   --map-input-bg: #ebebf5;
@@ -77,7 +73,6 @@
   --todo-color-green: var(--system-green);
   --todo-color-yellow: #ffcc00;
   --todo-bg-body: var(--system-gray6);
-  --todo-text-primary: var(--color-primary-text);
   --todo-text-secondary: var(--system-gray);
   --todo-text-placeholder: var(--system-gray2);
   /* De-glassed Panels */
@@ -97,7 +92,6 @@
   --sunmoon-bg-body: var(--system-gray6);
   --sunmoon-bg-widget: #ffffff;
   --sunmoon-border-widget: rgba(0, 0, 0, 0.1);
-  --sunmoon-text-primary: var(--color-primary-text);
   --sunmoon-text-secondary: var(--system-gray);
   --sunmoon-accent-color: var(--system-blue);
   --sunmoon-shadow-widget: var(--shadow-default);
@@ -126,7 +120,6 @@
   --weather-transition-spring: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   --weather-bg-start: #65c7f7;
   --weather-bg-end: #0052d4;
-  --weather-text-primary: var(--system-white);
   --weather-text-secondary: rgba(255, 255, 255, 0.8);
   /* Solidified layers */
   --weather-card-bg: rgba(
@@ -156,7 +149,6 @@
   /* Buttons */
   --btn-primary-bg-start: var(--system-blue);
   --btn-primary-bg-end: #0051d5;
-  --btn-primary-color: var(--system-white);
   --btn-primary-shadow: rgba(0, 122, 255, 0.3);
   --btn-secondary-bg: #e5e5ea;
   --btn-secondary-bg-hover: #d1d1d6;
@@ -167,7 +159,6 @@
   --control-border: #e5e5e5;
   --control-border-width: 1px;
   --control-border-active: #3b82f6;
-  --primary-text: #1f2937;
   --icon-color: #6b7280;
 
   /* List/Table Controls */
@@ -197,7 +188,6 @@
 
   /* Notification */
   --notify-bg-color: #ffffff;
-  --notify-text-color-primary: #1c1c1e;
   --notify-text-color-secondary: #3c3c43;
   --notify-border-color: rgba(0, 0, 0, 0.1);
   --notify-close-btn-color: var(--system-gray);
@@ -211,7 +201,6 @@
   --stepper-primary: var(--system-blue);
   --stepper-bg: #ffffff;
   --stepper-border-color: #e5e5e5;
-  --stepper-text-color: var(--color-primary-text);
   --stepper-icon-color: var(--stepper-primary);
   --stepper-disabled-icon: #d1d1d6;
 
@@ -219,7 +208,6 @@
   --map-bg-primary: var(--system-white);
   --map-bg-secondary: var(--system-gray6);
   --map-bg-tertiary: var(--system-gray5);
-  --map-text-primary: var(--color-primary-text);
   --map-text-secondary: var(--system-gray);
   --map-accent-color: var(--system-blue);
   --map-accent-destructive: var(--system-red);
@@ -247,7 +235,7 @@
 
   --color-folder-bg: #f2f2f7;
   --color-folder-shadow: rgba(0, 0, 0, 0.15);
-  --color-cell-label: var(--color-primary-text);
+  --color-cell-label: var(--ui-text-primary);
   --color-cell-shadow: rgba(0, 0, 0, 0.1);
 
   /* YAML Editor */
@@ -276,7 +264,6 @@
   /* Sysinfo */
   --sysinfo-bg-widget: #ffffff;
   --sysinfo-bg-element: #f2f2f7;
-  --sysinfo-text-primary: #1c1c1e;
   --sysinfo-text-secondary: #8e8e93;
   --sysinfo-accent-blue: #007aff;
   --sysinfo-accent-green: #34c759;
@@ -292,7 +279,6 @@
   --audio-player-bg: #ffffff;
   --audio-player-border: #e5e5e5;
   --audio-player-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  --audio-text-primary: #1a1a1a;
   --audio-text-secondary: rgba(0, 0, 0, 0.6);
   --audio-text-tertiary: rgba(0, 0, 0, 0.5);
   --audio-text-quaternary: rgba(0, 0, 0, 0.4);
@@ -335,7 +321,6 @@
   --imgbrws-app-bg: #000000;
   --imgbrws-sidebar-bg: #1c1c1e;
   --imgbrws-content-bg: #000000;
-  --imgbrws-text-primary: #ffffff;
   --imgbrws-text-secondary: #8e8e93;
   --imgbrws-accent-blue: #0a84ff;
   --imgbrws-separator: rgba(84, 84, 88, 0.65);
@@ -351,7 +336,6 @@
   --stocks-bg-item-active: rgba(255, 255, 255, 0.15);
   --stocks-bg-pill: rgba(255, 255, 255, 0.1);
   --stocks-bg-pill-active: #ffffff;
-  --stocks-text-primary: #ffffff;
   --stocks-text-secondary: #98989d;
   --stocks-text-inverse: #000000;
   --stocks-border-subtle: rgba(255, 255, 255, 0.12);
@@ -375,7 +359,6 @@
   --map-expanded-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 
   /* Todo List (Dark) */
-  --todo-text-primary: var(--system-white);
   --todo-text-secondary: #98989d;
   --todo-panel-bg: #1c1c1e;
   --todo-panel-border: rgba(255, 255, 255, 0.1);
@@ -433,7 +416,6 @@
   /* Standard Controls */
   --control-border: #4b5563;
   --control-border-active: #60a5fa;
-  --primary-text: #f9fafb;
   --icon-color: #9ca3af;
 
   /* List/Table Controls */
@@ -449,7 +431,6 @@
 
   /* Notification */
   --notify-bg-color: #1c1c1e;
-  --notify-text-color-primary: var(--system-white);
   --notify-text-color-secondary: #e5e5ea;
   --notify-border-color: rgba(255, 255, 255, 0.1);
   --notify-close-btn-color: #98989d;
@@ -514,7 +495,6 @@
   /* SysInfo */
   --sysinfo-bg-widget: #1c1c1e;
   --sysinfo-bg-element: rgba(255, 255, 255, 0.08);
-  --sysinfo-text-primary: #ffffff;
   --sysinfo-text-secondary: #98989d;
   --sysinfo-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 
@@ -523,7 +503,6 @@
   --audio-player-bg: #141414;
   --audio-player-border: rgba(255, 255, 255, 0.1);
   --audio-player-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-  --audio-text-primary: white;
   --audio-text-secondary: rgba(255, 255, 255, 0.6);
   --audio-text-tertiary: rgba(255, 255, 255, 0.5);
   --audio-text-quaternary: rgba(255, 255, 255, 0.4);
