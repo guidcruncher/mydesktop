@@ -1,113 +1,112 @@
 <template>
+  <audio
+    ref="audioElement"
+    :src="track.src"
+    crossorigin="anonymous"
+    @ended="handleEnded"
+    @timeupdate="handleTimeUpdate"
+    @loadedmetadata="handleMetadata"
+  ></audio>
 
-    <audio
-      ref="audioElement"
-      :src="track.src"
-      crossorigin="anonymous"
-      @ended="handleEnded"
-      @timeupdate="handleTimeUpdate"
-      @loadedmetadata="handleMetadata"
-    ></audio>
+  <div class="player-container surface" :class="{ 'compact-mode': !showArt }">
+    <div v-if="showArt" class="display-section">
+      <div class="album-art-container">
+        <div class="glow-ring" :class="{ active: isPlaying }"></div>
 
-    <div class="player-container surface" :class="{ 'compact-mode': !showArt }">
-      <div v-if="showArt" class="display-section">
-        <div class="album-art-container">
-          <div class="glow-ring" :class="{ active: isPlaying }"></div>
-
-          <div class="album-art" :style="{ background: track.gradient || defaultGradient }">
-            <img
-              v-if="currentCover"
-              :src="currentCover"
-              :alt="track.title"
-              crossorigin="anonymous"
-              class="fade-in"
-            />
-            <span v-else class="album-art-placeholder">
-              {{ isLoadingArt ? '⏳' : track.emoji || '🎵' }}
-            </span>
-          </div>
-
-          <div class="visualizer-bars">
-            <div
-              v-for="i in 8"
-              :key="i"
-              class="bar"
-              :ref="
-                (el) => {
-                  if (el) albumBars[i - 1] = el
-                }
-              "
-            ></div>
-          </div>
+        <div class="album-art" :style="{ background: track.gradient || defaultGradient }">
+          <img
+            v-if="currentCover"
+            :src="currentCover"
+            :alt="track.title"
+            crossorigin="anonymous"
+            class="fade-in"
+          />
+          <span v-else class="album-art-placeholder">
+            {{ isLoadingArt ? '⏳' : track.emoji || '🎵' }}
+          </span>
         </div>
 
-        <div class="track-info">
-          <div class="track-title" :title="track.title">
-            {{ track.title || 'No Track Selected' }}
-          </div>
-          <div class="track-artist">{{ track.artist || 'Unknown Artist' }}</div>
-        </div>
-      </div>
-
-      <div class="controls-section">
-        <div v-if="showWaveform" class="waveform-container">
+        <div class="visualizer-bars">
           <div
-            v-for="i in 60"
+            v-for="i in 8"
             :key="i"
-            class="waveform-bar"
+            class="bar"
             :ref="
               (el) => {
-                if (el) waveformBars[i - 1] = el
+                if (el) albumBars[i - 1] = el
               }
             "
           ></div>
         </div>
+      </div>
 
-        <div class="progress-section">
-          <div class="progress-bar" @click="handleSeek">
-            <div class="progress-fill" :style="{ width: progress + '%' }">
-              <div class="progress-handle"></div>
-            </div>
-          </div>
-          <div class="time-display">
-            <span>{{ formatTime(currentTime) }}</span>
-            <span>{{ formatTime(duration) }}</span>
+      <div class="track-info">
+        <div class="track-title" :title="track.title">
+          {{ track.title || 'No Track Selected' }}
+        </div>
+        <div class="track-artist">{{ track.artist || 'Unknown Artist' }}</div>
+      </div>
+    </div>
+
+    <div class="controls-section">
+      <div v-if="showWaveform" class="waveform-container">
+        <div
+          v-for="i in 60"
+          :key="i"
+          class="waveform-bar"
+          :ref="
+            (el) => {
+              if (el) waveformBars[i - 1] = el
+            }
+          "
+        ></div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-bar" @click="handleSeek">
+          <div class="progress-fill" :style="{ width: progress + '%' }">
+            <div class="progress-handle"></div>
           </div>
         </div>
-
-        <div class="playback-controls">
-          <button class="control-btn" @click="emit('prev')" title="Previous">⏮</button>
-          <button class="control-btn play-btn" @click="togglePlay">
-            {{ isPlaying ? '⏸' : '▶' }}
-          </button>
-          <button class="control-btn" @click="emit('next')" title="Next">⏭</button>
-        </div>
-
-        <div class="volume-section">
-          <div class="volume-icon" @click="toggleMute">{{ volume > 0 ? '🔊' : '🔇' }}</div>
-          <div class="volume-bar" @click="handleVolume">
-            <div class="volume-fill" :style="{ width: volume + '%' }"></div>
-          </div>
+        <div class="time-display">
+          <span>{{ formatTime(currentTime) }}</span>
+          <span>{{ formatTime(duration) }}</span>
         </div>
       </div>
 
-      <div v-if="showStats" class="stats-section">
-        <div class="frequency-display">
-          <div class="freq-label">
-            <div class="freq-value">{{ bassValue }}</div>
-            <div class="freq-name">Bass</div>
-          </div>
-          <div class="freq-label">
-            <div class="freq-value">{{ midValue }}</div>
-            <div class="freq-name">Mid</div>
-          </div>
-          <div class="freq-label">
-            <div class="freq-value">{{ trebleValue }}</div>
-            <div class="freq-name">Treble</div>
-          </div>
+      <div class="playback-controls">
+        <button class="control-btn" @click="emit('prev')" title="Previous">⏮</button>
+        <button class="control-btn play-btn" @click="togglePlay">
+          {{ isPlaying ? '⏸' : '▶' }}
+        </button>
+        <button class="control-btn" @click="emit('next')" title="Next">⏭</button>
+      </div>
+
+      <div class="volume-section">
+        <div class="volume-icon" @click="toggleMute">{{ volume > 0 ? '🔊' : '🔇' }}</div>
+        <div class="volume-bar" @click="handleVolume">
+          <div class="volume-fill" :style="{ width: volume + '%' }"></div>
         </div>
       </div>
     </div>
+
+    <div v-if="showStats" class="stats-section">
+      <div class="frequency-display">
+        <div class="freq-label">
+          <div class="freq-value">{{ bassValue }}</div>
+          <div class="freq-name">Bass</div>
+        </div>
+        <div class="freq-label">
+          <div class="freq-value">{{ midValue }}</div>
+          <div class="freq-name">Mid</div>
+        </div>
+        <div class="freq-label">
+          <div class="freq-value">{{ trebleValue }}</div>
+          <div class="freq-name">Treble</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -469,9 +468,6 @@ onUnmounted(() => {
 /* CONTAINER */
 .player-container {
   /* Solid Background */
-  background: var(--audio-player-bg, #ffffff);
-  border-radius: 35px;
-  border: 1px solid var(--audio-player-border, rgba(0, 0, 0, 0.1));
   box-shadow: var(--audio-player-shadow, 0 10px 40px rgba(0, 0, 0, 0.1));
   display: flex;
   flex-direction: column;

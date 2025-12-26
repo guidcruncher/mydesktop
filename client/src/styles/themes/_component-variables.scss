@@ -1,4 +1,5 @@
 @use './_system-colors' as *;
+@use '../surface.scss' as *;
 
 // --- Component-Specific Variables ---
 :root {
@@ -313,8 +314,8 @@
   --audio-accent-color: #667eea;
 
   /* Dropdown menu */
-  --mnu-bg: #ffffff;
-  --mnu-border: #d1d1d6;
+  --mnu-bg: rgba(255,255,255, var(--surface-bg-opacity));
+  --mnu-border: var(--surface-border);
   --mnu-text: #1d1d1f;
   --mnu-text-dim: #86868b;
   --mnu-hover: #f2f2f7;
@@ -534,8 +535,8 @@
   --audio-container-bg: rgba(255, 255, 255, 0.05);
 
   /* Dropdown menu */
-  --mnu-bg: #1c1c1e;
-  --mnu-border: rgba(255, 255, 255, 0.1);
+  --mnu-bg: rgba(28, 28, 30, var(--surface-bg-opacity));
+  --mnu-border: var(--surface-border);
   --mnu-text: #f5f5f7;
   --mnu-text-dim: #a1a1a6;
   --mnu-hover: rgba(255, 255, 255, 0.1);

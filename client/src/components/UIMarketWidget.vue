@@ -304,7 +304,6 @@ onUnmounted(() => {
   height: 600px;
 
   /* Solid Background */
-  background: var(--stocks-bg-widget);
 
   border-radius: var(--stocks-radius-lg);
   border: 1px solid var(--stocks-border-subtle);

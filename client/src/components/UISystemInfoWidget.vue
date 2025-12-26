@@ -201,8 +201,6 @@ onUnmounted(() => {
   flex-direction: column;
 
   /* Solid Background (Refactored from Glass) */
-  background: var(--sysinfo-bg-widget, #ffffff);
-  border-radius: var(--sysinfo-radius-lg, 24px);
   border: 1px solid var(--border-color-widget, rgba(0, 0, 0, 0.1));
   box-shadow: var(--sysinfo-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
 

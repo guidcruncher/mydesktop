@@ -38,7 +38,7 @@ const closeFolder = () => {
 
   <Teleport to="body">
     <Transition name="fade">
-      <div v-if="isOpen" class="widget-overlay" @click.self="closeFolder">
+      <div v-if="isOpen" class="overlay" @click.self="closeFolder">
         <div class="folder-wrapper">
           <UIFolderView
             :width="props.folderWidth"
@@ -60,26 +60,6 @@ const closeFolder = () => {
 
 <style lang="scss" scoped>
 /* Full screen overlay settings */
-.widget-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-
-  /* Solid Dimmed Background */
-  background-color: var(--modal-overlay-bg);
-
-  /* Center the folder in the middle of the screen */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* Ensure padding so the folder doesn't touch the screen edges on mobile */
-  padding: 20px;
-  box-sizing: border-box;
-}
 
 .folder-wrapper {
   /* Allow the wrapper to shrink to fit content */

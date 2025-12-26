@@ -107,7 +107,7 @@ onMounted(() => {
     </div>
 
     <div class="todo-input-section">
-      <div class="todo-input-wrapper surface" >
+      <div class="todo-input-wrapper surface">
         <div class="todo-plus-icon">+</div>
         <input
           v-model="newTaskInput"
@@ -155,7 +155,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   /* Solid Background */
-  background-color: var(--todo-bg-body);
   color: var(--todo-text-primary);
   border-radius: 24px;
   overflow: hidden;
@@ -170,7 +169,6 @@ onMounted(() => {
   justify-content: space-between;
   align-items: flex-start;
   /* Solid background for header area */
-  background-color: var(--todo-panel-bg);
   border-bottom: 1px solid var(--todo-panel-border);
 }
 

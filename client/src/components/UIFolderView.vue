@@ -33,13 +33,10 @@ const props = defineProps({
   padding: 10px 10px 20px 10px;
 
   /* Solid Background */
-  background-color: var(--bg-widget);
 
   /* Standard Border & Shadow */
   border: var(--border-color-widget);
   box-shadow: var(--shadow-base);
-
-  border-radius: 40px;
 
   display: flex;
   flex-direction: column;

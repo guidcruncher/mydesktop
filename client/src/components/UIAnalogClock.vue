@@ -1,6 +1,7 @@
+`
 <template>
-  <div class="analog-clock-wrapper">
-    <div class="analog-clock" :style="clockPanelStyle">
+  <div class="analog-clock-wrapper surface">
+    <div class="analog-clock" :style="clockPanelStyle" style="border: none">
       <svg :width="size" :height="size" viewBox="0 0 100 100">
         <circle
           cx="50"
@@ -208,7 +209,6 @@ onUnmounted(() => {
     position: relative;
     display: flex;
     flex-direction: column;
-    border-radius: 50%;
     padding: 0;
 
     /* Use the variable or fallback */

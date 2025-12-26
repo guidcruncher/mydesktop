@@ -1,6 +1,6 @@
 <template>
   <div class="cal-wrapper">
-    <div class="cal-widget">
+    <div class="cal-widget surface">
       <div class="cal-header">
         <div class="cal-month-name" @click="resetToToday">{{ monthName }}</div>
         <div class="cal-nav-buttons">
@@ -138,7 +138,6 @@ onMounted(() => {})
   height: 170px;
 
   /* Solid Background */
-  background: var(--cal-bg-widget);
   border: 1px solid var(--cal-bg-widget-border);
   box-shadow: var(--cal-shadow);
   border-radius: var(--cal-border-radius);

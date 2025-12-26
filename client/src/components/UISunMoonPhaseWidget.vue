@@ -333,7 +333,6 @@ onUnmounted(() => {
   height: 380px;
 
   /* Solid Background (Variable should define an opaque color) */
-  background: var(--sunmoon-bg-widget);
 
   /* Removed Glass/Blur Effects */
   /* backdrop-filter: blur(20px); */

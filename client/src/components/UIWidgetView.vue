@@ -33,7 +33,6 @@ import { ref } from 'vue'
   position: relative;
 
   /* Solid Background Variable */
-  background: var(--bg-widget);
   box-shadow: var(--shadow-base);
   border: var(--border-color-widget);
 }

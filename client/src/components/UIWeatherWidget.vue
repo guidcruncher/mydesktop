@@ -185,7 +185,6 @@ const openWidget = async () => {
     left: `${rect.left}px`,
     width: `${rect.width}px`,
     height: `${rect.height}px`,
-    borderRadius: '22px',
     transform: 'none',
   }
 
@@ -199,7 +198,6 @@ const openWidget = async () => {
     left: '50%',
     width: 'var(--weather-w-expand)',
     height: 'var(--weather-h-expand)',
-    borderRadius: '34px',
     transform: 'translate(-50%, -50%)',
   }
 }
@@ -214,7 +212,6 @@ const closeWidget = async () => {
     left: `${rect.left}px`,
     width: `${rect.width}px`,
     height: `${rect.height}px`,
-    borderRadius: '22px',
     transform: 'none',
   }
 
@@ -284,7 +281,7 @@ onUnmounted(() => {
 
     <Teleport to="body">
       <div v-if="isAnimating" class="weather-teleport-container">
-        <div class="backdrop" :class="{ active: isExpanded }" @click="closeWidget"></div>
+        <div class="overlay" :class="{ active: isExpanded }" @click="closeWidget"></div>
 
         <div class="ios-widget expanded-modal surface" :style="modalStyle">
           <div class="view-expanded">
@@ -365,7 +362,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .weather-wrapper {
-  color: var(--weather-text-primary);
+  color: var(--ui-text-primary);
   font-family: var(--font-family);
   display: inline-block;
   /* Wraps compact widget size */
@@ -373,7 +370,7 @@ onUnmounted(() => {
 
 /* Ensure font/color variables pass to Teleport container */
 .weather-teleport-container {
-  color: var(--weather-text-primary);
+  color: var(--ui-text-primary);
   font-family: var(--font-family);
   position: absolute;
   /* Non-intrusive container */
@@ -383,26 +380,8 @@ onUnmounted(() => {
   height: 0;
 }
 
-/* Backdrop - Removed Blur */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  /* Solid dim color */
-  background: var(--weather-overlay-bg);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease;
-  z-index: 9998;
-}
-
-.backdrop.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
 /* Base Widget Style (Shared) */
 .ios-widget {
-  background: linear-gradient(180deg, var(--weather-bg-start), var(--weather-bg-end));
   box-shadow: var(--weather-shadow);
   overflow: hidden;
   user-select: none;
@@ -420,7 +399,7 @@ onUnmounted(() => {
 .compact-widget {
   width: var(--weather-w-compact);
   height: var(--weather-h-compact);
-  border-radius: 22px;
+  border-radius: var(--surface-radius);
   cursor: pointer;
   position: relative;
 }
@@ -493,7 +472,7 @@ onUnmounted(() => {
 
 .compact-condition {
   font-size: 13px;
-  color: var(--weather-text-secondary);
+  color: var(--ui-text-secondary);
   font-weight: 500;
 }
 
@@ -519,7 +498,7 @@ onUnmounted(() => {
 
 .condition-lg {
   font-size: 15px;
-  color: var(--weather-text-secondary);
+  color: var(--ui-text-secondary);
   margin: 0;
 }
 
@@ -543,7 +522,7 @@ onUnmounted(() => {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  color: var(--weather-text-primary);
+  color: var(--ui-text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -572,7 +551,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--weather-text-primary);
+  color: var(--ui-text-primary);
 }
 
 .main-weather-lg {
@@ -619,7 +598,7 @@ onUnmounted(() => {
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--weather-text-secondary);
+  color: var(--ui-text-secondary);
 }
 
 .stat-val {
@@ -651,7 +630,7 @@ onUnmounted(() => {
 .f-day {
   font-size: 13px;
   font-weight: 600;
-  color: var(--weather-text-secondary);
+  color: var(--ui-text-secondary);
 }
 
 .f-temp {
@@ -703,26 +682,26 @@ onUnmounted(() => {
 
 /* Utils */
 .icon-white {
-  color: var(--weather-text-primary);
+  color: var(--ui-text-primary);
   width: 32px;
   height: 32px;
 }
 
 .icon-lg {
-  color: var(--weather-text-primary);
+  color: var(--ui-text-primary);
   width: 80px;
   height: 80px;
   stroke-width: 1.5;
 }
 
 .icon-sm {
-  color: var(--weather-text-primary);
+  color: var(--ui-text-primary);
   width: 20px;
   height: 20px;
 }
 
 .icon-xs {
-  color: var(--weather-text-primary);
+  color: var(--ui-text-primary);
   width: 14px;
   height: 14px;
 }

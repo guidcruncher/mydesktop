@@ -90,7 +90,7 @@ onUnmounted(() => {
           </template>
 
           <Transition name="mnu-dropdown-fade">
-            <div v-if="activeIndex === idx" class="mnu-dropdown surface" @click.stop>
+            <div v-if="activeIndex === idx" class="mnu-dropdown" @click.stop>
               <template v-for="(item, i) in section.items" :key="item.id || i">
                 <div v-if="item.type === 'separator'" class="mnu-separator" />
                 <div
@@ -133,7 +133,6 @@ onUnmounted(() => {
   font-family: var(--mnu-font);
   color: var(--mnu-text);
 }
-
 .mnu-navbar {
   position: fixed;
   top: 0;
@@ -144,10 +143,15 @@ onUnmounted(() => {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 0 16px;
-  background: var(--mnu-bg);
-  border-bottom: 1px solid var(--mnu-border);
   z-index: 7999;
   user-select: none;
+
+  background: var(--surface-bg);
+  backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  -webkit-backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  border-bottom: var(--surface-border);
+  box-shadow: var(--surface-shadow);
+  color: var(--text-color);
 }
 
 .mnu-section {
@@ -198,10 +202,14 @@ onUnmounted(() => {
   top: calc(100% + 6px);
   left: 0;
   min-width: 240px;
+
   background: var(--mnu-bg);
-  border: 1px solid var(--mnu-border);
-  border-radius: 12px;
-  box-shadow: var(--mnu-shadow);
+  backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  -webkit-backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  border: var(--surface-border);
+  box-shadow: var(--surface-shadow);
+  color: var(--text-color);
+  
   padding: 6px;
   display: flex;
   flex-direction: column;
