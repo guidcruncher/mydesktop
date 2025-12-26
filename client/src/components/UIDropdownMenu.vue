@@ -1,43 +1,66 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
 const props = defineProps({
-  /**
-   * Menu structure: Array of sections
-   * Section: { id, label, isLogo, items: [] }
-   * Item: { label, id, shortcut, disabled, to, name, type: 'separator' }
-   */
   menu: {
     type: Array,
     required: true,
     default: () => [],
   },
+  initialDarkMode: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const emit = defineEmits(['item-click', 'route-change'])
 
 const activeIndex = ref(null)
 const isDarkMode = ref(props.initialDarkMode)
+const triggerRefs = ref([]) // Store DOM references for positioning
+const dropdownStyle = ref({ top: '0px', left: '0px' })
 
-// Handle menu scrubbing (switching menus on hover if one is already open)
+// Helper to capture refs inside v-for
+const setTriggerRef = (el, index) => {
+  if (el) triggerRefs.value[index] = el
+}
+
+// Calculate position based on the trigger element
+const updatePosition = (index) => {
+  const trigger = triggerRefs.value[index]
+  if (trigger) {
+    const rect = trigger.getBoundingClientRect()
+    dropdownStyle.value = {
+      top: `${rect.bottom + 6}px`,
+      left: `${rect.left}px`
+    }
+  }
+}
+
+// Handle menu scrubbing
 const handleMouseEnter = (index) => {
-  if (activeIndex.value !== null) {
+  if (activeIndex.value !== null && activeIndex.value !== index) {
     activeIndex.value = index
+    updatePosition(index)
   }
 }
 
 const toggleMenu = (index, event) => {
   event.stopPropagation()
-  activeIndex.value = activeIndex.value === index ? null : index
+  if (activeIndex.value === index) {
+    activeIndex.value = null
+  } else {
+    activeIndex.value = index
+    updatePosition(index)
+  }
 }
 
 const handleItemClick = (item) => {
   if (item.disabled || item.type === 'separator') return
 
-  // Navigation Logic
   if (item.to || item.name) {
     emit('route-change', item)
     if (item.to) {
@@ -46,7 +69,6 @@ const handleItemClick = (item) => {
       router.push({ name: item.name, replace: true, query: item.params })
     }
   } else {
-    // Standard Click Event
     emit('item-click', item)
   }
 
@@ -57,12 +79,19 @@ const closeMenus = () => {
   activeIndex.value = null
 }
 
+// Close on resize to prevent floating menus in wrong spots
+const handleResize = () => {
+  if (activeIndex.value !== null) closeMenus()
+}
+
 onMounted(() => {
   window.addEventListener('click', closeMenus)
+  window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
   window.removeEventListener('click', closeMenus)
+  window.removeEventListener('resize', handleResize)
 })
 </script>
 
@@ -73,6 +102,7 @@ onUnmounted(() => {
         <div
           v-for="(section, idx) in menu"
           :key="section.id"
+          :ref="(el) => setTriggerRef(el, idx)"
           class="mnu-trigger"
           :class="{ 'mnu-active': activeIndex === idx, 'mnu-logo': section.isLogo }"
           @click="toggleMenu(idx, $event)"
@@ -89,22 +119,30 @@ onUnmounted(() => {
             {{ section.label }}
           </template>
 
-          <Transition name="mnu-dropdown-fade">
-            <div v-if="activeIndex === idx" class="mnu-dropdown" @click.stop>
-              <template v-for="(item, i) in section.items" :key="item.id || i">
-                <div v-if="item.type === 'separator'" class="mnu-separator" />
-                <div
-                  v-else
-                  class="mnu-item"
-                  :class="{ 'mnu-disabled': item.disabled }"
-                  @click="handleItemClick(item)"
-                >
-                  <span class="mnu-item-label">{{ item.label }}</span>
-                  <span v-if="item.shortcut" class="mnu-item-shortcut">{{ item.shortcut }}</span>
-                </div>
-              </template>
-            </div>
-          </Transition>
+          <Teleport to="body">
+            <Transition name="mnu-dropdown-fade">
+              <div 
+                v-if="activeIndex === idx" 
+                class="mnu-dropdown" 
+                :style="dropdownStyle"
+                @click.stop
+              >
+                <template v-for="(item, i) in section.items" :key="item.id || i">
+                  <div v-if="item.type === 'separator'" class="mnu-separator" />
+                  <div
+                    v-else
+                    class="mnu-item"
+                    :class="{ 'mnu-disabled': item.disabled }"
+                    @click="handleItemClick(item)"
+                  >
+                    <span class="mnu-item-label">{{ item.label }}</span>
+                    <span v-if="item.shortcut" class="mnu-item-shortcut">{{ item.shortcut }}</span>
+                  </div>
+                </template>
+              </div>
+            </Transition>
+          </Teleport>
+          
         </div>
       </div>
 
@@ -128,8 +166,8 @@ onUnmounted(() => {
 <style scoped>
 /* Base Variables - Light Mode */
 .mnu-root {
-  --mnu-font: var(--font-family);
-
+  --mnu-font: var(--font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  
   font-family: var(--mnu-font);
   color: var(--mnu-text);
 }
@@ -198,10 +236,13 @@ onUnmounted(() => {
 
 /* Dropdown */
 .mnu-dropdown {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
+  /* Changed to fixed for Teleport/Body positioning */
+  position: fixed; 
+  /* Top/Left removed here, handled by inline style */
   min-width: 240px;
+
+  /* Ensure font inherits correctly now that it's out of .mnu-root */
+  font-family: var(--font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
 
   background: var(--mnu-bg);
   backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
@@ -214,6 +255,11 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   z-index: 8000;
+  
+  /* Prevent overflow off screen (basic safety) */
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 10px;
 }
 
 .mnu-item {
@@ -224,6 +270,7 @@ onUnmounted(() => {
   border-radius: 6px;
   font-size: 14px;
   transition: background 0.05s;
+  cursor: default;
 }
 
 .mnu-item:hover:not(.mnu-disabled) {
