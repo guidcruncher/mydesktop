@@ -1,0 +1,23 @@
+{
+  "name": "mydesktop",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server",
+    "shared"
+  ],
+  "scripts": {
+    "cfg": "nano ./server/config/desktop.yml",
+    "install:all": "cd client && npm install && cd ../server && npm install",
+    "server": "cd server && npm run dev-server",
+    "client": "cd client && npm run dev-client",
+    "format": "cd client && prettier ./src --write && cd ../server && prettier ./src --write",
+    "dev": "npm run format && concurrently \"npm run server\" \"npm run client\"",
+    "prod": "docker compose -f ./docker-compose.yml up --build",
+    "build": "bash ./build.sh"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "prettier": "3.7.4"
+  }
+}

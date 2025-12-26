@@ -1,0 +1,121 @@
+:root {
+  /* Fallback defaults */
+  --surface-bg-opacity: 0.2;
+  --surface-bg: rgba(255, 255, 255, 0.2);
+  --surface-blur: 12px;
+  --surface-saturate: 100%;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.3);
+  --surface-radius: 12px;
+  --surface-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --text-color: #1e293b;
+  --accent-color: #6366f1;
+  --page-bg: #f1f5f9;
+}
+
+/* visionOS (Spatial) */
+[data-framework='vision'] {
+  --surface-bg-opacity: 0.4;
+  --surface-bg: rgba(255, 255, 255, 0.4);
+  --surface-blur: 50px;
+  --surface-radius: 40px;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.5);
+  --surface-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+.dark-mode[data-framework='vision'] {
+  --surface-bg-opacity: 0.4;
+  --surface-bg: rgba(25, 25, 25, 0.4);
+  --text-color: #fff;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.15);
+  --surface-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+/* Fluent (Windows) */
+[data-framework='fluent'] {
+  --surface-bg-opacity: 0.75;
+  --surface-bg: rgba(255, 255, 255, 0.75);
+  --surface-blur: 40px;
+  --surface-saturate: 150%;
+  --surface-radius: 8px;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.4);
+}
+.dark-mode[data-framework='fluent'] {
+  --surface-bg-opacity: 0.75;
+  --surface-bg: rgba(32, 32, 32, 0.75);
+  --surface-saturate: 180%;
+  --text-color: #fff;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* macOS (Vibrancy) */
+[data-framework='macos'] {
+  --surface-bg-opacity: 0.8;
+  --surface-bg: rgba(255, 255, 255, 0.8);
+  --surface-blur: 25px;
+  --surface-saturate: 140%;
+  --surface-radius: 12px;
+  --surface-border: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+.dark-mode[data-framework='macos'] {
+  --surface-bg-opacity: 0.7;
+  --surface-bg: rgba(45, 45, 45, 0.7);
+  --surface-saturate: 180%;
+  --text-color: #fff;
+  --surface-border: 0.5px solid rgba(255, 255, 255, 0.15);
+}
+
+/* GNOME (Adwaita) */
+[data-framework='gnome'] {
+  --surface-bg-opacity: 0.9;
+  --surface-bg: rgba(255, 255, 255, 0.9);
+  --surface-blur: 20px;
+  --surface-radius: 12px;
+  --surface-border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.dark-mode[data-framework='gnome'] {
+  --surface-bg-opacity: 0.9;
+  --surface-bg: rgba(40, 40, 40, 0.9);
+  --text-color: #eee;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* KDE (Breeze) */
+[data-framework='kde'] {
+  --surface-bg-opacity: 0.65;
+  --surface-bg: rgba(252, 252, 252, 0.65);
+  --surface-blur: 16px;
+  --surface-radius: 4px;
+  --surface-border: 1px solid #3daee9;
+}
+.dark-mode[data-framework='kde'] {
+  --surface-bg-opacity: 0.8;
+  --surface-bg: rgba(35, 38, 41, 0.8);
+  --text-color: #eff0f1;
+  --surface-border: 1px solid rgba(61, 174, 233, 0.6);
+}
+
+/* Glass (Trendy Web) */
+[data-framework='glass'] {
+  --surface-bg-opacity: 0.15;
+  --surface-bg: rgba(255, 255, 255, 0.15);
+  --surface-blur: 12px;
+  --surface-radius: 24px;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.dark-mode[data-framework='glass'] {
+  --surface-bg-opacity: 0.35;
+  --surface-bg: rgba(0, 0, 0, 0.35);
+  --text-color: #fff;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.surface {
+  background: var(--surface-bg);
+  backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  -webkit-backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  border: var(--surface-border);
+  border-radius: var(--surface-radius);
+  box-shadow: var(--surface-shadow);
+  color: var(--text-color);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
