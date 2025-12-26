@@ -1,5 +1,5 @@
 <template>
-  <nav :class="['navigation-bar', { 'is-scrolled': isScrolled }]">
+  <nav :class="['navigation-bar', 'surface', { 'is-scrolled': isScrolled }]">
     <div class="navigation-bar__slot navigation-bar__slot--left">
       <slot name="left"></slot>
     </div>
@@ -22,14 +22,12 @@ const props = defineProps<Props>()
 const isScrolled = ref(false)
 
 const handleScroll = () => {
-  // Simple logic to check if the user has scrolled past the top of the content.
-  // This is often used in iOS to change the appearance of the navigation bar.
   isScrolled.value = window.scrollY > 0
 }
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  handleScroll() // Check initial state
+  handleScroll()
 })
 
 onUnmounted(() => {
@@ -49,15 +47,19 @@ onUnmounted(() => {
   padding: 0 16px;
   width: 100%;
 
-  // Liquid Glass Effect
-  background: var(--glass-bg);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border-bottom: 1px solid var(--glass-border);
+  /* Solid Background */
+  background: var(--ui-background);
+  border-bottom: 1px solid var(--border-color);
 
   transition:
     border-bottom 0.3s ease,
-    background 0.3s ease;
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+
+  /* Optional: Add slight shadow when scrolled instead of blur */
+  &.is-scrolled {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
 
   &__title {
     position: absolute;
@@ -69,11 +71,10 @@ onUnmounted(() => {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: calc(100% - 140px); // Leave space for buttons
+    max-width: calc(100% - 140px);
   }
 
   &__slot {
-    // Allows buttons to take their natural width
     flex: 0 0 auto;
 
     &--left {
@@ -86,7 +87,7 @@ onUnmounted(() => {
   }
 
   body {
-    padding-bottom: 44px !important ;
+    padding-bottom: 44px !important;
   }
 }
 </style>

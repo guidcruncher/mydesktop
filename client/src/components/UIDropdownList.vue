@@ -13,7 +13,6 @@
           </div>
         </slot>
       </div>
-      <!-- Chevron Icon: fa-chevron-down points down when closed (0deg) and up when open (-180deg) -->
       <i
         class="fa-solid fa-chevron-down accessory"
         :style="{ transform: isOpen ? 'rotate(-180deg)' : 'rotate(0deg)' }"
@@ -24,7 +23,7 @@
       <div v-if="isOpen" class="ui-dropdown-overlay" @click.self="closeDropdown">
         <div
           ref="dropdownRef"
-          class="ui-dropdown-popover-glass"
+          class="ui-dropdown-popover-solid surface"
           :style="{
             top: position.top,
             left: position.left,
@@ -237,14 +236,12 @@ onUnmounted(() => {
   z-index: 500;
 }
 
-.ui-dropdown-popover-glass {
+.ui-dropdown-popover-solid {
   position: absolute;
   z-index: 501;
-  /* Glass effect */
-  background: var(--glass-bg);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border: 1px solid var(--glass-border);
+  /* Solid Opaque Background */
+  background: var(--ui-card-bg);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-medium);
   overflow: hidden;
   max-height: 400px;

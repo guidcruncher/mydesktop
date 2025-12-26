@@ -185,7 +185,6 @@ onMounted(() => {
 
 <template>
   <div class="map-wrapper">
-    <!-- Blur Backdrop -->
     <div
       class="map-backdrop"
       :class="{ 'map-backdrop-active': isExpanded }"
@@ -193,8 +192,7 @@ onMounted(() => {
     ></div>
 
     <div class="map-widget-container" :class="{ 'map-expanded': isExpanded }" @click="expandWidget">
-      <!-- Search Bar -->
-      <div class="map-search-container">
+      <div class="map-search-container surface">
         <svg
           class="map-search-icon"
           viewBox="0 0 24 24"
@@ -217,7 +215,6 @@ onMounted(() => {
         />
       </div>
 
-      <!-- UI Controls -->
       <div class="map-ui-controls">
         <button
           class="map-control-btn map-close-btn"
@@ -255,11 +252,9 @@ onMounted(() => {
         </button>
       </div>
 
-      <!-- Map Element -->
       <div id="map" ref="mapContainer"></div>
 
-      <!-- Bottom Overlay -->
-      <div class="map-widget-overlay">
+      <div class="map-widget-overlay surface">
         <div class="map-location-info">
           <span class="map-location-title">{{ locationTitle }}</span>
           <span class="map-location-subtitle">{{ locationSubtitle }}</span>
@@ -305,9 +300,7 @@ onMounted(() => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.2); /* Slight tint */
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  background-color: var(--modal-overlay-bg); /* Solid dim */
   z-index: 90;
   opacity: 0;
   pointer-events: none;
@@ -382,9 +375,7 @@ onMounted(() => {
 .map-control-btn {
   width: 44px;
   height: 44px;
-  background: var(--map-btn-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--map-btn-bg); /* Solid color */
   border-radius: 50%;
   border: none;
   display: flex;
@@ -433,9 +424,7 @@ onMounted(() => {
   transform: translateX(-50%) translateY(-20px);
   width: 90%;
   max-width: 400px;
-  background: var(--map-input-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--map-input-bg); /* Solid or high opacity */
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -492,9 +481,7 @@ onMounted(() => {
   bottom: 16px;
   left: 16px;
   right: 16px;
-  background: var(--map-overlay-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--map-overlay-bg); /* Solid color */
   border-radius: 18px;
   padding: 14px 18px;
   z-index: 10;

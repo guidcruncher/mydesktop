@@ -10,12 +10,15 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 <style lang="scss" scoped>
 .uiview-container {
+  /* Solid Background */
   background: var(--bg-primary);
+
   border-radius: var(--radius-medium);
   padding: var(--spacing-large);
   box-shadow: var(--shadow-default);
   border: 1px solid var(--border-color);
-  backdrop-filter: blur(20px);
+
+  /* Removed blur */
   transition: all 0.3s ease;
 }
 

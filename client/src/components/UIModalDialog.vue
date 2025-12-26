@@ -1,11 +1,9 @@
 <template>
   <div>
-    <!-- Modal Overlay -->
     <Teleport to="body">
       <Transition name="modal">
         <div v-if="modelValue" class="overlay" @click="closeOnOverlay">
-          <div class="modal-container" :class="{ maximized: isMaximized }">
-            <!-- Header -->
+          <div class="modal-container surface" :class="{ maximized: isMaximized }">
             <div class="modal-header">
               <div class="window-controls">
                 <button class="control-btn close" @click="close" title="Close"></button>
@@ -21,15 +19,13 @@
               </div>
             </div>
 
-            <!-- Body -->
             <div class="modal-body">
               <slot name="body">
-                <h2>Welcome to iOS 26</h2>
+                <h2>Welcome</h2>
                 <p>This is a modal dialog component with customizable content.</p>
               </slot>
             </div>
 
-            <!-- Footer -->
             <div class="modal-footer" v-if="$slots.footer || showDefaultFooter">
               <slot name="footer">
                 <button class="modal-btn secondary" @click="close">Cancel</button>
@@ -46,7 +42,6 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 
-// Props
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -62,14 +57,11 @@ const props = defineProps({
   },
 })
 
-// Emits
 const emit = defineEmits(['update:modelValue', 'confirm', 'close'])
 
-// State
 const isMaximized = ref(false)
 const isMinimizing = ref(false)
 
-// Methods
 const close = () => {
   emit('update:modelValue', false)
   emit('close')
@@ -77,7 +69,7 @@ const close = () => {
 }
 
 const closeOnOverlay = (event) => {
-  if (props.closeOnOverlayClick && event.target.classList.contains('modal-overlay')) {
+  if (props.closeOnOverlayClick && event.target.classList.contains('overlay')) {
     close()
   }
 }
@@ -105,7 +97,6 @@ const handleEscape = (e) => {
   }
 }
 
-// Watch for modal state changes
 watch(
   () => props.modelValue,
   (newVal) => {
@@ -117,7 +108,6 @@ watch(
   },
 )
 
-// Lifecycle
 onMounted(() => {
   document.addEventListener('keydown', handleEscape)
 })
@@ -129,11 +119,23 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-/* Modal Container */
+/* Overlay with Dimmed Background */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--modal-overlay-bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal Container - Solid */
 .modal-container {
   background: var(--modal-container-bg);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
   border-radius: 20px;
   box-shadow: 0 20px 60px var(--modal-shadow);
   width: 90%;
@@ -143,6 +145,7 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
+  border: 1px solid var(--border-color); /* Added subtle border */
 }
 
 .modal-container.maximized {
@@ -152,11 +155,7 @@ onUnmounted(() => {
 
 /* Modal Header */
 .modal-header {
-  background: linear-gradient(
-    180deg,
-    var(--modal-header-bg-start) 0%,
-    var(--modal-header-bg-end) 100%
-  );
+  background: var(--modal-header-bg);
   padding: 16px 20px;
   display: flex;
   align-items: center;
@@ -185,10 +184,6 @@ onUnmounted(() => {
   filter: brightness(1.1);
 }
 
-.control-btn:active {
-  transform: scale(0.95);
-}
-
 .control-btn.close {
   background: linear-gradient(135deg, var(--control-close-start) 0%, var(--control-close-end) 100%);
 }
@@ -207,44 +202,6 @@ onUnmounted(() => {
     var(--control-maximize-start) 0%,
     var(--control-maximize-end) 100%
   );
-}
-
-/* Control icons appear on hover */
-.modal-header:hover .control-btn::after {
-  opacity: 1;
-}
-
-.control-btn::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.control-btn.close::after {
-  content: '×';
-  font-size: 10px;
-  color: var(--control-close-icon);
-  line-height: 1;
-}
-
-.control-btn.minimize::after {
-  width: 6px;
-  height: 1px;
-  background: var(--control-minimize-icon);
-}
-
-.control-btn.maximize::after {
-  width: 5px;
-  height: 5px;
-  border: 1px solid var(--control-maximize-icon);
-  border-top: none;
-  border-right: none;
-  transform: translate(-50%, -50%) rotate(-45deg);
-  margin-top: 1px;
 }
 
 .modal-title {
@@ -325,10 +282,6 @@ onUnmounted(() => {
   background: var(--btn-secondary-bg-hover);
 }
 
-.modal-btn:active {
-  transform: scale(0.98);
-}
-
 /* Transitions */
 .modal-enter-active,
 .modal-leave-active {
@@ -346,10 +299,6 @@ onUnmounted(() => {
 }
 
 .modal-enter-from .modal-container {
-  transform: scale(0.9) translateY(20px);
-}
-
-.modal-leave-to .modal-container {
   transform: scale(0.9) translateY(20px);
 }
 </style>

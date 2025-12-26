@@ -221,8 +221,8 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .picker-compact {
+  /* Solid Background, no blur */
   background: var(--ui-card-bg);
-  backdrop-filter: blur(20px);
   border-radius: var(--radius-medium);
   padding: 16px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);

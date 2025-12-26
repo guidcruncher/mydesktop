@@ -1,4 +1,3 @@
-<!-- MKMapView.vue -->
 <template>
   <div class="mk-map-view" :style="mapStyle">
     <div class="mk-map-container">
@@ -189,8 +188,8 @@ onBeforeUnmount(() => {
 }
 
 .mk-button-group {
-  background: var(--control-bg);
-  backdrop-filter: blur(20px);
+  /* Solid background, removed blur */
+  background: var(--map-control-bg, var(--control-bg));
   border-radius: 10px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
@@ -222,8 +221,8 @@ onBeforeUnmount(() => {
 }
 
 .mk-location-button {
-  background: var(--control-bg);
-  backdrop-filter: blur(20px);
+  /* Solid background, removed blur */
+  background: var(--map-control-bg, var(--control-bg));
   border-radius: 10px;
   box-shadow: var(--shadow-sm);
   border: 0.5px solid var(--control-border);
@@ -247,8 +246,8 @@ onBeforeUnmount(() => {
   bottom: 16px;
   right: 16px;
   z-index: 1000;
-  background: var(--control-bg);
-  backdrop-filter: blur(20px);
+  /* Solid background, removed blur */
+  background: var(--map-control-bg, var(--control-bg));
   border-radius: 10px;
   padding: 8px;
   box-shadow: var(--shadow-sm);
@@ -283,8 +282,8 @@ onBeforeUnmount(() => {
   z-index: 1000;
   width: 44px;
   height: 44px;
-  background: var(--control-bg);
-  backdrop-filter: blur(20px);
+  /* Solid background, removed blur */
+  background: var(--map-control-bg, var(--control-bg));
   border-radius: 50%;
   box-shadow: var(--shadow-sm);
   border: 0.5px solid var(--control-border);

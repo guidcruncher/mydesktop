@@ -1,5 +1,6 @@
 
 desktop:
+  framework: "glass"
   background:
     style: image
     colors:

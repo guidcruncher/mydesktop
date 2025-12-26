@@ -46,44 +46,31 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
 })
 
-const emit = defineEmits<{
-  (e: 'update:selectedIndex', index: number): void
-}>()
+const emit = defineEmits<{ (e: 'update:selectedIndex', index: number): void }>()
 
 const wheelRef = ref<HTMLElement | null>(null)
 
-// Calculated height for the top/bottom padding elements
+// Calculate padding to ensure the first and last items can be centered
 const paddingHeight = computed(() => {
-  return `${(props.containerHeight - props.itemHeight) / 2}px`
+  const halfContainer = props.containerHeight / 2
+  const halfItem = props.itemHeight / 2
+  return `${halfContainer - halfItem}px`
 })
 
-/**
- * Sets the wheel's scrollTop to center the item corresponding to the initial index.
- */
 const calculateInitialScroll = () => {
-  if (!wheelRef.value) return
-
-  // Centering the Nth item (0-based) requires a scrollTop of N * ITEM_HEIGHT.
-  wheelRef.value.scrollTop = props.selectedIndex * props.itemHeight
+  if (wheelRef.value) {
+    wheelRef.value.scrollTop = props.selectedIndex * props.itemHeight
+  }
 }
 
-/**
- * Handles scroll events: determines the new selected index based on scroll position and emits it.
- * NOTE: The manual scroll-snapping line (target.scrollTop = ...) has been removed.
- * The visual snapping is now handled solely by CSS (scroll-snap-type).
- */
+// --- Scroll Handling ---
 const handleScroll = (event: Event) => {
-  const target = event.target as HTMLElement
+  if (!wheelRef.value) return
 
-  const currentScrollTop = target.scrollTop
-
-  // 1. Calculate the 0-based data index (N) by rounding to the nearest snap point.
-  // This is how the selected item is determined, even while scrolling.
+  const currentScrollTop = wheelRef.value.scrollTop
+  // Calculate the index based on scroll position
   const itemIndex = Math.round(currentScrollTop / props.itemHeight)
 
-  // 2. We skip manual snapping (target.scrollTop = ...), relying on CSS scroll-snap.
-
-  // 3. Emit the index, clamped within the bounds of the actual data array
   const clampedIndex = Math.min(Math.max(0, itemIndex), props.items.length - 1)
 
   if (clampedIndex !== props.selectedIndex) {
@@ -91,15 +78,11 @@ const handleScroll = (event: Event) => {
   }
 }
 
-const debouncedHandleScroll = debounce(handleScroll, 150)
+const debouncedHandleScroll = debounce(handleScroll, 50) // Faster debounce for snappier feel
 
-// Watch the selectedIndex prop to update scroll position externally
 watch(
   () => props.selectedIndex,
   () => {
-    // We only update the scroll position if the prop change was external
-    // and not a result of the local 'update:selectedIndex' emit.
-    // nextTick ensures the DOM is ready for scroll manipulation.
     nextTick(calculateInitialScroll)
   },
   { immediate: true },
@@ -114,11 +97,11 @@ onMounted(() => {
 .wheel {
   flex: 1;
   overflow-y: scroll;
-  // Scroll snap ensures the center of the item aligns with the center of the wheel
   scroll-snap-type: y mandatory;
   height: 100%;
   scrollbar-width: none;
   padding: 0 4px;
+  /* Solid Background Implicit from Parent */
 
   &::-webkit-scrollbar {
     display: none;
@@ -127,13 +110,20 @@ onMounted(() => {
 
 .item {
   text-align: center;
-  font-size: 17px;
-  color: var(--ui-text-primary);
   scroll-snap-align: center;
+  font-size: 18px;
+  color: var(--ui-text-primary);
+  cursor: pointer;
   user-select: none;
+  transition:
+    color 0.2s,
+    transform 0.2s;
+  opacity: 0.6;
 }
 
-.padding {
-  pointer-events: none;
+/* Simple active state based on proximity would need JS, 
+   but standard CSS hover can simulate focus */
+.wheel:hover .item {
+  opacity: 0.8;
 }
 </style>

@@ -1,9 +1,9 @@
-@use '../../_mixins' as *;
+@use '../_mixins' as *;
+
 // =========================================================
-// 1. SCSS System Color Variable Definitions (Theme  Maps)
+// 1. SCSS System Color Variable Definitions
 // =========================================================
 
-// Apple (iOS) System Colors
 $system-colors: (
   color-primary-text: (
     light: #000000,
@@ -41,11 +41,10 @@ $system-colors: (
     light: #8e8e93,
     dark: #8e8e93,
   ),
-  // iOS Dark/Light gray often matches
   system-gray2: (
-      light: #aeaeb2,
-      dark: #636366,
-    ),
+    light: #aeaeb2,
+    dark: #636366,
+  ),
   system-gray3: (
     light: #c7c7cc,
     dark: #48484a,
@@ -66,11 +65,10 @@ $system-colors: (
 
 :root {
   @include generate-system-vars($system-colors, 'light');
-  --system-color-red-darken: darken($system-red, 8%);
+  --system-color-red-darken: darken(#ff3b30, 8%);
 }
 
-// Dark Mode
 .dark-mode {
   @include generate-system-vars($system-colors, 'dark');
-  --system-color-red-darken: darken($system-red, 8%);
+  --system-color-red-darken: darken(#ff453a, 8%);
 }

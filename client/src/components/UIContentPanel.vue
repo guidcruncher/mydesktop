@@ -83,11 +83,9 @@ const panelStyle = computed(() => {
   border-bottom-left-radius: var(--panel-radius);
   border-bottom-right-radius: var(--panel-radius);
 
-  // Still uses a raw glass definition as the color is absolute white, not themed.
-  background: rgba(var(--color-glass-rgb), 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(var(--color-glass-rgb), 0.3);
+  /* Solid background replacing glass */
+  background: var(--ui-background, #f5f5f7);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   color: var(--panel-color);
   text-align: right;
 }

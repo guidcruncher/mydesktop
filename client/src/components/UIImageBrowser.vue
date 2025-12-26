@@ -65,11 +65,9 @@ onUnmounted(() => {
 
 <template>
   <div class="imgbrws-ios-browser">
-    <!-- Sidebar Area -->
     <aside class="imgbrws-sidebar" :class="{ 'imgbrws-closed': !isSidebarOpen }">
       <div class="imgbrws-sidebar-content">
         <slot name="sidebar">
-          <!-- Fallback Sidebar Content -->
           <div class="imgbrws-default-sidebar-msg">
             <h2 class="imgbrws-sidebar-title">Library</h2>
             <div class="imgbrws-placeholder-nav">
@@ -81,9 +79,7 @@ onUnmounted(() => {
       </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="imgbrws-main-content">
-      <!-- Top Bar -->
       <header class="imgbrws-top-bar">
         <div class="imgbrws-top-left">
           <button
@@ -102,7 +98,6 @@ onUnmounted(() => {
         </div>
       </header>
 
-      <!-- Photo Grid -->
       <div class="imgbrws-scroll-container">
         <div class="imgbrws-photo-grid" v-if="modelValue.length > 0">
           <div
@@ -123,7 +118,6 @@ onUnmounted(() => {
       </div>
     </main>
 
-    <!-- Lightbox Overlay -->
     <Transition name="imgbrws-fade">
       <div v-if="lightboxVisible" class="imgbrws-lightbox" @click.self="closeLightbox">
         <button class="imgbrws-lightbox-close" @click="closeLightbox">
@@ -167,9 +161,7 @@ onUnmounted(() => {
 /* --- Sidebar --- */
 .imgbrws-sidebar {
   width: 280px;
-  background-color: var(--imgbrws-sidebar-bg);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
+  background-color: var(--imgbrws-sidebar-bg); /* Solid color from theme */
   border-right: 1px solid var(--imgbrws-sidebar-border);
   flex-shrink: 0;
   transition:
@@ -231,9 +223,7 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   right: 0;
-  background: var(--imgbrws-top-bar-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--imgbrws-top-bar-bg); /* Solid color from theme */
   z-index: 5;
   border-bottom: 1px solid var(--imgbrws-top-bar-border);
   transition: background-color 0.3s;
@@ -364,8 +354,7 @@ onUnmounted(() => {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(80, 80, 80, 0.5);
-  backdrop-filter: blur(10px);
+  background: rgba(50, 50, 50, 1); /* Solid Dark Gray */
   border: none;
   color: white; /* Always white on dark lightbox overlay */
   display: flex;
@@ -373,6 +362,7 @@ onUnmounted(() => {
   justify-content: center;
   cursor: pointer;
   z-index: 101;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .imgbrws-lightbox-close svg {
@@ -386,9 +376,8 @@ onUnmounted(() => {
   bottom: 0;
   width: 100%;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: #1a1a1a; /* Solid Background */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
   color: var(--imgbrws-lightbox-text);
 }

@@ -50,9 +50,6 @@ const toggleTask = (taskId) => {
 }
 
 const deleteTask = (taskId) => {
-  // Simple filter for data removal.
-  // In a real app, you might want to wait for animation to finish,
-  // but Vue <TransitionGroup> handles the visual part.
   tasks.value = tasks.value.filter((t) => t.id !== taskId)
 }
 
@@ -60,502 +57,203 @@ const setFilter = (filter) => {
   currentFilter.value = filter
 }
 
-// --- Lifecycle & Persistence ---
+// Init some dummy data if empty
 onMounted(() => {
-  // Load Tasks
-  const savedTasks = localStorage.getItem('todo-tasks')
-  if (savedTasks) {
-    try {
-      tasks.value = JSON.parse(savedTasks)
-    } catch (e) {
-      console.error('Failed to parse tasks', e)
-    }
+  if (tasks.value.length === 0) {
+    tasks.value = [
+      {
+        id: 1,
+        text: 'Review project specs',
+        completed: false,
+        createdAt: new Date().toISOString(),
+      },
+      { id: 2, text: 'Email team', completed: true, createdAt: new Date().toISOString() },
+      {
+        id: 3,
+        text: 'Update documentation',
+        completed: false,
+        createdAt: new Date().toISOString(),
+      },
+    ]
   }
 })
-
-watch(
-  tasks,
-  (newTasks) => {
-    localStorage.setItem('todo-tasks', JSON.stringify(newTasks))
-  },
-  { deep: true },
-)
-
-// --- Touch Handling (Swipe to Delete) ---
-let touchStartX = 0
-const onTouchStart = (e) => {
-  touchStartX = e.changedTouches[0].screenX
-}
-
-const onTouchEnd = (e, taskId) => {
-  const touchEndX = e.changedTouches[0].screenX
-  if (touchStartX - touchEndX > 100) {
-    // Swipe Left Detected
-    deleteTask(taskId)
-  }
-}
 </script>
 
 <template>
-  <div class="todo-widget-card">
-    <header class="todo-header">
-      <div>
-        <h2 class="todo-date-text">{{ dateDisplay }}</h2>
-        <h1 class="todo-title-text">Tasks</h1>
-        <div class="todo-count-badge">{{ pendingCount }} Pending</div>
+  <div class="todo-widget surface">
+    <div class="todo-header">
+      <div class="todo-title-group">
+        <div class="todo-date">{{ dateDisplay }}</div>
+        <div class="todo-greeting">
+          Task List <span class="todo-count-badge" v-if="pendingCount > 0">{{ pendingCount }}</span>
+        </div>
       </div>
-    </header>
+      <div class="todo-actions">
+        <button
+          class="todo-filter-btn"
+          @click="setFilter('all')"
+          :class="{ active: currentFilter === 'all' }"
+        >
+          All
+        </button>
+        <button
+          class="todo-filter-btn"
+          @click="setFilter('active')"
+          :class="{ active: currentFilter === 'active' }"
+        >
+          Active
+        </button>
+      </div>
+    </div>
 
-    <div class="todo-filter-container">
-      <button
-        @click="setFilter('all')"
-        :class="['todo-filter-btn', { 'todo-active': currentFilter === 'all' }]"
-      >
-        All
-      </button>
-      <button
-        @click="setFilter('active')"
-        :class="['todo-filter-btn', { 'todo-active': currentFilter === 'active' }]"
-      >
-        Active
-      </button>
-      <button
-        @click="setFilter('completed')"
-        :class="['todo-filter-btn', { 'todo-active': currentFilter === 'completed' }]"
-      >
-        Done
-      </button>
+    <div class="todo-input-section">
+      <div class="todo-input-wrapper surface" >
+        <div class="todo-plus-icon">+</div>
+        <input
+          v-model="newTaskInput"
+          @keyup.enter="addTask"
+          type="text"
+          placeholder="Add a task..."
+          class="todo-task-input"
+        />
+        <button @click="addTask" class="todo-add-btn" :disabled="!newTaskInput.trim()">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5v14" /></svg>
+        </button>
+      </div>
     </div>
 
     <div class="todo-list-container">
-      <TransitionGroup name="todo-list">
+      <TransitionGroup name="list">
         <div
           v-for="task in filteredTasks"
           :key="task.id"
-          class="todo-task-item"
-          @touchstart="onTouchStart"
-          @touchend="(e) => onTouchEnd(e, task.id)"
+          class="todo-item"
+          :class="{ completed: task.completed }"
         >
-          <div class="todo-task-inner">
-            <button
-              @click.stop="toggleTask(task.id)"
-              :class="['todo-check-btn', { 'todo-checked': task.completed }]"
-            >
-              <svg
-                class="todo-check-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            </button>
-
-            <span :class="['todo-task-text', { 'todo-completed': task.completed }]">
-              {{ task.text }}
-            </span>
-
-            <button @click.stop="deleteTask(task.id)" class="todo-delete-btn">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path
-                  d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                ></path>
-              </svg>
-            </button>
+          <div class="todo-checkbox" @click="toggleTask(task.id)">
+            <svg v-if="task.completed" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" /></svg>
           </div>
+          <div class="todo-text">{{ task.text }}</div>
+          <button class="todo-delete-btn" @click="deleteTask(task.id)">
+            <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" /></svg>
+          </button>
         </div>
       </TransitionGroup>
 
       <div v-if="filteredTasks.length === 0" class="todo-empty-state">
-        <div class="todo-empty-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-        </div>
-        <p class="todo-empty-text">No tasks here</p>
-        <p class="todo-empty-subtext">Add a task to get started</p>
-      </div>
-    </div>
-
-    <div class="todo-input-bar-container">
-      <div class="todo-input-wrapper">
-        <span class="todo-plus-icon">+</span>
-        <input
-          type="text"
-          v-model="newTaskInput"
-          class="todo-task-input"
-          placeholder="New Reminder..."
-          @keydown.enter="addTask"
-        />
-        <button @click="addTask" class="todo-add-btn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <line x1="12" y1="19" x2="12" y2="5"></line>
-            <polyline points="5 12 12 5 19 12"></polyline>
-          </svg>
-        </button>
+        <p>No tasks found</p>
       </div>
     </div>
   </div>
 </template>
 
-<style lang="scss">
-/* --- WIDGET CARD --- */
-.todo-widget-card {
+<style lang="scss" scoped>
+.todo-widget {
   width: 100%;
   height: 100%;
-  max-width: 600px;
-  max-height: 800px;
-  border-radius: 40px;
-  background: var(--todo-glass-panel-bg);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  border: 1px solid var(--todo-glass-border);
-  box-shadow: var(--todo-glass-shadow);
+  min-height: 400px;
   display: flex;
   flex-direction: column;
+  /* Solid Background */
+  background-color: var(--todo-bg-body);
+  color: var(--todo-text-primary);
+  border-radius: 24px;
   overflow: hidden;
+  box-shadow: var(--shadow-default);
   position: relative;
-  transition: all 0.3s ease;
-  z-index: 1;
 }
 
-/* --- HEADER --- */
+/* Header */
 .todo-header {
-  padding: 2rem 2rem 1rem 2rem;
+  padding: 24px 24px 16px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  z-index: 10;
+  /* Solid background for header area */
+  background-color: var(--todo-panel-bg);
+  border-bottom: 1px solid var(--todo-panel-border);
 }
 
-.todo-date-text {
-  font-size: 0.875rem;
+.todo-date {
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ui-text-secondary);
-  margin-bottom: 0.25rem;
-  margin-top: 0;
+  color: var(--todo-text-secondary);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
 }
 
-.todo-title-text {
-  font-size: 2.25rem;
+.todo-greeting {
+  font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(to right, var(--ui-text-primary), var(--ui-text-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .todo-count-badge {
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.125rem 0.625rem;
-  border-radius: 9999px;
-  /* Use color-mix for opacity handling of the variable */
-  background-color: color-mix(in srgb, var(--todo-color-blue), transparent 85%);
-  color: var(--todo-color-blue);
-  display: inline-block;
-  margin-top: 0.5rem;
+  background: var(--todo-color-blue);
+  color: white;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  vertical-align: middle;
 }
 
-.todo-theme-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--todo-btn-bg);
-  border: none;
-  cursor: pointer;
+.todo-actions {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-  transition:
-    transform 0.2s,
-    background-color 0.3s;
-  color: var(--ui-text-primary);
-}
-
-/* Updated selector to use standard .dark-mode class */
-.dark-mode .todo-theme-btn {
-  color: var(--todo-color-yellow);
-}
-
-.todo-theme-btn:hover {
-  transform: scale(1.05);
-}
-.todo-theme-btn:active {
-  transform: scale(0.95);
-}
-
-/* --- FILTERS --- */
-.todo-filter-container {
-  padding: 0 2rem 0.5rem 2rem;
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scrollbar-width: none;
+  gap: 8px;
 }
 
 .todo-filter-btn {
-  background: none;
-  border: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  opacity: 0.5;
-  transition:
-    opacity 0.3s,
-    color 0.3s;
-  color: var(--ui-text-primary);
-  white-space: nowrap;
-}
-
-.todo-filter-btn.todo-active {
-  opacity: 1;
-  color: var(--todo-color-blue);
-}
-
-.todo-filter-btn:hover {
-  opacity: 1;
-}
-
-/* --- TASK LIST --- */
-.todo-list-container {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0.5rem 1.5rem 6rem 1.5rem;
-}
-
-.todo-list-enter-active,
-.todo-list-leave-active {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.todo-list-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.todo-list-leave-to {
-  opacity: 0;
-  transform: translateX(-100%);
-}
-
-.todo-task-item {
-  position: relative;
-  margin-bottom: 0.75rem;
-  border-radius: 1rem;
-  user-select: none;
-}
-
-.todo-task-inner {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  background-color: var(--todo-task-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--todo-task-border);
-  border-radius: 1rem;
-  transition:
-    transform 0.2s,
-    background-color 0.2s;
-  cursor: pointer;
-}
-
-.todo-task-inner:hover {
-  background-color: var(--todo-task-bg-hover);
-}
-
-.todo-task-inner:active {
-  transform: scale(0.98);
-}
-
-.todo-check-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  /* Standard system gray for border */
-  border: 2px solid color-mix(in srgb, var(--system-gray), transparent 50%);
   background: transparent;
-  margin-right: 1rem;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  padding: 0;
-}
-
-.todo-check-btn.todo-checked {
-  background-color: var(--todo-color-blue);
-  border-color: var(--todo-color-blue);
-}
-
-.todo-check-icon {
-  color: white;
-  width: 12px;
-  height: 12px;
-  transform: scale(0);
-  transition: transform 0.2s;
-}
-
-.todo-check-btn.todo-checked .todo-check-icon {
-  transform: scale(1);
-}
-
-.todo-task-text {
-  flex-grow: 1;
-  font-size: 1.1rem;
-  color: var(--ui-text-primary);
-  transition: color 0.2s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.todo-task-text.todo-completed {
-  color: var(--ui-text-secondary);
-  text-decoration: line-through;
-}
-
-.todo-delete-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
   border: none;
-  /* Use color-mix for red opacity */
-  background-color: color-mix(in srgb, var(--todo-color-red), transparent 90%);
-  color: var(--todo-color-red);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: var(--todo-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  opacity: 0;
-  margin-left: 0.5rem;
+  padding: 4px 8px;
+  border-radius: 6px;
   transition: all 0.2s;
 }
 
-.todo-delete-btn:hover {
-  background-color: var(--todo-color-red);
-  color: white;
+.todo-filter-btn.active {
+  background: var(--todo-btn-bg);
+  color: var(--todo-text-primary);
 }
 
-/* Show delete button on hover or focus-within */
-.todo-task-item:hover .todo-delete-btn {
-  opacity: 1;
-}
-.todo-task-item:focus-within .todo-delete-btn {
-  opacity: 1;
-}
-/* Always show on touch devices when active? CSS can't detect touch well, relies on :hover which works on tap sometimes */
-
-/* --- EMPTY STATE --- */
-.todo-empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 60%;
-  text-align: center;
-  opacity: 0.6;
-  margin-top: 4rem;
-}
-
-.todo-empty-icon {
-  width: 96px;
-  height: 96px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  backdrop-filter: blur(4px);
-  color: var(--todo-color-blue);
-  animation: float 6s ease-in-out infinite;
-}
-
-.todo-empty-text {
-  font-size: 1.125rem;
-  font-weight: 500;
-  margin: 0.5rem 0 0 0;
-}
-
-.todo-empty-subtext {
-  font-size: 0.875rem;
-  color: var(--ui-text-secondary);
-  margin: 0.25rem 0 0 0;
-}
-
-/* --- INPUT BAR --- */
-.todo-input-bar-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 1.5rem;
-  padding-bottom: 2rem;
+/* Input Section - De-glassed */
+.todo-input-section {
+  padding: 16px 24px;
+  background-color: var(--todo-bg-body); /* Match body to look seamless */
   z-index: 20;
-  box-sizing: border-box;
 }
 
 .todo-input-wrapper {
-  background: var(--todo-glass-panel-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--todo-glass-border);
-  border-radius: 2rem;
-  padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+  /* Solid Opaque Panel */
+  background: var(--todo-input-bg);
+  border: 1px solid var(--todo-panel-border);
+  border-radius: 16px;
+  padding: 8px 8px 8px 16px;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .todo-input-wrapper:focus-within {
-  transform: scale(1.02);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--todo-color-blue);
 }
 
 .todo-plus-icon {
-  color: var(--ui-text-secondary);
-  font-size: 1.2rem;
+  color: var(--todo-text-secondary);
+  font-size: 18px;
+  font-weight: 300;
 }
 
 .todo-task-input {
@@ -563,53 +261,154 @@ const onTouchEnd = (e, taskId) => {
   background: transparent;
   border: none;
   outline: none;
-  height: 3rem;
-  font-size: 1.1rem;
-  color: var(--ui-text-primary);
+  height: 40px;
+  font-size: 16px;
+  color: var(--todo-text-primary);
   min-width: 0;
 }
 
 .todo-task-input::placeholder {
-  color: var(--ui-text-placeholder);
+  color: var(--todo-text-placeholder);
 }
 
 .todo-add-btn {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background-color: var(--todo-color-blue);
-  color: white;
+  border-radius: 12px;
   border: none;
+  background: var(--todo-color-blue);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--todo-color-blue-hover);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+/* List */
+.todo-list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 24px 24px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  /* Solid Item Background */
+  background: var(--todo-task-bg);
+  border: 1px solid var(--todo-task-border);
+  border-radius: 16px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+
+.todo-item:hover {
+  background: var(--todo-task-bg-hover);
+  transform: translateX(2px);
+}
+
+.todo-checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--todo-text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
   transition: all 0.2s;
   flex-shrink: 0;
-}
 
-.todo-add-btn:hover {
-  background-color: var(--todo-color-blue-hover);
-}
-.todo-add-btn:active {
-  transform: scale(0.9);
-}
-
-/* --- ANIMATIONS --- */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
+  svg {
+    width: 14px;
+    height: 14px;
+    stroke: white;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 }
 
-/* Scrollbar Hide */
-::-webkit-scrollbar {
-  width: 0px;
+.todo-item.completed .todo-checkbox {
+  background: var(--todo-color-green);
+  border-color: var(--todo-color-green);
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 15px;
+  color: var(--todo-text-primary);
+  transition: color 0.2s;
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: var(--todo-text-secondary);
+}
+
+.todo-delete-btn {
   background: transparent;
+  border: none;
+  color: var(--todo-text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s;
+  padding: 4px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+  }
+
+  &:hover {
+    color: var(--todo-color-red);
+  }
+}
+
+.todo-item:hover .todo-delete-btn {
+  opacity: 1;
+}
+
+.todo-empty-state {
+  text-align: center;
+  color: var(--todo-text-secondary);
+  margin-top: 40px;
+  font-style: italic;
+}
+
+/* Animations */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
 }
 </style>

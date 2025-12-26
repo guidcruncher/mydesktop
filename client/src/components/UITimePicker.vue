@@ -3,7 +3,6 @@
     <div class="picker-container" :style="{ width: pickerWidth + 'px' }">
       <div class="highlight"></div>
 
-      <!-- Hour Wheel -->
       <UIWheelListView
         :items="hours"
         :selected-index="currentHourIndex"
@@ -15,7 +14,6 @@
         </template>
       </UIWheelListView>
 
-      <!-- Minute Wheel -->
       <UIWheelListView
         :items="minutes"
         :selected-index="currentMinuteIndex"
@@ -52,7 +50,6 @@ const minutes = [...Array(60).keys()]
 
 const pickerWidth = computed(() => props.width)
 
-// Compute indices from the modelValue
 const currentHourIndex = computed(() =>
   props.modelValue ? props.modelValue.getHours() : new Date().getHours(),
 )
@@ -60,12 +57,9 @@ const currentMinuteIndex = computed(() =>
   props.modelValue ? props.modelValue.getMinutes() : new Date().getMinutes(),
 )
 
-// Helper to create a new Date object based on the current modelValue
 const getNewDate = () => {
   return props.modelValue ? new Date(props.modelValue) : new Date()
 }
-
-// --- Handlers ---
 
 const handleHourUpdate = (newIndex: number) => {
   const newDate = getNewDate()
@@ -93,11 +87,13 @@ const handleMinuteUpdate = (newIndex: number) => {
   .picker-container {
     display: flex;
     height: 160px;
+    /* Solid Background */
     background: var(--ui-background);
     border-radius: var(--radius-medium);
     overflow: hidden;
     position: relative;
     margin: 0 auto;
+    border: 1px solid var(--border-color);
   }
   .highlight {
     position: absolute;
@@ -109,8 +105,6 @@ const handleMinuteUpdate = (newIndex: number) => {
     transform: translateY(-50%);
     pointer-events: none;
     z-index: 10;
-    border-top: 0.5px solid rgba(0, 0, 0, 0.05);
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
   }
 }
 </style>

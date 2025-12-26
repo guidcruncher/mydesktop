@@ -443,18 +443,14 @@ onUnmounted(() => {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
     &.active {
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(0, 0, 0, 0.95); /* Solid Opaque Black */
       opacity: 1;
       visibility: visible;
     }
 
     .viewer-header {
       z-index: 10;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(40px) saturate(180%);
-      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      background: #1a1a1a; /* Solid */
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding: 16px 24px;
       display: flex;
@@ -492,9 +488,7 @@ onUnmounted(() => {
     .control-btn {
       width: 36px;
       height: 36px;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: #333333; /* Solid */
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 4px; // Matches UIDropDownTrigger
       cursor: pointer;
@@ -506,7 +500,7 @@ onUnmounted(() => {
       font-size: 18px;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: #444444;
         transform: scale(1.05);
       }
 
@@ -515,15 +509,15 @@ onUnmounted(() => {
       }
 
       &.active {
-        background: rgba(255, 255, 255, 0.25);
+        background: #555555;
         border-color: rgba(255, 255, 255, 0.3);
       }
 
       &.close-btn {
-        background: rgba(255, 59, 48, 0.8);
-        border-color: rgba(255, 59, 48, 0.5);
+        background: #d32f2f; /* Solid Red */
+        border-color: #b71c1c;
         &:hover {
-          background: rgba(255, 59, 48, 1);
+          background: #f44336;
         }
       }
     }
@@ -565,10 +559,10 @@ onUnmounted(() => {
           background: rgba(255, 255, 255, 0.05);
         }
         &::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.2);
+          background: #555;
           border-radius: 4px;
           &:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: #777;
           }
         }
       }
@@ -600,9 +594,7 @@ onUnmounted(() => {
     }
 
     .viewer-footer {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(40px) saturate(180%);
-      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      background: #1a1a1a; /* Solid */
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       padding: 16px 24px;
       display: flex;
@@ -623,7 +615,7 @@ onUnmounted(() => {
     }
 
     .mode-indicator {
-      background: rgba(255, 255, 255, 0.12);
+      background: #333333;
       padding: 6px 12px;
       border-radius: 6px;
       font-size: 12px;

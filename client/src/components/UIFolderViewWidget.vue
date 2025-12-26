@@ -68,10 +68,8 @@ const closeFolder = () => {
   height: 100vh;
   z-index: 9999;
 
-  /* Background Blur & Color from Variables */
+  /* Solid Dimmed Background */
   background-color: var(--modal-overlay-bg);
-  backdrop-filter: blur(var(--modal-overlay-bg-blur));
-  -webkit-backdrop-filter: blur(var(--modal-overlay-bg-blur));
 
   /* Center the folder in the middle of the screen */
   display: flex;

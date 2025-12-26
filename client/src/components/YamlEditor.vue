@@ -1,5 +1,49 @@
+<template>
+  <div class="yaml-editor">
+    <div class="ymledit-toolbar">
+      <div class="status-indicator">
+        <span class="status-dot" :class="isValid ? 'status-valid' : 'status-error'"></span>
+        <span v-if="isValid">Valid YAML</span>
+        <span v-else>Invalid YAML</span>
+      </div>
+      <div class="toolbar-actions">
+        <button class="toolbar-btn" @click="copyToClipboard" title="Copy">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="editor-container">
+      <div class="gutter" ref="gutterRef">
+        <div v-for="line in lineCount" :key="line" class="line-num">
+          {{ line }}
+        </div>
+      </div>
+
+      <div class="code-area">
+        <pre class="highlight-layer" aria-hidden="true"><code v-html="highlightedCode"></code></pre>
+
+        <textarea
+          ref="editorRef"
+          v-model="editorValue"
+          class="input-layer"
+          @input="handleInput"
+          @scroll="syncScroll"
+          @keydown.tab.prevent="insertTab"
+          spellcheck="false"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="ymledit-status-bar">
+      <span>{{ cursorPos }}</span>
+      <span v-if="errorMessage" class="error-msg">{{ errorMessage }}</span>
+    </div>
+  </div>
+</template>
+
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import yaml from 'js-yaml'
 import hljs from 'highlight.js/lib/core'
 import yamlLang from 'highlight.js/lib/languages/yaml'
@@ -25,9 +69,11 @@ const cursorPos = ref('Ln 1, Col 1')
 
 // Refs to DOM elements
 const editorRef = ref(null)
-const highlightRef = ref(null)
-const scrollViewRef = ref(null)
 const gutterRef = ref(null)
+
+const lineCount = computed(() => {
+  return editorValue.value.split('\n').length
+})
 
 // -- Core Logic --
 
@@ -47,417 +93,228 @@ const validateAndEmit = (val) => {
     isValid.value = false
     // Extract first line of error for brevity
     errorMessage.value = e.message ? e.message.split('\n')[0] : 'Invalid YAML'
-    emit('validation-change', { isValid: false, error: errorMessage.value })
+    emit('validation-change', { isValid: false, error: e.message })
   }
 }
 
-const updateHighlighting = () => {
+const highlight = () => {
   if (!editorValue.value) {
     highlightedCode.value = ''
-    syncHeight() // Ensure height syncs even on empty
     return
   }
-
-  // Add a space if ends in newline to preserve visual height
-  let codeToHighlight = editorValue.value
-  if (codeToHighlight.endsWith('\n')) {
-    codeToHighlight += ' '
-  }
-
-  const result = hljs.highlight(codeToHighlight, { language: 'yaml' })
+  const result = hljs.highlight(editorValue.value, { language: 'yaml' })
   highlightedCode.value = result.value
-
-  syncHeight()
-}
-
-const syncHeight = async () => {
-  await nextTick()
-  if (editorRef.value && highlightRef.value) {
-    // FIX: Reset height to 'auto' first so it can shrink if lines are deleted
-    editorRef.value.style.height = 'auto'
-    highlightRef.value.parentElement.style.height = 'auto'
-
-    // Now measure the true scrollHeight
-    const height = editorRef.value.scrollHeight + 'px'
-
-    // Apply new height
-    editorRef.value.style.height = height
-    highlightRef.value.parentElement.style.height = height
-  }
 }
 
 const handleInput = (e) => {
   const val = e.target.value
   editorValue.value = val
+  highlight()
   validateAndEmit(val)
-  updateHighlighting()
+  updateCursor(e)
 }
 
-// -- Scroll & Cursor Sync --
+const insertTab = (e) => {
+  const start = e.target.selectionStart
+  const end = e.target.selectionEnd
+  const val = editorValue.value
 
-const handleScroll = () => {
-  if (scrollViewRef.value && gutterRef.value) {
-    gutterRef.value.scrollTop = scrollViewRef.value.scrollTop
+  // Insert 2 spaces for YAML
+  editorValue.value = val.substring(0, start) + '  ' + val.substring(end)
+
+  nextTick(() => {
+    e.target.selectionStart = e.target.selectionEnd = start + 2
+    highlight()
+  })
+}
+
+const syncScroll = (e) => {
+  // Sync highlight layer scroll
+  const highlightLayer = e.target.previousElementSibling
+  if (highlightLayer) {
+    highlightLayer.scrollTop = e.target.scrollTop
+    highlightLayer.scrollLeft = e.target.scrollLeft
+  }
+  // Sync Gutter
+  if (gutterRef.value) {
+    gutterRef.value.scrollTop = e.target.scrollTop
   }
 }
 
-const updateCursorPos = () => {
-  if (!editorRef.value) return
-
-  const text = editorValue.value
-  const pos = editorRef.value.selectionStart
-  const sub = text.substring(0, pos)
-  const lines = sub.split('\n')
-  const row = lines.length
+const updateCursor = (e) => {
+  const val = editorValue.value.substring(0, e.target.selectionStart)
+  const lines = val.split('\n')
+  const line = lines.length
   const col = lines[lines.length - 1].length + 1
-
-  cursorPos.value = `Ln ${row}, Col ${col}`
+  cursorPos.value = `Ln ${line}, Col ${col}`
 }
 
-// -- Keyboard Handling --
-
-const handleKeydown = (e) => {
-  // Tab handling now uses the shared insertText function
-  if (e.key === 'Tab') {
-    e.preventDefault()
-    insertText('  ')
-  }
-}
-
-// -- Actions --
-
-const formatYaml = () => {
-  try {
-    const obj = yaml.load(editorValue.value)
-    const formatted = yaml.dump(obj, { indent: 2, lineWidth: -1 })
-    editorValue.value = formatted
-    validateAndEmit(formatted)
-    updateHighlighting()
-  } catch (e) {
-    alert('Cannot format invalid YAML. Please fix errors first.')
-  }
-}
-
-const copyContent = () => {
+const copyToClipboard = () => {
   navigator.clipboard.writeText(editorValue.value)
 }
 
-// -- Watchers & Lifecycle --
-
-// Sync from parent prop to local state
 watch(
   () => props.modelValue,
   (newVal) => {
     if (newVal !== editorValue.value) {
       editorValue.value = newVal
-      validateAndEmit(newVal)
-      updateHighlighting()
+      highlight()
     }
   },
 )
 
 onMounted(() => {
-  validateAndEmit(editorValue.value)
-  updateHighlighting()
-})
-
-// Computed for line numbers
-const lineNumbers = ref([1])
-
-// FIX: Added { immediate: true } so line numbers generate on load
-watch(
-  editorValue,
-  (newVal) => {
-    const lines = newVal.split('\n').length
-    lineNumbers.value = Array.from({ length: lines }, (_, i) => i + 1)
-  },
-  { immediate: true },
-)
-
-const insertText = (text) => {
-  if (!editorRef.value) return
-
-  const start = editorRef.value.selectionStart
-  const end = editorRef.value.selectionEnd
-
-  // Slice current value around insertion point
-  const val = editorValue.value
-  const newVal = val.substring(0, start) + text + val.substring(end)
-
-  // Update State
-  editorValue.value = newVal
-  validateAndEmit(newVal)
-  updateHighlighting()
-
-  // Move cursor to end of inserted text
-  nextTick(() => {
-    const newPos = start + text.length
-    editorRef.value.focus()
-    editorRef.value.selectionStart = newPos
-    editorRef.value.selectionEnd = newPos
-    updateCursorPos()
-  })
-}
-
-const pasteContent = async () => {
-  try {
-    const text = await navigator.clipboard.readText()
-    if (text) {
-      insertText(text)
-    }
-  } catch (err) {
-    console.error('Failed to read clipboard:', err)
+  highlight()
+  // Add listeners for cursor tracking
+  if (editorRef.value) {
+    editorRef.value.addEventListener('click', updateCursor)
+    editorRef.value.addEventListener('keyup', updateCursor)
   }
-}
+})
 </script>
 
-<template>
-  <div class="ymledit-container">
-    <div class="ymledit-toolbar">
-      <div class="ymledit-title">
-        <slot name="title">Editor</slot>
-      </div>
-      <div class="ymledit-actions">
-        <button class="ymledit-btn" @click="formatYaml" title="Format Document">Format</button>
-        <button class="ymledit-btn" @click="copyContent">Copy</button>
-        <button class="ymledit-btn" @click="pasteContent" title="Paste from Clipboard">
-          Paste
-        </button>
-      </div>
-    </div>
-
-    <div class="ymledit-main">
-      <div class="ymledit-gutter" ref="gutterRef">
-        <div v-for="n in lineNumbers" :key="n">{{ n }}</div>
-      </div>
-
-      <div class="ymledit-scroll-view" ref="scrollViewRef" @scroll="handleScroll">
-        <pre class="ymledit-highlight"><code 
-          ref="highlightRef" 
-          v-html="highlightedCode" 
-          class="language-yaml"
-        ></code></pre>
-
-        <textarea
-          ref="editorRef"
-          class="ymledit-editor"
-          v-model="editorValue"
-          @input="handleInput"
-          @keydown="handleKeydown"
-          @keyup="updateCursorPos"
-          @click="updateCursorPos"
-          spellcheck="false"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-        ></textarea>
-      </div>
-    </div>
-
-    <div class="ymledit-status-bar">
-      <div class="status-indicator" :class="isValid ? 'status-valid' : 'status-error'">
-        <span class="status-dot"></span>
-        {{ isValid ? 'Valid YAML' : errorMessage }}
-      </div>
-      <div class="status-pos">{{ cursorPos }}</div>
-    </div>
-  </div>
-</template>
-
 <style lang="scss" scoped>
-/* Scoped Styles */
-
-.ymledit-container {
-  /* Layout Variables */
-  /* We use a specific stack and force the font size/line-height to be pixels 
-     to avoid browser rounding errors (sub-pixel rendering) */
-  --ymledit-font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  --ymledit-font-size: 14px;
-  --ymledit-line-height: 21px; /* Fixed pixel height is crucial for alignment */
-  --ymledit-padding: 15px;
-
+.yaml-editor {
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
+  min-height: 300px;
   background-color: var(--ymledit-bg);
   border: 1px solid var(--ymledit-border);
   border-radius: 6px;
   overflow: hidden;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
 }
 
 /* --- Toolbar --- */
 .ymledit-toolbar {
-  padding: 8px 12px;
+  height: 36px;
+  /* Solid Background */
   background-color: var(--ymledit-toolbar-bg);
   border-bottom: 1px solid var(--ymledit-border);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-shrink: 0;
+  justify-content: space-between;
+  padding: 0 12px;
 }
 
-.ymledit-title {
-  font-weight: 600;
-  font-size: 13px;
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
   color: var(--ymledit-fg);
 }
 
-.ymledit-actions {
-  display: flex;
-  gap: 8px;
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.status-valid {
+  background-color: var(--ymledit-status-ok-bg);
+}
+.status-error {
+  background-color: var(--ymledit-status-err-bg);
 }
 
-.ymledit-btn {
-  background-color: var(--ymledit-toolbar-btn-bg);
+.toolbar-btn {
+  background: var(--ymledit-toolbar-btn-bg);
   border: 1px solid var(--ymledit-toolbar-btn-border);
   color: var(--ymledit-fg);
-  padding: 4px 10px;
   border-radius: 4px;
+  padding: 4px 8px;
   cursor: pointer;
   font-size: 12px;
-  font-weight: 500;
+  transition: background 0.2s;
 }
-.ymledit-btn:hover {
-  background-color: var(--ymledit-toolbar-btn-hover);
+.toolbar-btn:hover {
+  background: var(--ymledit-toolbar-btn-hover);
 }
 
-/* --- Main Editor Area --- */
-.ymledit-main {
+/* --- Editor Container --- */
+.editor-container {
   flex: 1;
-  position: relative;
   display: flex;
+  position: relative;
   overflow: hidden;
 }
 
-.ymledit-gutter {
-  width: 45px;
+.gutter {
+  width: 40px;
   background-color: var(--ymledit-gutter-bg);
   color: var(--ymledit-gutter-fg);
-  text-align: right;
-  padding: var(--ymledit-padding) 8px var(--ymledit-padding) 0;
-  font-family: var(--ymledit-font-family);
-  font-size: var(--ymledit-font-size);
-  line-height: var(--ymledit-line-height);
-  user-select: none;
   border-right: 1px solid var(--ymledit-border);
+  padding: 10px 0;
+  text-align: right;
+  font-size: 12px;
+  line-height: 1.5;
   overflow: hidden;
+  user-select: none;
 }
 
-.ymledit-scroll-view {
+.line-num {
+  padding-right: 8px;
+}
+
+.code-area {
   flex: 1;
   position: relative;
-  overflow: auto;
-  background-color: var(--ymledit-bg);
 }
 
-/* --- The Core Alignment Fix --- */
-
-/* 1. Shared Base Styles for both layers */
-.ymledit-editor,
-.ymledit-highlight {
+.highlight-layer,
+.input-layer {
   position: absolute;
   top: 0;
   left: 0;
-  margin: 0;
-  border: none;
-  padding: var(--ymledit-padding);
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 10px;
+  border: none;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.5;
   box-sizing: border-box;
-
-  /* Font Geometry - Must be identical */
-  font-family: var(--ymledit-font-family) !important; /* Force override user agent */
-  font-size: var(--ymledit-font-size) !important;
-  line-height: var(--ymledit-line-height) !important;
-  letter-spacing: 0px;
-  word-spacing: 0px;
-
-  /* Rendering - Must be identical to prevent width drift */
-  tab-size: 2;
   white-space: pre;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased; /* Ensure both layers render font weight the same */
-  -moz-osx-font-smoothing: grayscale;
+  overflow: auto;
 }
 
-/* 2. Highlight Layer Specifics */
-.ymledit-highlight {
+.highlight-layer {
   z-index: 1;
-  color: var(--ymledit-fg);
   pointer-events: none;
+  color: var(--ymledit-fg);
 }
 
-/* 3. Textarea Layer Specifics */
-.ymledit-editor {
+.input-layer {
   z-index: 2;
-  color: transparent; /* Hide text, show cursor */
+  color: transparent;
   background: transparent;
   caret-color: var(--ymledit-caret);
   resize: none;
   outline: none;
 }
-.ymledit-editor::selection {
-  background: var(--ymledit-selection);
-  color: transparent;
-}
-
-/* 4. RESET Highlight.js inner code element 
-   (Crucial: browsers often add padding/margin/font changes to <code> tags) */
-.ymledit-highlight code {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  padding: 0;
-  margin: 0;
-  white-space: pre;
-}
 
 /* --- Status Bar --- */
 .ymledit-status-bar {
-  padding: 4px 12px;
+  height: 24px;
+  background-color: var(--ymledit-toolbar-bg);
   border-top: 1px solid var(--ymledit-border);
-  font-size: 12px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ymledit-fg);
+  font-size: 11px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background-color: var(--ymledit-gutter-bg);
-  color: var(--ymledit-fg);
-  height: 28px;
-  flex-shrink: 0;
+  padding: 0 12px;
+  gap: 12px;
 }
 
-.status-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 11px;
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: currentColor;
-}
-
-.status-valid {
-  background-color: var(--ymledit-status-ok-bg);
-  color: var(--ymledit-status-ok-fg);
-}
-.status-error {
-  background-color: var(--ymledit-status-err-bg);
+.error-msg {
   color: var(--ymledit-status-err-fg);
 }
 
-/* Syntax Highlighting */
+/* Syntax Highlighting Colors (Mapped to Vars) */
 :deep(.hljs-attr) {
   color: var(--ymledit-syntax-key);
-  font-weight: 600;
 }
 :deep(.hljs-string) {
   color: var(--ymledit-syntax-string);
@@ -465,20 +322,11 @@ const pasteContent = async () => {
 :deep(.hljs-number) {
   color: var(--ymledit-syntax-value);
 }
-:deep(.hljs-comment) {
-  color: var(--ymledit-syntax-comment);
-  font-style: italic;
-}
 :deep(.hljs-literal) {
   color: var(--ymledit-syntax-keyword);
 }
-:deep(.hljs-bullet) {
-  color: var(--ymledit-syntax-keyword);
-}
-:deep(.hljs-meta) {
-  color: var(--ymledit-syntax-meta);
-}
-:deep(.hljs-variable) {
-  color: var(--ymledit-syntax-string);
+:deep(.hljs-comment) {
+  color: var(--ymledit-syntax-comment);
+  font-style: italic;
 }
 </style>

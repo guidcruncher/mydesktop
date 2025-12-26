@@ -14,6 +14,12 @@ const apply = (el, binding, API_BASE_URL) => {
     return
   }
   const config = binding.value
+  if (config.framework) {
+    document.body.dataset.framework = config.framework
+  } else {
+    document.body.dataset.framework = 'vision'
+  }
+
   if (!config.style) {
     return
   }

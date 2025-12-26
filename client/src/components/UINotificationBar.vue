@@ -1,5 +1,5 @@
 <template>
-  <div class="apple-notification">
+  <div class="apple-notification surface">
     <div class="notification-content">
       <span class="icon-placeholder">🔔</span>
 
@@ -18,7 +18,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 
-// 1. Props Definition
 const props = defineProps({
   title: {
     type: String,
@@ -34,19 +33,15 @@ const props = defineProps({
   },
 })
 
-// 3. Close/Visibility Logic
 const emit = defineEmits(['close', 'update:modelValue'])
 
 const closeNotification = () => {
-  // Emit 'close' for custom handling
   emit('close')
-  // Emit 'update:modelValue' for v-model compatibility
   emit('update:modelValue', false)
 }
 </script>
 
 <style lang="scss">
-// 3. Component Styling
 .apple-notification {
   display: flex;
   justify-content: space-between;
@@ -54,23 +49,17 @@ const closeNotification = () => {
   padding: 10px 15px;
   z-index: 9000;
 
-  // Apply CSS variables for dynamic coloring
+  /* Solid Background */
   background-color: var(--notify-bg-color);
   color: var(--notify-text-color-primary);
 
-  // Apple-like styling: Rounded corners, slight border, shadow
   border-radius: var(--radius-medium);
   border: 1px solid var(--notify-border-color);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 
-  // Key for the translucent Apple look
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); // For Safari compatibility
-
   width: 100%;
   max-width: 350px;
 
-  // Font stack resembling the Apple UI
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
@@ -112,7 +101,7 @@ const closeNotification = () => {
     color: var(--notify-close-btn-color);
     padding: 0;
     margin-left: 10px;
-    opacity: 0.7; // Slightly faded close icon
+    opacity: 0.7;
 
     &:hover {
       opacity: 1;

@@ -69,7 +69,6 @@ onUnmounted(() => {
 <template>
   <div class="mnu-root">
     <nav class="mnu-navbar">
-      <!-- Slot 1: Menus Origin Left (Prop-driven) -->
       <div class="mnu-section mnu-left">
         <div
           v-for="(section, idx) in menu"
@@ -79,7 +78,6 @@ onUnmounted(() => {
           @click="toggleMenu(idx, $event)"
           @mouseenter="handleMouseEnter(idx)"
         >
-          <!-- Label or Apple Logo -->
           <template v-if="section.isLogo">
             <svg class="mnu-apple-svg" viewBox="0 0 24 24" fill="currentColor">
               <path
@@ -91,9 +89,8 @@ onUnmounted(() => {
             {{ section.label }}
           </template>
 
-          <!-- Dropdown -->
           <Transition name="mnu-dropdown-fade">
-            <div v-if="activeIndex === idx" class="mnu-dropdown" @click.stop>
+            <div v-if="activeIndex === idx" class="mnu-dropdown surface" @click.stop>
               <template v-for="(item, i) in section.items" :key="item.id || i">
                 <div v-if="item.type === 'separator'" class="mnu-separator" />
                 <div
@@ -111,17 +108,14 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- Slot 2: App Title (Center Slot) -->
       <div class="mnu-section mnu-center">
         <slot name="app-title">
           <span class="mnu-default-title">Untitled App</span>
         </slot>
       </div>
 
-      <!-- Slot 3: Right Toolbar (Right Slot) -->
       <div class="mnu-section mnu-right">
         <slot name="right-toolbar">
-          <!-- Default content if no slot provided -->
           <div class="mnu-default-status">
             <span class="mnu-time">8:20 PM</span>
           </div>
@@ -134,7 +128,6 @@ onUnmounted(() => {
 <style scoped>
 /* Base Variables - Light Mode */
 .mnu-root {
-  --mnu-blur: 20px;
   --mnu-font: var(--font-family);
 
   font-family: var(--mnu-font);
@@ -152,8 +145,6 @@ onUnmounted(() => {
   align-items: center;
   padding: 0 16px;
   background: var(--mnu-bg);
-  backdrop-filter: blur(var(--mnu-blur));
-  -webkit-backdrop-filter: blur(var(--mnu-blur));
   border-bottom: 1px solid var(--mnu-border);
   z-index: 7999;
   user-select: none;
@@ -208,8 +199,6 @@ onUnmounted(() => {
   left: 0;
   min-width: 240px;
   background: var(--mnu-bg);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
   border: 1px solid var(--mnu-border);
   border-radius: 12px;
   box-shadow: var(--mnu-shadow);

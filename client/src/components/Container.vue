@@ -45,6 +45,6 @@ body {
   width: 100vw;
   height: 100%;
   padding-bottom: 120px;
-  padding-top:53px;
+  padding-top: 53px;
 }
 </style>

@@ -15,7 +15,6 @@ interface Props {
   placeholder?: string
   rows?: number | string
   modelValue: string
-  /** New: Controls the disabled state of the textarea */
   disabled?: boolean
 }
 
@@ -29,7 +28,6 @@ const emit = defineEmits(['update:modelValue'])
 
 const handleInput = (event: Event) => {
   const target = event.target as HTMLTextAreaElement
-  // Guard against input when disabled
   if (!props.disabled) {
     emit('update:modelValue', target.value)
   }
@@ -42,10 +40,9 @@ const handleInput = (event: Event) => {
   width: 100%;
   padding: 10px 0;
 
-  // NEW: Disabled State Styling
   &.disabled {
     opacity: 0.6;
-    pointer-events: none; /* Block interaction */
+    pointer-events: none;
     cursor: not-allowed;
   }
 
@@ -61,16 +58,13 @@ const handleInput = (event: Event) => {
     font-family: inherit;
     line-height: 1.4;
 
-    // Native disabled styling override
     &:disabled {
-      color: var(--ui-text-secondary); /* Use secondary text color when disabled */
-      -webkit-text-fill-color: var(--ui-text-secondary); /* Safari fix */
-      opacity: 1; /* Reset native opacity if applied, let wrapper handle it */
+      color: var(--ui-text-secondary);
     }
-  }
 
-  textarea::placeholder {
-    color: var(--ui-text-tertiary);
+    &::placeholder {
+      color: var(--ui-text-secondary);
+    }
   }
 }
 </style>

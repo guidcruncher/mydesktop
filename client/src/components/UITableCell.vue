@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import IconView from '@/components/IconView.vue'
-import UISwitch from '@/components/UISwitch.vue' // Need to define this one too
+import UISwitch from '@/components/UISwitch.vue'
 
 type Accessory = 'chevron' | 'detail' | 'none'
 type CellType = 'default' | 'switch' | 'input'
@@ -45,20 +45,16 @@ const props = withDefaults(defineProps<Props>(), {
   switchState: 'off',
 })
 
-// For switch: manage its state internally, or use v-model if it were more complex
 const initialSwitchState = ref(props.switchState === 'on')
 
-const handleSwitchChange = (newState: boolean) => {
-  initialSwitchState.value = newState
-  // Emit event if parent component needs to react
-  // emit('switchChange', newState);
+const handleSwitchChange = (val: boolean) => {
+  initialSwitchState.value = val
 }
 
 const getAccessoryIcon = (acc: Accessory): string => {
   switch (acc) {
     case 'chevron':
       return 'chevron'
-    // Add other accessory icons here if needed
     default:
       return ''
   }
@@ -71,12 +67,10 @@ const getAccessoryIcon = (acc: Accessory): string => {
   align-items: center;
   padding: 12px 16px;
   min-height: 48px;
+  /* Solid Background */
   background: var(--ui-card-bg);
   border-bottom: 0.5px solid var(--ui-separator);
   font-size: 17px;
-
-  // The parent (UITableView) handles the first/last-child logic to clear borders,
-  // but we keep the separator here for general use.
 
   &:last-child {
     border-bottom: none;
@@ -110,24 +104,15 @@ const getAccessoryIcon = (acc: Accessory): string => {
     flex: 1;
     text-align: right;
     color: var(--ui-text-secondary);
-    margin-right: 8px;
-  }
-
-  // Slot content needs to be flexible to hold TextFields, TextViews, etc.
-  :deep(slot[name='custom-content']) {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__accessory {
+    margin-left: 10px;
     color: var(--ui-text-tertiary);
-    width: 14px;
-    height: 14px;
-    fill: currentColor;
-    opacity: 0.6;
-    margin-left: 8px;
+    font-size: 14px;
   }
 }
 </style>

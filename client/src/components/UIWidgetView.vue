@@ -1,6 +1,6 @@
 <template>
   <div class="widget-container">
-    <div class="ui-widget">
+    <div class="ui-widget surface">
       <slot></slot>
     </div>
   </div>
@@ -21,8 +21,7 @@ import { ref } from 'vue'
 
 /* Widget */
 .ui-widget {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  /* Removed Glassmorphism (backdrop-filter) */
   border-radius: 28px;
   padding: 12px;
   display: flex;
@@ -32,16 +31,17 @@ import { ref } from 'vue'
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
-  /* Use the variables defined in the theme class */
+
+  /* Solid Background Variable */
   background: var(--bg-widget);
   box-shadow: var(--shadow-base);
-  border: var(--border-color);
+  border: var(--border-color-widget);
 }
 
-/* Widget Interaction Styles (Also using variables) */
+/* Widget Interaction Styles */
 .ui-widget:hover {
   transform: scale(1.02);
-  box-shadow: var(--shadow-hover); /* Only the box-shadow changes on hover */
+  box-shadow: var(--shadow-hover);
 }
 
 .ui-widget:active {

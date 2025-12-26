@@ -130,51 +130,19 @@ onMounted(() => {})
   color: var(--ui-text-primary);
 }
 
-/* Ambient Background */
-.cal-ambient-light {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, var(--cal-accent-color) 0%, transparent 70%);
-  opacity: 0.2;
-  top: -150px;
-  left: -150px;
-  z-index: 0;
-  filter: blur(80px);
-  animation: cal-float 20s infinite ease-in-out;
-}
-
-.cal-ambient-light:nth-child(2) {
-  top: auto;
-  bottom: -150px;
-  left: auto;
-  right: -150px;
-  background: radial-gradient(circle, var(--cal-accent-secondary) 0%, transparent 70%);
-  animation-delay: -10s;
-}
-
-@keyframes cal-float {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(30px, 30px);
-  }
-}
-
-/* Widget Container */
+/* Widget Container - De-glassed */
 .cal-widget {
   position: relative;
   z-index: 1;
   width: 170px;
   height: 170px;
+
+  /* Solid Background */
   background: var(--cal-bg-widget);
-  backdrop-filter: blur(var(--cal-blur-strength));
-  -webkit-backdrop-filter: blur(var(--cal-blur-strength));
-  box-shadow: var(--cal-shadow);
   border: 1px solid var(--cal-bg-widget-border);
+  box-shadow: var(--cal-shadow);
   border-radius: var(--cal-border-radius);
+
   padding: 12px 10px;
   display: flex;
   flex-direction: column;
@@ -315,9 +283,11 @@ onMounted(() => {})
   width: 40px;
   height: 40px;
   border-radius: 50%;
+
+  /* Solid Background */
   background: var(--cal-bg-widget);
-  backdrop-filter: blur(20px);
   border: 1px solid var(--cal-bg-widget-border);
+
   color: var(--ui-text-primary);
   display: flex;
   justify-content: center;

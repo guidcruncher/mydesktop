@@ -3,7 +3,7 @@
     <transition name="fade">
       <div v-if="isVisible" class="overlay">
         <transition name="pop">
-          <div v-if="isVisible" class="ui-alert__dialog">
+          <div v-if="isVisible" class="ui-alert__dialog surface">
             <div class="content">
               <h3 v-if="title" class="title">{{ title }}</h3>
               <p v-if="message" class="message">{{ message }}</p>
@@ -86,18 +86,29 @@ const handleActionClick = (index: number, handler?: UIAlertActionHandler) => {
 </script>
 
 <style lang="scss" scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--modal-overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
 .ui-alert__dialog {
   max-width: 270px;
   width: 100%;
   border-radius: 14px;
   overflow: hidden;
 
-  // The Alert Glass Effect (simulating UIVisualEffectView)
-  background: var(--glass-bg);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  // Solid Background
+  background: var(--ui-card-bg);
+  border: 1px solid var(--border-color);
 
-  // No border needed here, separation is done by the action row borders
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 
   .content {

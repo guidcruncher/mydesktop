@@ -1,5 +1,5 @@
 <template>
-  <div class="ui-toolbar">
+  <div class="ui-toolbar surface">
     <slot></slot>
   </div>
 </template>
@@ -19,13 +19,11 @@
   padding: 0 16px;
   gap: 10px;
 
-  // Liquid Glass Effect
-  background: var(--glass-bg);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border-top: 1px solid var(--glass-border);
+  /* Solid Background - Removed Glass/Blur */
+  background: var(--ui-background);
+  border-top: 1px solid var(--border-color);
 
-  // Position it just above the TabBar for the demo's flow
+  /* Position it just above the TabBar if used in layout */
   margin-top: 20px;
 }
 </style>

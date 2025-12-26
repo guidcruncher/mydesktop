@@ -1,7 +1,6 @@
 <template>
   <div class="stocks-widget-wrapper">
-    <div class="stocks-widget">
-      <!-- Header -->
+    <div class="stocks-widget surface">
       <div class="stocks-header">
         <div class="stocks-title-group">
           <span class="stocks-label-sm">{{ currentDate }}</span>
@@ -12,7 +11,6 @@
         </div>
       </div>
 
-      <!-- List Container -->
       <div class="stocks-scroll-area">
         <div
           v-for="(item, index) in filteredStocks"
@@ -20,18 +18,15 @@
           class="stocks-item stocks-animate-entry"
           :style="{ animationDelay: `${index * 50}ms` }"
         >
-          <!-- Icon -->
           <div :class="['stocks-icon', item.color]">
             {{ getIconLabel(item) }}
           </div>
 
-          <!-- Info -->
           <div class="stocks-info">
             <div class="stocks-symbol">{{ item.displayId }}</div>
             <div class="stocks-name">{{ item.name }}</div>
           </div>
 
-          <!-- Sparkline -->
           <div class="stocks-chart-container">
             <svg
               class="stocks-sparkline"
@@ -43,7 +38,6 @@
             </svg>
           </div>
 
-          <!-- Price -->
           <div class="stocks-price-group">
             <div class="stocks-current-price">
               {{ formatPrice(item.price, item.type) }}
@@ -58,10 +52,6 @@
         </div>
       </div>
 
-      <!-- Footer Spacer -->
-      <div style="height: 80px"></div>
-
-      <!-- Footer Filters -->
       <div class="stocks-footer">
         <button
           v-for="filter in filters"
@@ -120,8 +110,6 @@ const filters = [
 ]
 
 // --- Initialization Logic ---
-
-// Helper to determine metadata from raw symbol string
 function parseSymbol(rawSymbol) {
   let type = 'stock'
   let displayId = rawSymbol
@@ -130,12 +118,9 @@ function parseSymbol(rawSymbol) {
 
   if (rawSymbol.includes('BINANCE:') || rawSymbol.includes('COINBASE:')) {
     type = 'crypto'
-    // Remove prefix e.g., BINANCE:BTCUSDT -> BTCUSDT
     const clean = rawSymbol.split(':')[1]
-    // Guess base currency for display e.g. BTC
     displayId = clean.replace('USDT', '').replace('USD', '')
     name = `${displayId}/USD`
-    // Color logic
     if (displayId === 'BTC') color = 'stocks-bg-orange'
     else if (displayId === 'ETH') color = 'stocks-bg-purple'
     else color = 'stocks-bg-black'
@@ -146,15 +131,14 @@ function parseSymbol(rawSymbol) {
     name = displayId
     color = 'stocks-bg-blue'
   } else {
-    // Default to Stock
     type = 'stock'
     displayId = rawSymbol
-    name = rawSymbol // Will be updated by profile fetch
+    name = rawSymbol
     color = 'stocks-bg-black'
   }
 
   return {
-    symbol: rawSymbol, // Keep raw for API calls
+    symbol: rawSymbol,
     displayId,
     name,
     type,
@@ -164,7 +148,6 @@ function parseSymbol(rawSymbol) {
   }
 }
 
-// Initialize internal state from props
 function initStocks() {
   stocksData.value = props.symbols.map((s) => parseSymbol(s))
 }
@@ -181,7 +164,6 @@ const currentDate = computed(() => {
 })
 
 // --- Methods ---
-
 function getIconLabel(item) {
   if (item.type === 'crypto' || item.type === 'forex') {
     return item.displayId.substring(0, 1)
@@ -221,14 +203,9 @@ function generateSparkline(trendPercent) {
 }
 
 // --- API Calls ---
-
-// 1. Fetch Company Profiles (Runs once to get proper Names for Stocks)
 async function fetchProfiles() {
   if (!props.apiKey) return
-
   const stockItems = stocksData.value.filter((item) => item.type === 'stock')
-
-  // We process sequentially to be gentle on rate limits even though profile calls are cheap
   for (const item of stockItems) {
     try {
       const response = await fetch(
@@ -240,12 +217,11 @@ async function fetchProfiles() {
         item.name = data.name
       }
     } catch (e) {
-      // Silent fail, keep default name
+      // Silent fail
     }
   }
 }
 
-// 2. Fetch Quotes (Runs on interval)
 async function fetchQuotes() {
   if (!props.apiKey) {
     console.warn('MarketWidget: No API Key provided')
@@ -259,11 +235,10 @@ async function fetchQuotes() {
         `https://finnhub.io/api/v1/quote?symbol=${item.symbol}&token=${props.apiKey}`,
       )
       if (!response.ok) return
-
       const data = await response.json()
       if (data.c) {
         item.price = data.c
-        item.change = data.dp // dp is percent change in Finnhub
+        item.change = data.dp
       }
     } catch (error) {
       console.warn(`Failed to fetch quote for ${item.symbol}`, error)
@@ -279,19 +254,13 @@ function startTimer() {
   intervalId = setInterval(fetchQuotes, props.updateInterval)
 }
 
-// --- Lifecycle ---
 onMounted(async () => {
   initStocks()
-
-  // 3. Initial Fetches
-  await fetchQuotes() // Get numbers first (most important)
-  fetchProfiles() // Get names in background (less critical)
-
-  // 4. Start Timer
+  await fetchQuotes()
+  fetchProfiles()
   startTimer()
 })
 
-// Watch for prop changes
 watch(() => props.updateInterval, startTimer)
 watch(
   () => props.symbols,
@@ -309,7 +278,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-/* Global Theme Variables */
 :root {
   --stocks-color-green: #30d158;
   --stocks-color-red: #ff453a;
@@ -323,8 +291,6 @@ onUnmounted(() => {
 </style>
 
 <style lang="scss" scoped>
-/* Component Scoped Styles */
-
 .stocks-widget-wrapper {
   display: flex;
   justify-content: center;
@@ -336,9 +302,10 @@ onUnmounted(() => {
 .stocks-widget {
   width: 380px;
   height: 600px;
+
+  /* Solid Background */
   background: var(--stocks-bg-widget);
-  backdrop-filter: var(--stocks-blur);
-  -webkit-backdrop-filter: var(--stocks-blur);
+
   border-radius: var(--stocks-radius-lg);
   border: 1px solid var(--stocks-border-subtle);
   box-shadow: var(--stocks-shadow);
@@ -404,37 +371,11 @@ onUnmounted(() => {
   opacity: 1;
 }
 
-/* Theme Toggle */
-.stocks-theme-switch {
-  width: 44px;
-  height: 24px;
-  background: var(--stocks-bg-pill);
-  border: none;
-  border-radius: 99px;
-  position: relative;
-  cursor: pointer;
-  transition: 0.3s;
-  padding: 0;
-}
-
-.stocks-theme-switch::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 20px;
-  height: 20px;
-  background: var(--stocks-text-primary);
-  border-radius: 50%;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
 /* Scrollable Content */
 .stocks-scroll-area {
   flex: 1;
   overflow-y: auto;
-  padding: 0 16px;
+  padding: 0 16px 80px 16px; /* Added bottom padding to account for footer */
   scroll-behavior: smooth;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -586,10 +527,12 @@ onUnmounted(() => {
   stroke: var(--stocks-color-red);
 }
 
-/* Footer */
+/* Footer - Solidified */
 .stocks-footer {
-  padding: 20px;
-  background: linear-gradient(to top, var(--stocks-bg-widget) 20%, transparent);
+  padding: 16px;
+  /* Solid background matched to widget */
+  background: var(--stocks-bg-widget);
+  border-top: 1px solid var(--stocks-border-subtle);
   display: flex;
   justify-content: center;
   gap: 12px;
@@ -597,7 +540,6 @@ onUnmounted(() => {
   bottom: 0;
   left: 0;
   right: 0;
-  backdrop-filter: blur(5px);
   z-index: 20;
 }
 
@@ -605,7 +547,7 @@ onUnmounted(() => {
   background: var(--stocks-bg-pill);
   color: var(--stocks-text-secondary);
   border: none;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 99px;
   font-size: 13px;
   font-weight: 600;
@@ -620,10 +562,9 @@ onUnmounted(() => {
 .stocks-filter-btn.stocks-active {
   background: var(--stocks-bg-pill-active);
   color: var(--stocks-text-inverse);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Animations */
 @keyframes stocks-rotation {
   0% {
     transform: rotate(0deg);

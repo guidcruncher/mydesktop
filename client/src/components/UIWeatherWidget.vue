@@ -268,7 +268,7 @@ onUnmounted(() => {
       :class="{ 'opacity-0': isExpanded }"
       @click="openWidget"
     >
-      <div class="view-compact">
+      <div class="view-compact surface">
         <div class="compact-header">
           <span>{{ weatherData.locationName }}</span>
           <div class="compact-icon-wrapper">
@@ -286,7 +286,7 @@ onUnmounted(() => {
       <div v-if="isAnimating" class="weather-teleport-container">
         <div class="backdrop" :class="{ active: isExpanded }" @click="closeWidget"></div>
 
-        <div class="ios-widget expanded-modal" :style="modalStyle">
+        <div class="ios-widget expanded-modal surface" :style="modalStyle">
           <div class="view-expanded">
             <div class="search-overlay" :class="{ active: searchOpen }">
               <input
@@ -367,32 +367,34 @@ onUnmounted(() => {
 .weather-wrapper {
   color: var(--weather-text-primary);
   font-family: var(--font-family);
-  display: inline-block; /* Wraps compact widget size */
+  display: inline-block;
+  /* Wraps compact widget size */
 }
 
 /* Ensure font/color variables pass to Teleport container */
 .weather-teleport-container {
   color: var(--weather-text-primary);
   font-family: var(--font-family);
-  position: absolute; /* Non-intrusive container */
+  position: absolute;
+  /* Non-intrusive container */
   top: 0;
   left: 0;
   width: 0;
   height: 0;
 }
 
-/* Backdrop */
+/* Backdrop - Removed Blur */
 .backdrop {
   position: fixed;
   inset: 0;
-  background: var(--weather-backdrop-color);
-  backdrop-filter: blur(var(--weather-backdrop-blur));
-  -webkit-backdrop-filter: blur(var(--weather-backdrop-blur));
+  /* Solid dim color */
+  background: var(--weather-overlay-bg);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.6s ease;
   z-index: 9998;
 }
+
 .backdrop.active {
   opacity: 1;
   pointer-events: all;
@@ -422,6 +424,7 @@ onUnmounted(() => {
   cursor: pointer;
   position: relative;
 }
+
 /* Hide compact when expanded (creates illusion it moved) */
 .opacity-0 {
   opacity: 0;
@@ -452,11 +455,13 @@ onUnmounted(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  opacity: 0; /* Fade in content after expansion starts */
+  opacity: 0;
+  /* Fade in content after expansion starts */
   animation: fadeIn 0.4s ease 0.2s forwards;
   overflow-y: auto;
   scrollbar-width: none;
 }
+
 .view-expanded::-webkit-scrollbar {
   display: none;
 }
@@ -467,27 +472,31 @@ onUnmounted(() => {
   }
 }
 
-/* Internal Styling (Same as before) */
+/* Internal Styling */
 .compact-header {
   font-size: 16px;
   font-weight: 600;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .compact-body {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
+
 .compact-temp {
   font-size: 42px;
   font-weight: 300;
   line-height: 1;
 }
+
 .compact-condition {
   font-size: 13px;
   color: var(--weather-text-secondary);
   font-weight: 500;
 }
+
 .compact-icon-wrapper {
   position: absolute;
   top: 15px;
@@ -501,22 +510,26 @@ onUnmounted(() => {
   margin-bottom: 10px;
   flex-shrink: 0;
 }
+
 .city-name-lg {
   font-size: 28px;
   font-weight: 600;
   margin: 0;
 }
+
 .condition-lg {
   font-size: 15px;
   color: var(--weather-text-secondary);
   margin: 0;
 }
+
 .header-actions {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
 }
+
 .expanded-content {
   display: flex;
   flex-direction: column;
@@ -535,9 +548,10 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  backdrop-filter: blur(4px);
+  /* Removed blur */
   transition: background 0.2s;
 }
+
 .close-btn:hover {
   background: rgba(0, 0, 0, 0.4);
 }
@@ -547,6 +561,7 @@ onUnmounted(() => {
   gap: 8px;
   margin-top: 5px;
 }
+
 .icon-btn {
   background: var(--weather-btn-bg);
   border: none;
@@ -568,11 +583,13 @@ onUnmounted(() => {
   justify-content: center;
   min-height: 150px;
 }
+
 .temp-lg {
   font-size: 72px;
   font-weight: 200;
   line-height: 1;
 }
+
 .hl-lg {
   font-size: 15px;
   margin-top: 5px;
@@ -582,52 +599,61 @@ onUnmounted(() => {
 .stats-row {
   display: flex;
   justify-content: space-around;
-  background: var(--weather-glass-bg);
+  /* Replaced glass-bg with solid card-bg */
+  background: var(--weather-card-bg);
   border-radius: 16px;
   padding: 12px;
   margin-bottom: 20px;
-  backdrop-filter: blur(10px);
+  /* Removed blur */
   flex-shrink: 0;
 }
+
 .stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
+
 .stat-label {
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--weather-text-secondary);
 }
+
 .stat-val {
   font-size: 14px;
   font-weight: 600;
 }
 
 .forecast-container {
-  border-top: 1px solid var(--weather-glass-border);
+  /* Replaced glass-border with standard border */
+  border-top: 1px solid var(--weather-border);
   padding-top: 15px;
   flex-shrink: 0;
   padding-bottom: 10px;
 }
+
 .forecast-grid {
   display: flex;
   justify-content: space-between;
   text-align: center;
 }
+
 .forecast-day {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
+
 .f-day {
   font-size: 13px;
   font-weight: 600;
   color: var(--weather-text-secondary);
 }
+
 .f-temp {
   font-size: 14px;
   font-weight: 600;
@@ -638,6 +664,7 @@ onUnmounted(() => {
   top: 60px;
   left: 20px;
   right: 20px;
+  /* Ensure solid background */
   background: var(--weather-overlay-bg);
   padding: 10px;
   border-radius: 12px;
@@ -649,11 +676,13 @@ onUnmounted(() => {
   transition: all 0.2s;
   z-index: 60;
 }
+
 .search-overlay.active {
   opacity: 1;
   transform: scale(1);
   pointer-events: all;
 }
+
 .search-input {
   flex: 1;
   border-radius: 8px;
@@ -662,6 +691,7 @@ onUnmounted(() => {
   font-size: 14px;
   outline: none;
 }
+
 .search-go {
   background: var(--weather-accent);
   color: white;
@@ -677,22 +707,26 @@ onUnmounted(() => {
   width: 32px;
   height: 32px;
 }
+
 .icon-lg {
   color: var(--weather-text-primary);
   width: 80px;
   height: 80px;
   stroke-width: 1.5;
 }
+
 .icon-sm {
   color: var(--weather-text-primary);
   width: 20px;
   height: 20px;
 }
+
 .icon-xs {
   color: var(--weather-text-primary);
   width: 14px;
   height: 14px;
 }
+
 .mb-2 {
   margin-bottom: 10px;
 }

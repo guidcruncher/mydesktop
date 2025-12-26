@@ -1,6 +1,4 @@
 <template>
-  <div class="audio-player-wrapper">
-    <canvas ref="visualizerCanvas" class="visualizer"></canvas>
 
     <audio
       ref="audioElement"
@@ -11,7 +9,7 @@
       @loadedmetadata="handleMetadata"
     ></audio>
 
-    <div class="player-container" :class="{ 'compact-mode': !showArt }">
+    <div class="player-container surface" :class="{ 'compact-mode': !showArt }">
       <div v-if="showArt" class="display-section">
         <div class="album-art-container">
           <div class="glow-ring" :class="{ active: isPlaying }"></div>
@@ -110,7 +108,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -145,7 +142,6 @@ const dataArray = ref(null)
 const sourceNode = ref(null)
 const gainNode = ref(null)
 const audioElement = ref(null)
-const visualizerCanvas = ref(null)
 const albumBars = ref([])
 const waveformBars = ref([])
 
@@ -323,6 +319,7 @@ const handleEnded = () => {
 
 // --- Visualizer ---
 const drawVisualizer = () => {
+  return
   if (!canvasCtx || !visualizerCanvas.value) return
   const width = visualizerCanvas.value.width
   const height = visualizerCanvas.value.height
@@ -471,11 +468,10 @@ onUnmounted(() => {
 
 /* CONTAINER */
 .player-container {
-  background: var(--audio-player-bg, rgba(255, 255, 255, 0.8));
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  /* Solid Background */
+  background: var(--audio-player-bg, #ffffff);
   border-radius: 35px;
-  border: 1px solid var(--audio-player-border, rgba(255, 255, 255, 0.5));
+  border: 1px solid var(--audio-player-border, rgba(0, 0, 0, 0.1));
   box-shadow: var(--audio-player-shadow, 0 10px 40px rgba(0, 0, 0, 0.1));
   display: flex;
   flex-direction: column;
@@ -529,7 +525,7 @@ onUnmounted(() => {
   border-radius: 4px 4px 0 0;
   height: 10%;
   transition: height 0.05s ease;
-  backdrop-filter: blur(4px);
+  /* Removed blur */
 }
 .album-art {
   width: 100%;
@@ -772,7 +768,7 @@ onUnmounted(() => {
 }
 
 :global(.dark-mode) .player-container {
-  background: rgba(30, 30, 40, 0.8);
+  background: #141414;
   border-color: rgba(255, 255, 255, 0.1);
 }
 :global(.dark-mode) .track-title {

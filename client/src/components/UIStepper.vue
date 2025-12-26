@@ -48,12 +48,12 @@ const props = defineProps({
     type: Number,
     default: 100,
   },
-  /** The amount the value changes per step */
+  /** The step increment */
   step: {
     type: Number,
     default: 1,
   },
-  /** Whether the stepper is globally disabled */
+  /** Disable interaction */
   disabled: {
     type: Boolean,
     default: false,
@@ -62,39 +62,19 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-/**
- * Checks if the decrement button should be disabled (at or below min)
- */
-const isDecrementDisabled = computed(() => {
-  // Use a small epsilon to handle floating point math issues near min/max
-  return props.modelValue - props.step < props.min - 1e-6
-})
+const isDecrementDisabled = computed(() => props.modelValue <= props.min)
+const isIncrementDisabled = computed(() => props.modelValue >= props.max)
 
-/**
- * Checks if the increment button should be disabled (at or above max)
- */
-const isIncrementDisabled = computed(() => {
-  return props.modelValue + props.step > props.max + 1e-6
-})
-
-/**
- * Decreases the value, clamped to the minimum.
- */
-function decrement() {
+const decrement = () => {
   if (isDecrementDisabled.value || props.disabled) return
-  const newValue = props.modelValue - props.step
-  // Ensure the value doesn't go below min, then emit
-  emit('update:modelValue', Math.max(newValue, props.min))
+  const newValue = Math.max(props.min, props.modelValue - props.step)
+  emit('update:modelValue', newValue)
 }
 
-/**
- * Increases the value, clamped to the maximum.
- */
-function increment() {
+const increment = () => {
   if (isIncrementDisabled.value || props.disabled) return
-  const newValue = props.modelValue + props.step
-  // Ensure the value doesn't go above max, then emit
-  emit('update:modelValue', Math.min(newValue, props.max))
+  const newValue = Math.min(props.max, props.modelValue + props.step)
+  emit('update:modelValue', newValue)
 }
 </script>
 
@@ -102,20 +82,19 @@ function increment() {
 .ui-stepper {
   display: inline-flex;
   align-items: center;
-  /* iOS 26 style: More rounded corners */
-  border-radius: 14px;
+  border-radius: 10px;
   overflow: hidden;
-  /* Liquid Glass Effect: Translucency and subtle border */
+
+  /* Solid Background - Removed Glass Effect */
   background-color: var(--stepper-bg);
   border: 1px solid var(--stepper-border-color);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(10px); /* For Liquid Glass effect */
-  -webkit-backdrop-filter: blur(10px);
+
   height: 32px; /* Standard iOS control height */
 }
 
 .ui-stepper.is-disabled {
-  opacity: 0.6; /* Slight reduction in opacity for disabled state */
+  opacity: 0.6;
 }
 
 /* Styles for the Buttons */
@@ -136,7 +115,7 @@ function increment() {
 }
 
 .stepper-btn:not([disabled]):active {
-  background-color: rgba(0, 0, 0, 0.1); /* Subtle press state */
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Disabled State for Buttons */
@@ -146,22 +125,21 @@ function increment() {
 }
 
 .is-disabled .stepper-btn[disabled] {
-  /* When global disabled, buttons look disabled too */
+  /* When global disabled is active, standard disabled color applies */
   color: var(--stepper-disabled-icon);
 }
 
-/* SVG Icon Styling */
 .stepper-btn svg {
-  width: 18px; /* Standard SF Symbol size imitation */
-  height: 18px;
-  /* Use fill instead of stroke for the solid SF Symbol look */
-  fill: currentColor;
+  width: 14px;
+  height: 14px;
+  display: block;
 }
 
-/* Divider Style */
+/* Vertical Divider */
 .stepper-divider {
   width: 1px;
-  height: 70%;
+  height: 18px;
   background-color: var(--stepper-border-color);
+  opacity: 0.5;
 }
 </style>

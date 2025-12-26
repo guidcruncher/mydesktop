@@ -1,5 +1,5 @@
 <template>
-  <div class="segmented-control">
+  <div class="segmented-control surface">
     <button
       v-for="(segment, index) in segments"
       :key="index"
@@ -39,11 +39,11 @@ const handleSelect = (index) => {
 <style lang="scss" scoped>
 .segmented-control {
   display: inline-flex;
+  /* Solid Background */
   background-color: var(--segment-background);
   border-radius: var(--radius-small);
   padding: 2px;
   position: relative;
-  backdrop-filter: blur(20px);
 }
 
 .segment {

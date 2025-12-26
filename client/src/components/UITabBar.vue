@@ -1,5 +1,5 @@
 <template>
-  <div class="ui-tab-bar">
+  <div class="ui-tab-bar surface">
     <slot></slot>
   </div>
 </template>
@@ -51,17 +51,20 @@ provide(TabBarContextKey, {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 83px;
+  height: 83px; /* Standard iOS Tab Bar height including Home Indicator area */
   z-index: 1000;
+
   display: flex;
   justify-content: space-around;
+  align-items: flex-start;
   padding-top: 10px;
-  padding-bottom: 34px;
+  padding-bottom: 24px; /* Space for Home Indicator */
 
-  // Liquid Glass Effect
-  background: var(--glass-bg);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border-top: 1px solid var(--glass-border);
+  /* Solid Background - Removed Glass/Blur */
+  background: var(--ui-background);
+  border-top: 1px solid var(--border-color);
+
+  /* Standard shadow for separation */
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
 }
 </style>

@@ -2,21 +2,21 @@
 
 // --- Component-Specific Variables ---
 :root {
-  /* Widget/Card Defaults */
-  --bg-widget: rgba(255, 255, 255, 0.85);
-  --shadow-base: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  --border-color-widget: 1px solid rgba(255, 255, 255, 0.6);
+  /* Widget/Card Defaults (Solid) */
+  --bg-widget: #ffffff;
+  --shadow-base: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.12);
+  --border-color-widget: 1px solid rgba(0, 0, 0, 0.1);
 
-  /* Image Browser*/
+  /* Image Browser */
   --imgbrws-app-bg: #ffffff;
-  --imgbrws-sidebar-bg: rgba(242, 242, 247, 0.85);
+  --imgbrws-sidebar-bg: var(--system-gray6);
   --imgbrws-content-bg: #ffffff;
   --imgbrws-text-primary: #000000;
   --imgbrws-text-secondary: #8e8e93;
-  --imgbrws-accent-blue: #007aff;
+  --imgbrws-accent-blue: var(--system-blue);
   --imgbrws-separator: rgba(60, 60, 67, 0.18);
-  --imgbrws-top-bar-bg: rgba(255, 255, 255, 0.85);
+  --imgbrws-top-bar-bg: #f5f5f7;
   --imgbrws-top-bar-border: rgba(0, 0, 0, 0.1);
   --imgbrws-grid-item-bg: #e5e5ea;
   --imgbrws-lightbox-bg: #000000;
@@ -24,8 +24,8 @@
   --imgbrws-sidebar-border: rgba(0, 0, 0, 0.1);
 
   /* Stocks */
-  --stocks-bg-app: #f2f2f7;
-  --stocks-bg-widget: rgba(255, 255, 255, 0.65);
+  --stocks-bg-app: var(--system-gray6);
+  --stocks-bg-widget: #ffffff;
   --stocks-bg-item: rgba(0, 0, 0, 0.03);
   --stocks-bg-item-active: rgba(0, 0, 0, 0.08);
   --stocks-bg-pill: rgba(0, 0, 0, 0.05);
@@ -33,162 +33,141 @@
   --stocks-text-primary: #000000;
   --stocks-text-secondary: #86868b;
   --stocks-text-inverse: #ffffff;
-  --stocks-border-subtle: rgba(0, 0, 0, 0.05);
-  --stocks-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  --stocks-blur: blur(60px);
+  --stocks-border-subtle: rgba(0, 0, 0, 0.08);
+  --stocks-shadow: var(--shadow-default);
 
-  /* Calendar widget */
-  /* Backgrounds */
+  /* Calendar Widget */
   --cal-bg-body: var(--system-gray6);
-  --cal-bg-widget: rgba(255, 255, 255, 0.65);
-  --cal-bg-widget-border: rgba(255, 255, 255, 0.4);
+  --cal-bg-widget: #ffffff;
+  --cal-bg-widget-border: rgba(0, 0, 0, 0.1);
   --cal-hover-bg: rgba(0, 0, 0, 0.05);
   --cal-nav-btn-bg: rgba(128, 128, 128, 0.1);
-
-  /* Typography & Icons */
   --cal-text-primary: var(--color-primary-text);
   --cal-text-secondary: var(--system-gray);
   --cal-text-weekend: var(--system-gray);
-
-  /* Accents & States */
   --cal-accent-color: var(--system-blue);
-  --cal-accent-secondary: #ff2d55; /* Apple Pink/Red */
+  --cal-accent-secondary: #ff2d55;
   --cal-today-bg: var(--system-blue);
   --cal-today-text: var(--system-white);
-
-  /* Effects */
-  --cal-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  --cal-blur-strength: 40px;
+  --cal-shadow: var(--shadow-default);
   --cal-border-radius: 22px;
 
   /* Map */
-  /* Colors */
   --map-body-bg: var(--system-gray6);
   --map-widget-bg: var(--system-white);
   --map-text-primary: var(--color-primary-text);
   --map-text-secondary: #6e6e73;
-  --map-overlay-bg: rgba(255, 255, 255, 0.75);
-  --map-input-bg: rgba(235, 235, 245, 0.85);
+  --map-overlay-bg: #ffffff; /* Solid instead of 0.75 */
+  --map-input-bg: #ebebf5;
   --map-accent: var(--system-blue);
-  --map-btn-bg: rgba(235, 235, 245, 0.6);
+  --map-btn-bg: #ebebf5;
   --map-btn-icon: #3a3a3c;
   --map-pin-border: var(--system-white);
   --map-border-radius: 22px;
-
-  /* Shadows */
   --map-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
-  --map-expanded-shadow: 0 40px 80px rgba(0, 0, 0, 0.3); /* Deeper shadow for modal feel */
+  --map-expanded-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   --map-overlay-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   --map-btn-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
-  /* Todolist */
+  /* Todolist - Standard Card Style */
   --todo-color-blue: var(--system-blue);
   --todo-color-blue-hover: #0063ce;
   --todo-color-red: var(--system-red);
   --todo-color-green: var(--system-green);
   --todo-color-yellow: #ffcc00;
-  /* Light Mode Defaults */
   --todo-bg-body: var(--system-gray6);
   --todo-text-primary: var(--color-primary-text);
   --todo-text-secondary: var(--system-gray);
   --todo-text-placeholder: var(--system-gray2);
-  /* Glassmorphism - Light */
-  --todo-glass-panel-bg: rgba(255, 255, 255, 0.8);
-  --todo-glass-border: rgba(255, 255, 255, 0.6);
-  --todo-glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  /* Task Item - Light */
-  --todo-task-bg: rgba(255, 255, 255, 0.6);
-  --todo-task-bg-hover: rgba(255, 255, 255, 0.8);
-  --todo-task-border: rgba(255, 255, 255, 0.4);
-  /* Gradients - Light */
-  --todo-mesh-gradient:
-    radial-gradient(at 0% 0%, hsla(192, 100%, 92%, 1) 0, transparent 50%),
-    radial-gradient(at 50% 100%, hsla(264, 100%, 92%, 1) 0, transparent 50%),
-    radial-gradient(at 100% 0%, hsla(326, 100%, 92%, 1) 0, transparent 50%);
+  /* De-glassed Panels */
+  --todo-panel-bg: #ffffff;
+  --todo-panel-border: #e5e5e5;
+  --todo-panel-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  /* Task Item */
+  --todo-task-bg: #f9f9f9;
+  --todo-task-bg-hover: #f0f0f0;
+  --todo-task-border: #eeeeee;
   /* Controls */
-  --todo-btn-bg: rgba(255, 255, 255, 0.5);
+  --todo-btn-bg: #f2f2f7;
   --todo-btn-text: #1c1c1e;
-  --todo-input-bg: rgba(255, 255, 255, 0.5);
+  --todo-input-bg: #ffffff;
 
-  /* Sun moon phase */
+  /* Sun/Moon Phase */
   --sunmoon-bg-body: var(--system-gray6);
-  --sunmoon-bg-widget: rgba(255, 255, 255, 0.65);
-  --sunmoon-border-widget: rgba(255, 255, 255, 0.4);
+  --sunmoon-bg-widget: #ffffff;
+  --sunmoon-border-widget: rgba(0, 0, 0, 0.1);
   --sunmoon-text-primary: var(--color-primary-text);
   --sunmoon-text-secondary: var(--system-gray);
   --sunmoon-accent-color: var(--system-blue);
-  --sunmoon-shadow-widget: 0 10px 30px rgba(0, 0, 0, 0.1);
-  --sunmoon-sun-path: var(--system-gray5);
+  --sunmoon-shadow-widget: var(--shadow-default);
+  --sunmoon-sun-path: rgba(0, 0, 0, 0);
   --sunmoon-sun-fill: var(--system-orange);
   --sunmoon-sun-dot-stroke: var(--system-gray6);
   --sunmoon-moon-bg: var(--system-gray5);
   --sunmoon-moon-lit: #ffdd00;
-  --sunmoon-input-bg: rgba(118, 118, 128, 0.12);
-  --sunmoon-card-bg: rgba(255, 255, 255, 0.05);
+  --sunmoon-input-bg: #f2f2f7;
+  --sunmoon-card-bg: #f9f9f9;
 
   /* News */
   --news-bg-fallback: var(--system-gray5);
-  --news-accent: #ff2d55; /* Standard Pink/Red */
+  --news-accent: #ff2d55;
   --news-text: var(--system-white);
   --news-text-sub: rgba(255, 255, 255, 0.85);
-  --news-shadow: rgba(0, 0, 0, 0.15); /* Lighter shadow */
+  --news-shadow: rgba(0, 0, 0, 0.15);
   --news-status-text: var(--system-gray);
 
-  /* Weather */
+  /* Weather (De-glassed) */
   --weather-w-compact: 160px;
   --weather-h-compact: 160px;
-
   --weather-w-expand: min(340px, 90vw);
   --weather-h-expand: min(520px, 85vh);
-
-  --weather-backdrop-blur: 12px;
-  --weather-backdrop-color: rgba(0, 0, 0, 0.45);
-
   --weather-accent: #0a84ff;
-
   --weather-transition-spring: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-
   --weather-bg-start: #65c7f7;
   --weather-bg-end: #0052d4;
   --weather-text-primary: var(--system-white);
-  --weather-text-secondary: rgba(255, 255, 255, 0.7);
-  --weather-glass-bg: rgba(255, 255, 255, 0.2);
-  --weather-glass-border: rgba(255, 255, 255, 0.3);
+  --weather-text-secondary: rgba(255, 255, 255, 0.8);
+  /* Solidified layers */
+  --weather-card-bg: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Kept slight transparency for gradient overlay, but removed blur */
+  --weather-border: rgba(255, 255, 255, 0.2);
   --weather-shadow: 0 20px 40px rgba(0, 82, 212, 0.3);
-  --weather-btn-bg: rgba(255, 255, 255, 0.15);
+  --weather-btn-bg: rgba(255, 255, 255, 0.2);
   --weather-close-btn-bg: rgba(0, 0, 0, 0.2);
-  --weather-overlay-bg: rgba(40, 40, 40, 0.95);
+  --weather-overlay-bg: #282828;
 
   /* Modal/Overlay */
-  --modal-overlay-bg: rgba(0, 0, 0, 0.4);
-  --modal-overlay-bg-blur: 12px;
-  --modal-container-bg: rgba(255, 255, 255, 0.95);
-  --modal-shadow: rgba(0, 0, 0, 0.3);
-  --modal-header-bg-start: rgba(255, 255, 255, 0.8);
-  --modal-header-bg-end: rgba(245, 245, 247, 0.8);
-  --modal-header-border: rgba(0, 0, 0, 0.08);
+  --modal-overlay-bg: rgba(0, 0, 0, 0.5); /* Dimmer */
+  --modal-container-bg: #ffffff; /* Solid */
+  --modal-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  --modal-header-bg: #f5f5f7;
+  --modal-header-border: #e5e5e5;
   --modal-title-color: #1d1d1f;
   --modal-body-color: #1d1d1f;
   --modal-body-secondary: #6e6e73;
-  --modal-footer-bg: rgba(245, 245, 247, 0.6);
-  --modal-footer-border: rgba(0, 0, 0, 0.08);
+  --modal-footer-bg: #f5f5f7;
+  --modal-footer-border: #e5e5e5;
 
   /* Buttons */
   --btn-primary-bg-start: var(--system-blue);
   --btn-primary-bg-end: #0051d5;
   --btn-primary-color: var(--system-white);
-  --btn-primary-shadow: rgba(0, 122, 255, 0.4);
-  --btn-secondary-bg: rgba(118, 118, 128, 0.12);
-  --btn-secondary-bg-hover: rgba(0, 0, 0, 0.1);
+  --btn-primary-shadow: rgba(0, 122, 255, 0.3);
+  --btn-secondary-bg: #e5e5ea;
+  --btn-secondary-bg-hover: #d1d1d6;
   --btn-secondary-color: var(--system-blue);
 
-  /* Standard Controls (Form fields, etc.) */
+  /* Standard Controls */
   --control-bg: var(--system-white);
-  --control-border: #e5e5e5; /* Lighter gray border (UITextField look) */
+  --control-border: #e5e5e5;
   --control-border-width: 1px;
-  --control-border-active: #3b82f6; /* blue-500 for focus */
-  --primary-text: #1f2937; /* gray-800 */
-  --icon-color: #6b7280; /* gray-500 */
+  --control-border-active: #3b82f6;
+  --primary-text: #1f2937;
+  --icon-color: #6b7280;
 
   /* List/Table Controls */
   --list-bg: var(--system-white);
@@ -211,29 +190,29 @@
   --control-maximize-icon: #006610;
 
   /* Popover/Tooltip */
-  --popover-bg: rgba(255, 255, 255, 0.95);
+  --popover-bg: #ffffff;
   --popover-text: #1c1c1e;
   --popover-border: rgba(0, 0, 0, 0.15);
 
   /* Notification */
-  --notify-bg-color: rgba(255, 255, 255, 0.9);
-  --notify-text-color-primary: #1c1c1e; // Nearly black
+  --notify-bg-color: #ffffff;
+  --notify-text-color-primary: #1c1c1e;
   --notify-text-color-secondary: #3c3c43;
-  --notify-border-color: rgba(0, 0, 0, 0.08);
+  --notify-border-color: rgba(0, 0, 0, 0.1);
   --notify-close-btn-color: var(--system-gray);
 
   /* Panel */
-  --panel-bg: var(--color-system-background-tertiary); /* #ffffff */
-  --panel-radius: 8px; /* Example fixed radius */
-  --panel-color: var(--color-label); /* #000000 */
+  --panel-bg: #ffffff;
+  --panel-radius: 8px;
+  --panel-color: #000000;
 
-  /* Stepper (Number Input) */
+  /* Stepper */
   --stepper-primary: var(--system-blue);
-  --stepper-bg: rgba(255, 255, 255, 0.75); /* Liquid Glass effect light */
-  --stepper-border-color: rgba(0, 0, 0, 0.1);
+  --stepper-bg: #ffffff;
+  --stepper-border-color: #e5e5e5;
   --stepper-text-color: var(--color-primary-text);
   --stepper-icon-color: var(--stepper-primary);
-  --stepper-disabled-icon: rgba(0, 0, 0, 0.3);
+  --stepper-disabled-icon: #d1d1d6;
 
   /* Map/GIS */
   --map-bg-primary: var(--system-white);
@@ -243,32 +222,32 @@
   --map-text-secondary: var(--system-gray);
   --map-accent-color: var(--system-blue);
   --map-accent-destructive: var(--system-red);
-  --map-control-bg: rgba(255, 255, 255, 0.95);
-  --map-control-border: rgba(0, 0, 0, 0.04);
-  --map-control-divider: rgba(0, 0, 0, 0.08);
-  --map-control-hover: rgba(0, 0, 0, 0.05);
-  --map-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
-  --map-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
-  --map-shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --map-control-bg: #ffffff;
+  --map-control-border: #e5e5e5;
+  --map-control-divider: #f2f2f7;
+  --map-control-hover: #f9f9f9;
+  --map-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --map-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --map-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
 
   /* Segmented Control */
-  --segment-background: rgba(118, 118, 128, 0.12);
-  --segment-text: rgba(60, 60, 67, 0.6);
-  --segment-selected-background: var(--system-white);
-  --segment-selected-text: var(--color-primary-text);
-  --segment-selected-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+  --segment-background: #e5e5ea;
+  --segment-text: #6e6e73;
+  --segment-selected-background: #ffffff;
+  --segment-selected-text: #000000;
+  --segment-selected-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   /* Clock */
   --clock-face-color: var(--system-white);
-  --clock-border-color: rgba(0, 0, 0, 0.15); /* Subtle gray border */
+  --clock-border-color: #d1d1d6;
   --clock-hand-hour: var(--system-black);
   --clock-hand-minute: var(--system-black);
   --clock-hand-second: var(--system-red);
 
-  --color-folder-bg: rgba(255, 255, 255, 0.65);
-  --color-folder-shadow: rgba(31, 38, 135, 0.37);
+  --color-folder-bg: #f2f2f7;
+  --color-folder-shadow: rgba(0, 0, 0, 0.15);
   --color-cell-label: var(--color-primary-text);
-  --color-cell-shadow: rgba(0, 0, 0, 0.12);
+  --color-cell-shadow: rgba(0, 0, 0, 0.1);
 
   /* YAML Editor */
   --ymledit-bg: #ffffff;
@@ -278,27 +257,24 @@
   --ymledit-gutter-bg: #f6f8fa;
   --ymledit-gutter-fg: #bbb;
   --ymledit-border: #e1e4e8;
-  /* Status Colors */
   --ymledit-status-ok-bg: #dafbe1;
   --ymledit-status-ok-fg: #1a7f37;
   --ymledit-status-err-bg: #ffebe9;
   --ymledit-status-err-fg: #cf222e;
-  /* Syntax Highlighting Mapping */
   --ymledit-syntax-key: #22863a;
   --ymledit-syntax-string: #032f62;
   --ymledit-syntax-value: #005cc5;
   --ymledit-syntax-comment: #6a737d;
   --ymledit-syntax-keyword: #d73a49;
   --ymledit-syntax-meta: #6f42c1;
-  /* UI Colors */
   --ymledit-toolbar-bg: #f6f8fa;
   --ymledit-toolbar-btn-bg: #ffffff;
   --ymledit-toolbar-btn-border: #d1d5da;
   --ymledit-toolbar-btn-hover: #f3f4f6;
 
-  /* Sysinfo *
-  --sysinfo-bg-widget: rgba(255, 255, 255, 0.65);
-  --sysinfo-bg-element: rgba(0, 0, 0, 0.05);
+  /* Sysinfo */
+  --sysinfo-bg-widget: #ffffff;
+  --sysinfo-bg-element: #f2f2f7;
   --sysinfo-text-primary: #1c1c1e;
   --sysinfo-text-secondary: #8e8e93;
   --sysinfo-accent-blue: #007aff;
@@ -306,72 +282,70 @@
   --sysinfo-accent-orange: #ff9500;
   --sysinfo-accent-red: #ff3b30;
   --sysinfo-accent-teal: #30b0c7;
-  --sysinfo-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --sysinfo-shadow: var(--shadow-default);
   --sysinfo-radius-lg: 26px;
   --sysinfo-radius-md: 16px;
-  --sysinfo-blur: blur(35px);
 
- /* Audio Player */
+  /* Audio Player */
   --audio-bg: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-  --audio-player-bg: rgba(255, 255, 255, 0.7);
-  --audio-player-border: rgba(0, 0, 0, 0.1);
-  --audio-player-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+  --audio-player-bg: #ffffff;
+  --audio-player-border: #e5e5e5;
+  --audio-player-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   --audio-text-primary: #1a1a1a;
   --audio-text-secondary: rgba(0, 0, 0, 0.6);
   --audio-text-tertiary: rgba(0, 0, 0, 0.5);
   --audio-text-quaternary: rgba(0, 0, 0, 0.4);
-  --audio-control-bg: rgba(0, 0, 0, 0.08);
-  --audio-control-border: rgba(0, 0, 0, 0.1);
-  --audio-control-hover: rgba(0, 0, 0, 0.12);
+  --audio-control-bg: #f2f2f7;
+  --audio-control-border: #e5e5e5;
+  --audio-control-hover: #e5e5ea;
   --audio-control-text: #1a1a1a;
-  --audio-progress-bg: rgba(0, 0, 0, 0.1);
-  --audio-container-bg: rgba(0, 0, 0, 0.05);
+  --audio-progress-bg: #e5e5ea;
+  --audio-container-bg: #f9f9f9;
   --audio-gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --audio-bar-gradient: linear-gradient(to top, #667eea, #764ba2, #f093fb);
   --audio-waveform-gradient: linear-gradient(to top, #667eea, #764ba2);
   --audio-progress-gradient: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
   --audio-volume-gradient: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
   --audio-play-btn-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --audio-play-btn-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
-  --audio-play-btn-shadow-hover: 0 20px 40px rgba(102, 126, 234, 0.6);
+  --audio-play-btn-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+  --audio-play-btn-shadow-hover: 0 12px 24px rgba(102, 126, 234, 0.4);
   --audio-glow-ring: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
   --audio-accent-color: #667eea;
 
   /* Dropdown menu */
-  --mnu-bg: rgba(255, 255, 255, 0.75);
-  --mnu-border: rgba(0, 0, 0, 0.1);
+  --mnu-bg: #ffffff;
+  --mnu-border: #d1d1d6;
   --mnu-text: #1d1d1f;
   --mnu-text-dim: #86868b;
-  --mnu-hover: rgba(0, 0, 0, 0.05);
-  --mnu-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  --mnu-hover: #f2f2f7;
+  --mnu-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   --mnu-accent: #007aff;
   --mnu-disabled: #c5c5c7;
-  --mnu-blur: 20px;
 }
 
 .dark-mode {
   /* Widget/Card Defaults */
-  --bg-widget: rgba(44, 44, 56, 0.95);
+  --bg-widget: var(--system-gray6);
   --shadow-base: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --border-color-widget: 1px solid rgba(255, 255, 255, 0.1);
 
   /* Image browser */
   --imgbrws-app-bg: #000000;
-  --imgbrws-sidebar-bg: rgba(30, 30, 30, 0.75);
+  --imgbrws-sidebar-bg: #1c1c1e;
   --imgbrws-content-bg: #000000;
   --imgbrws-text-primary: #ffffff;
   --imgbrws-text-secondary: #8e8e93;
   --imgbrws-accent-blue: #0a84ff;
   --imgbrws-separator: rgba(84, 84, 88, 0.65);
-  --imgbrws-top-bar-bg: rgba(0, 0, 0, 0.8);
+  --imgbrws-top-bar-bg: #1c1c1e;
   --imgbrws-top-bar-border: rgba(255, 255, 255, 0.1);
   --imgbrws-grid-item-bg: #2c2c2e;
   --imgbrws-sidebar-border: rgba(255, 255, 255, 0.1);
 
   /* Stocks */
   --stocks-bg-app: #000000;
-  --stocks-bg-widget: rgba(28, 28, 30, 0.75);
+  --stocks-bg-widget: #1c1c1e;
   --stocks-bg-item: rgba(255, 255, 255, 0.05);
   --stocks-bg-item-active: rgba(255, 255, 255, 0.15);
   --stocks-bg-pill: rgba(255, 255, 255, 0.1);
@@ -380,94 +354,84 @@
   --stocks-text-secondary: #98989d;
   --stocks-text-inverse: #000000;
   --stocks-border-subtle: rgba(255, 255, 255, 0.12);
-  --stocks-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
-  --stocks-blur: blur(50px);
+  --stocks-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 
-  /* calendar widget */
-  --cal-bg-widget: rgba(30, 30, 30, 0.8);
+  /* Calendar widget */
+  --cal-bg-widget: #1c1c1e;
   --cal-bg-widget-border: rgba(255, 255, 255, 0.1);
   --cal-hover-bg: rgba(255, 255, 255, 0.1);
   --cal-nav-btn-bg: rgba(255, 255, 255, 0.1);
   --cal-text-secondary: #98989d;
   --cal-text-weekend: #98989d;
-  --cal-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  --cal-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
   /* Map */
-  --map-overlay-bg: rgba(30, 30, 30, 0.75);
-  --map-input-bg: rgba(44, 44, 46, 0.85);
-  --map-btn-bg: rgba(30, 30, 30, 0.6);
+  --map-overlay-bg: #2c2c2e;
+  --map-input-bg: #3a3a3c;
+  --map-btn-bg: #2c2c2e;
   --map-btn-icon: #ebebf5;
-  --map-shadow: 0 4px 48px rgba(0, 0, 0, 0.5);
-  --map-expanded-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+  --map-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  --map-expanded-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 
-  /* Toodo list */
+  /* Todo List (Dark) */
   --todo-text-primary: var(--system-white);
   --todo-text-secondary: #98989d;
-  /* Glassmorphism - Dark */
-  --todo-glass-panel-bg: rgba(30, 30, 30, 1);
-  --todo-glass-border: rgba(255, 255, 255, 0.1);
-  --todo-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  /* Task Item - Dark */
-  --todo-task-bg: rgba(255, 255, 255, 0.05);
-  --todo-task-bg-hover: rgba(255, 255, 255, 0.1);
+  --todo-panel-bg: #1c1c1e;
+  --todo-panel-border: rgba(255, 255, 255, 0.1);
+  --todo-panel-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --todo-task-bg: #2c2c2e;
+  --todo-task-bg-hover: #3a3a3c;
   --todo-task-border: rgba(255, 255, 255, 0.05);
-  /* Gradients - Dark */
-  --todo-mesh-gradient:
-    radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
-    radial-gradient(at 50% 0%, hsla(225, 39%, 15%, 1) 0, transparent 50%),
-    radial-gradient(at 100% 0%, hsla(339, 49%, 15%, 1) 0, transparent 50%);
-  /* Controls */
   --todo-btn-bg: rgba(255, 255, 255, 0.1);
   --todo-btn-text: #ffcc00;
-  --todo-input-bg: rgba(0, 0, 0, 0.2);
+  --todo-input-bg: #000000;
 
   /* News */
-  --news-accent: #ff375f; /* Slightly lighter/brighter accent for dark mode */
+  --news-accent: #ff375f;
   --news-text-sub: rgba(255, 255, 255, 0.8);
-  --news-shadow: rgba(0, 0, 0, 0.4); /* Deeper shadow */
+  --news-shadow: rgba(0, 0, 0, 0.4);
   --news-status-text: #98989d;
 
   /* Sun moon phase */
-  --sunmoon-bg-widget: rgba(30, 30, 30, 1);
+  --sunmoon-bg-widget: #1c1c1e;
   --sunmoon-border-widget: rgba(255, 255, 255, 0.1);
   --sunmoon-text-secondary: #98989d;
   --sunmoon-shadow-widget: 0 10px 30px rgba(0, 0, 0, 0.4);
   --sunmoon-moon-lit: #f2f2f7;
-  --sunmoon-input-bg: rgba(118, 118, 128, 0.24);
+  --sunmoon-input-bg: #3a3a3c;
 
   /* Weather */
   --weather-bg-start: #2c3e50;
   --weather-bg-end: #000000;
   --weather-text-secondary: rgba(255, 255, 255, 0.5);
-  --weather-glass-bg: rgba(255, 255, 255, 0.1);
-  --weather-glass-border: rgba(255, 255, 255, 0.15);
+  --weather-card-bg: #1c1c1e;
+  --weather-border: rgba(255, 255, 255, 0.15);
   --weather-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   --weather-btn-bg: rgba(255, 255, 255, 0.1);
   --weather-close-btn-bg: rgba(255, 255, 255, 0.1);
-  --weather-overlay-bg: rgba(20, 20, 20, 0.95);
+  --weather-overlay-bg: #111111;
 
   /* Modal/Overlay */
   --modal-overlay-bg: rgba(0, 0, 0, 0.6);
-  --modal-container-bg: rgba(30, 30, 30, 0.95);
+  --modal-container-bg: #1c1c1e;
   --modal-shadow: rgba(0, 0, 0, 0.6);
-  --modal-header-bg-start: rgba(45, 45, 45, 0.8);
-  --modal-header-bg-end: rgba(28, 28, 30, 0.8);
+  --modal-header-bg: #2c2c2e;
   --modal-header-border: rgba(255, 255, 255, 0.1);
   --modal-title-color: #f5f5f7;
   --modal-body-color: #f5f5f7;
   --modal-body-secondary: #a1a1a6;
-  --modal-footer-bg: rgba(28, 28, 30, 0.6);
+  --modal-footer-bg: #2c2c2e;
   --modal-footer-border: rgba(255, 255, 255, 0.1);
 
   /* Buttons */
   --btn-primary-bg-end: #0066cc;
   --btn-primary-shadow: rgba(10, 132, 255, 0.4);
-  --btn-secondary-bg: rgba(118, 118, 128, 0.24);
-  --btn-secondary-bg-hover: rgba(255, 255, 255, 0.15);
+  --btn-secondary-bg: #3a3a3c;
+  --btn-secondary-bg-hover: #48484a;
 
-  /* Standard Controls (Form fields, etc.) */
-  --control-border: #4b5563; /* gray-600 */
-  --control-border-active: #60a5fa; /* blue-400 */
+  /* Standard Controls */
+  --control-border: #4b5563;
+  --control-border-active: #60a5fa;
   --primary-text: #f9fafb;
   --icon-color: #9ca3af;
 
@@ -477,32 +441,30 @@
   --list-separator: #374151;
   --selected-hover-bg: #60a5fa;
 
-  /* Window Controls (Traffic Lights) - (Colors are often static/non-theming) */
-
   /* Popover/Tooltip */
-  --popover-bg: rgba(40, 40, 40, 0.95);
+  --popover-bg: #2c2c2e;
   --popover-text: var(--system-white);
   --popover-border: rgba(255, 255, 255, 0.15);
 
   /* Notification */
-  --notify-bg-color: rgba(28, 28, 30, 0.9);
+  --notify-bg-color: #1c1c1e;
   --notify-text-color-primary: var(--system-white);
   --notify-text-color-secondary: #e5e5ea;
   --notify-border-color: rgba(255, 255, 255, 0.1);
-  --notify-close-btn-color: #98989d; // Lighter
+  --notify-close-btn-color: #98989d;
 
   /* Panel */
   --panel-bg: var(--system-gray5);
   --panel-color: var(--system-white);
 
-  /* Stepper (Number Input) */
-  --stepper-bg: rgba(28, 28, 30, 0.75); /* Liquid Glass effect dark */
+  /* Stepper */
+  --stepper-bg: #2c2c2e;
   --stepper-border-color: rgba(255, 255, 255, 0.2);
   --stepper-disabled-icon: rgba(255, 255, 255, 0.4);
 
   /* Map/GIS */
   --map-text-secondary: #98989d;
-  --map-control-bg: rgba(28, 28, 30, 0.95);
+  --map-control-bg: #2c2c2e;
   --map-control-border: rgba(255, 255, 255, 0.1);
   --map-control-divider: rgba(255, 255, 255, 0.15);
   --map-control-hover: rgba(255, 255, 255, 0.1);
@@ -511,9 +473,9 @@
   --map-shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.7);
 
   /* Segmented Control */
-  --segment-background: rgba(118, 118, 128, 0.24);
-  --segment-text: rgba(235, 235, 245, 0.6);
-  --segment-selected-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --segment-background: #3a3a3c;
+  --segment-text: #98989d;
+  --segment-selected-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
   /* Clock */
   --clock-face-color: var(--system-gray5);
@@ -521,12 +483,11 @@
   --clock-hand-hour: var(--system-white);
   --clock-hand-minute: var(--system-white);
 
-  --color-folder-bg: rgba(40, 40, 40, 0.65);
+  --color-folder-bg: #3a3a3c;
   --color-folder-shadow: rgba(0, 0, 0, 0.5);
   --color-cell-shadow: rgba(0, 0, 0, 0.8);
 
   /* YAML Editor */
-  /* Dark Theme Overrides */
   --ymledit-bg: #1e1e1e;
   --ymledit-fg: #d4d4d4;
   --ymledit-caret: #ffffff;
@@ -550,16 +511,15 @@
   --ymledit-toolbar-btn-hover: #30363d;
 
   /* SysInfo */
-  --sysinfo-bg-widget: rgba(30, 30, 30, 0.75);
+  --sysinfo-bg-widget: #1c1c1e;
   --sysinfo-bg-element: rgba(255, 255, 255, 0.08);
   --sysinfo-text-primary: #ffffff;
   --sysinfo-text-secondary: #98989d;
   --sysinfo-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 
   /* Audio player */
-  /* Audio Player - Dark Theme Colors */
   --audio-bg: #0a0a0a;
-  --audio-player-bg: rgba(20, 20, 20, 0.7);
+  --audio-player-bg: #141414;
   --audio-player-border: rgba(255, 255, 255, 0.1);
   --audio-player-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
   --audio-text-primary: white;
@@ -574,7 +534,7 @@
   --audio-container-bg: rgba(255, 255, 255, 0.05);
 
   /* Dropdown menu */
-  --mnu-bg: rgba(28, 28, 30, 0.75);
+  --mnu-bg: #1c1c1e;
   --mnu-border: rgba(255, 255, 255, 0.1);
   --mnu-text: #f5f5f7;
   --mnu-text-dim: #a1a1a6;
@@ -582,5 +542,4 @@
   --mnu-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   --mnu-accent: #0a84ff;
   --mnu-disabled: #48484a;
-
 }

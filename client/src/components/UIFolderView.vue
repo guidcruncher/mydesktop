@@ -14,7 +14,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="folder-view-container" :style="{ width: props.width }">
+  <div class="folder-view-container surface" :style="{ width: props.width }">
     <div class="folder-title">
       <slot name="title">
         {{ label }}
@@ -32,27 +32,21 @@ const props = defineProps({
   margin: 20px auto;
   padding: 10px 10px 20px 10px;
 
-  /* iOS Frosted Glass Effect 
-  background-color: var(--color-folder-bg);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-*/
-  background: var(--glass-bg);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border-bottom: 1px solid var(--glass-border);
+  /* Solid Background */
+  background-color: var(--bg-widget);
+
+  /* Standard Border & Shadow */
+  border: var(--border-color-widget);
+  box-shadow: var(--shadow-base);
 
   border-radius: 40px;
-
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 var(--color-folder-shadow);
 
   display: flex;
   flex-direction: column;
 
   overflow-y: auto;
   overflow-x: hidden;
-  -webkit-overflow-scrolling: touch; /* Improves scrolling performance on iOS devices */
+  -webkit-overflow-scrolling: touch;
 }
 
 .folder-title {
@@ -61,7 +55,6 @@ const props = defineProps({
   color: var(--color-primary-text);
   padding: 10px 20px 10px 20px;
   text-align: left;
-  /* Prevents the title from shrinking or scrolling with the content */
   flex-shrink: 0;
 }
 

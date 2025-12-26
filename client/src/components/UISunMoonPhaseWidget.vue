@@ -1,5 +1,5 @@
 <template>
-  <div class="sunmoon-widget-container" :class="{ 'sunmoon-loading-shim': loading }">
+  <div class="sunmoon-widget-container surface" :class="{ 'sunmoon-loading-shim': loading }">
     <div class="sunmoon-search-overlay" :class="{ 'sunmoon-active': isSearchActive }">
       <input
         ref="searchInput"
@@ -323,16 +323,21 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-/* * CSS VARIABLES - Scoped via specific selector 
+/*
+ * CSS VARIABLES - Scoped via specific selector
  * The .sunmoon-widget-container class wraps the whole template
  */
 .sunmoon-widget-container {
   /* Layout Properties */
   width: 360px;
   height: 380px;
+
+  /* Solid Background (Variable should define an opaque color) */
   background: var(--sunmoon-bg-widget);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+
+  /* Removed Glass/Blur Effects */
+  /* backdrop-filter: blur(20px); */
+
   border-radius: 22px;
   border: 1px solid var(--sunmoon-border-widget);
   box-shadow: var(--sunmoon-shadow-widget);
@@ -342,6 +347,7 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 20px;
   overflow: hidden;
+
   /* Use Shared Font Variable */
   font-family: var(--weather-font-family);
   color: var(--ui-text-primary);
@@ -417,8 +423,13 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   height: 80px;
+
+  /* Solid Background */
   background: var(--sunmoon-bg-widget);
-  backdrop-filter: blur(25px);
+
+  /* Removed Glass/Blur Effects */
+  /* backdrop-filter: blur(25px); */
+
   z-index: 10;
   display: flex;
   align-items: center;
@@ -489,6 +500,7 @@ onUnmounted(() => {
   position: relative;
   margin-top: 10px;
 }
+
 .sunmoon-sun-info {
   width: 100%;
   display: flex;
@@ -505,15 +517,18 @@ onUnmounted(() => {
   height: 70px;
   position: relative;
 }
+
 .sunmoon-moon-info {
   text-align: center;
   margin-top: 8px;
 }
+
 .sunmoon-moon-phase-name {
   font-size: 14px;
   font-weight: 600;
   color: var(--ui-text-primary);
 }
+
 .sunmoon-moon-illumination {
   font-size: 12px;
   color: var(--ui-text-secondary);
