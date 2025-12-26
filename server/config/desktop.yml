@@ -1,6 +1,6 @@
 
 desktop:
-  framework: macos
+  framework: glass
   background:
     style: mesh
     colors:

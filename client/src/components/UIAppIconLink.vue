@@ -67,7 +67,7 @@ const handleClick = () => {
 .cell-content {
   width: 80px;
   height: 80px;
-  border-radius: 18px;
+  border-radius: var(--surface-radius);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,7 +103,7 @@ const handleClick = () => {
   width: 95%;
   height: 95%;
   /* Match the border radius of the .cell-content */
-  border-radius: 18px;
+  border-radius: var(--surface-radius);
   object-fit: cover;
 }
 </style>

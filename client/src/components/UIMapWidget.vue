@@ -319,8 +319,8 @@ onMounted(() => {
 
 /* --- WIDGET CONTAINER --- */
 .map-widget-container {
-  width: 340px;
-  height: 340px;
+  width: 300px;
+  height: 300px;
   background-color: var(--map-widget-bg);
   border-radius: var(--surface-radius);
   box-shadow: var(--map-shadow);
@@ -332,8 +332,7 @@ onMounted(() => {
   z-index: 91; /* Just above backdrop */
   transition: all 0.6s cubic-bezier(0.32, 0.72, 0, 1);
   transform-origin: center center;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: var(--font-family);
 }
 
 .map-widget-container:not(.map-expanded):active {
@@ -351,7 +350,7 @@ onMounted(() => {
 
   /* 90% Dimensions */
   width: 90vw;
-  height: 80vh;
+  height: 68vh;
 
   /* Ensure rounded corners persist */
   border-radius: var(--surface-radius);
