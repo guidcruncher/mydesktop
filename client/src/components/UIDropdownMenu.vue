@@ -12,8 +12,8 @@ const props = defineProps({
   },
   initialDarkMode: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const emit = defineEmits(['item-click', 'route-change'])
@@ -35,7 +35,7 @@ const updatePosition = (index) => {
     const rect = trigger.getBoundingClientRect()
     dropdownStyle.value = {
       top: `${rect.bottom + 6}px`,
-      left: `${rect.left}px`
+      left: `${rect.left}px`,
     }
   }
 }
@@ -121,9 +121,9 @@ onUnmounted(() => {
 
           <Teleport to="body">
             <Transition name="mnu-dropdown-fade">
-              <div 
-                v-if="activeIndex === idx" 
-                class="mnu-dropdown" 
+              <div
+                v-if="activeIndex === idx"
+                class="mnu-dropdown"
                 :style="dropdownStyle"
                 @click.stop
               >
@@ -142,7 +142,6 @@ onUnmounted(() => {
               </div>
             </Transition>
           </Teleport>
-          
         </div>
       </div>
 
@@ -166,8 +165,17 @@ onUnmounted(() => {
 <style scoped>
 /* Base Variables - Light Mode */
 .mnu-root {
-  --mnu-font: var(--font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
-  
+  --mnu-font: var(
+    --font-family,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif
+  );
+
   font-family: var(--mnu-font);
   color: var(--mnu-text);
 }
@@ -237,12 +245,21 @@ onUnmounted(() => {
 /* Dropdown */
 .mnu-dropdown {
   /* Changed to fixed for Teleport/Body positioning */
-  position: fixed; 
+  position: fixed;
   /* Top/Left removed here, handled by inline style */
   min-width: 240px;
 
   /* Ensure font inherits correctly now that it's out of .mnu-root */
-  font-family: var(--font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  font-family: var(
+    --font-family,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif
+  );
 
   background: var(--mnu-bg);
   backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
@@ -250,12 +267,12 @@ onUnmounted(() => {
   border: var(--surface-border);
   box-shadow: var(--surface-shadow);
   color: var(--text-color);
-  
+
   padding: 6px;
   display: flex;
   flex-direction: column;
   z-index: 8000;
-  
+
   /* Prevent overflow off screen (basic safety) */
   max-height: 90vh;
   overflow-y: auto;
