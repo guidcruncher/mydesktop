@@ -13,6 +13,7 @@ const apply = (el, binding, API_BASE_URL) => {
   if (!binding.value) {
     return
   }
+
   const config = binding.value
   if (config.framework) {
     document.body.dataset.framework = config.framework
@@ -20,19 +21,25 @@ const apply = (el, binding, API_BASE_URL) => {
     document.body.dataset.framework = 'vision'
   }
 
-  if (!config.style) {
+  if (!config.background) {
+    return
+  }
+
+  const backgroundConfig = config.background
+
+  if (!backgroundConfig.style) {
     return
   }
   const ctl = document.body
-  switch (config.style) {
+  switch (backgroundConfig.style) {
     case 'mesh':
-      BackgroundMesh(config.colors ?? colors, ctl)
+      BackgroundMesh(backgroundConfig.colors ?? colors, ctl)
       break
     case 'color':
-      ctl.style.backgroundColor = config.color
+      ctl.style.backgroundColor = backgroundConfig.color
       break
     case 'image':
-      const url = `${API_BASE_URL}/api/proxy?url=${encodeURIComponent(config.src ?? '')}`
+      const url = `${API_BASE_URL}/api/proxy?url=${encodeURIComponent(backgroundConfig.src ?? '')}`
       ctl.style.backgroundImage = `url("${url}")`
       ctl.style.backgroundSize = 'cover'
       ctl.style.backgroundRepeat = 'no-repeat'

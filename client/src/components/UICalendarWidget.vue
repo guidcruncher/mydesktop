@@ -140,7 +140,7 @@ onMounted(() => {})
   /* Solid Background */
   border: 1px solid var(--cal-bg-widget-border);
   box-shadow: var(--cal-shadow);
-  border-radius: var(--cal-border-radius);
+  border-radius: var(--surface-radius);
 
   padding: 12px 10px;
   display: flex;

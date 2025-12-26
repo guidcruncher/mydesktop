@@ -286,7 +286,7 @@ watch(
   --news-font-stack: var(--weather-font-family);
 
   position: relative;
-  border-radius: var(--news-radius);
+  border-radius: var(--surface-radius);
   overflow: hidden;
   font-family: var(--news-font-stack);
   box-shadow: 0 10px 25px -5px var(--news-shadow);

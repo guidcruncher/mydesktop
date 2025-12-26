@@ -24,8 +24,8 @@ onMounted(async () => {
       const ipinfo = await IpInformation()
       location.value = ipinfo.full
       desktop.value = json
-      if (json.desktop.background) {
-        bg.value = json.desktop.background
+      if (json.desktop) {
+        bg.value = json.desktop
       }
       showDesktop.value = true
     }

@@ -322,7 +322,7 @@ onMounted(() => {
   width: 340px;
   height: 340px;
   background-color: var(--map-widget-bg);
-  border-radius: var(--map-border-radius);
+  border-radius: var(--surface-radius);
   box-shadow: var(--map-shadow);
   position: relative;
   overflow: hidden;
@@ -354,7 +354,7 @@ onMounted(() => {
   height: 80vh;
 
   /* Ensure rounded corners persist */
-  border-radius: var(--map-border-radius);
+  border-radius: var(--surface-radius);
 
   z-index: 100;
   cursor: default;

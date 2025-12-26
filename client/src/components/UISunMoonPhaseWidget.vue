@@ -337,7 +337,7 @@ onUnmounted(() => {
   /* Removed Glass/Blur Effects */
   /* backdrop-filter: blur(20px); */
 
-  border-radius: 22px;
+  border-radius: var(--surface-radius);
   border: 1px solid var(--sunmoon-border-widget);
   box-shadow: var(--sunmoon-shadow-widget);
   padding: 24px;
