@@ -429,7 +429,7 @@ onMounted(() => {
   width: 90%;
   max-width: 400px;
   background: var(--map-input-bg); /* Solid or high opacity */
-  border-radius: 12px;
+  border-radius: var(--surface-radius);
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -486,7 +486,7 @@ onMounted(() => {
   left: 16px;
   right: 16px;
   background: var(--map-overlay-bg); /* Solid color */
-  border-radius: 18px;
+  border-radius: var(--surface-radius);
   padding: 14px 18px;
   z-index: 10;
   display: flex;

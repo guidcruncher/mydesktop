@@ -1,6 +1,6 @@
 
 desktop:
-  framework: glass
+  framework: fluent
   background:
     style: mesh
     colors:
