@@ -87,7 +87,7 @@ const handleClick = () => {
 
 .cell-label {
   font-size: 13px;
-  color: var(--color-primary-text);
+  color: var(--text-color);
   text-align: center;
   font-weight: 400;
   white-space: nowrap;
@@ -101,7 +101,7 @@ const handleClick = () => {
   width: 95%;
   height: 95%;
   /* Match the border radius of the .cell-content */
-  border-radius: var(--surface-radius);	
+  border-radius: var(--surface-radius);
   object-fit: cover;
 }
 </style>

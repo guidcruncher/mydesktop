@@ -114,7 +114,7 @@ const handleActionClick = (index: number, handler?: UIAlertActionHandler) => {
   .content {
     padding: 20px 16px 15px;
     text-align: center;
-    color: var(--ui-text-primary);
+    color: var(--text-color);
 
     .title {
       font-size: 17px;
@@ -126,7 +126,7 @@ const handleActionClick = (index: number, handler?: UIAlertActionHandler) => {
     .message {
       font-size: 13px;
       font-weight: 400;
-      color: var(--ui-text-primary);
+      color: var(--text-color);
       margin: 0;
       opacity: 0.9;
     }

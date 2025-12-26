@@ -362,7 +362,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .weather-wrapper {
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   font-family: var(--font-family);
   display: inline-block;
   /* Wraps compact widget size */
@@ -370,7 +370,7 @@ onUnmounted(() => {
 
 /* Ensure font/color variables pass to Teleport container */
 .weather-teleport-container {
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   font-family: var(--font-family);
   position: absolute;
   /* Non-intrusive container */
@@ -522,7 +522,7 @@ onUnmounted(() => {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -551,7 +551,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
 }
 
 .main-weather-lg {
@@ -682,26 +682,26 @@ onUnmounted(() => {
 
 /* Utils */
 .icon-white {
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   width: 32px;
   height: 32px;
 }
 
 .icon-lg {
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   width: 80px;
   height: 80px;
   stroke-width: 1.5;
 }
 
 .icon-sm {
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   width: 20px;
   height: 20px;
 }
 
 .icon-xs {
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   width: 14px;
   height: 14px;
 }

@@ -251,7 +251,7 @@ onUnmounted(() => {
   padding: 0 12px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   min-width: 90px;
 }
 

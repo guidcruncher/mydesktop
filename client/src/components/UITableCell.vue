@@ -96,7 +96,7 @@ const getAccessoryIcon = (acc: Accessory): string => {
 
   &__label {
     flex: 0 0 auto;
-    color: var(--ui-text-primary);
+    color: var(--text-color);
     margin-right: 10px;
   }
 

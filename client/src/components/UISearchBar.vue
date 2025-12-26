@@ -58,7 +58,7 @@ const handleInput = (event: Event) => {
     font-size: 17px;
     width: 100%;
     outline: none;
-    color: var(--ui-text-primary);
+    color: var(--text-color);
     font-family: inherit;
   }
 

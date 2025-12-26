@@ -51,7 +51,7 @@ const handleInput = (event: Event) => {
     border: none;
     background: transparent;
     font-size: 17px;
-    color: var(--ui-text-primary);
+    color: var(--text-color);
     outline: none;
     resize: none;
     padding: 0;

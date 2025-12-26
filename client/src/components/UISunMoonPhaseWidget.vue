@@ -70,7 +70,7 @@
           <span>{{ formattedSunset }}</span>
         </div>
         <div style="font-size: 12px; margin-top: 5px; color: var(--ui-text-secondary)">
-          Daylight: <span style="color: var(--ui-text-primary)">{{ daylightDuration }}</span>
+          Daylight: <span style="color: var(--text-color)">{{ daylightDuration }}</span>
         </div>
       </div>
 
@@ -349,7 +349,7 @@ onUnmounted(() => {
 
   /* Use Shared Font Variable */
   font-family: var(--weather-font-family);
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   box-sizing: border-box;
   transition:
     background-color 0.3s ease,
@@ -381,7 +381,7 @@ onUnmounted(() => {
 .sunmoon-location-icon {
   width: 14px;
   height: 14px;
-  fill: var(--ui-text-primary);
+  fill: var(--text-color);
   opacity: 0.5;
 }
 
@@ -389,7 +389,7 @@ onUnmounted(() => {
   font-size: 32px;
   font-weight: 300;
   margin-top: 4px;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   letter-spacing: -0.5px;
 }
 
@@ -412,7 +412,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
 }
 
 /* Search Overlay */
@@ -449,7 +449,7 @@ onUnmounted(() => {
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 16px;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   outline: none;
 }
 
@@ -525,7 +525,7 @@ onUnmounted(() => {
 .sunmoon-moon-phase-name {
   font-size: 14px;
   font-weight: 600;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
 }
 
 .sunmoon-moon-illumination {

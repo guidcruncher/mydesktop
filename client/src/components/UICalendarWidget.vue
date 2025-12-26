@@ -127,7 +127,7 @@ onMounted(() => {})
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
 }
 
 /* Widget Container - De-glassed */
@@ -188,7 +188,7 @@ onMounted(() => {})
 .cal-nav-btn {
   background: none;
   border: none;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   cursor: pointer;
   width: 20px;
   height: 20px;
@@ -287,7 +287,7 @@ onMounted(() => {})
   background: var(--cal-bg-widget);
   border: 1px solid var(--cal-bg-widget-border);
 
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   display: flex;
   justify-content: center;
   align-items: center;

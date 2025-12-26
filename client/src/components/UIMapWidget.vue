@@ -460,7 +460,7 @@ onMounted(() => {
   background: transparent;
   border: none;
   font-size: 17px;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   width: 100%;
   height: 100%;
   font-family: inherit;
@@ -517,7 +517,7 @@ onMounted(() => {
 .map-location-title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

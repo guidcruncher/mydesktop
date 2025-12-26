@@ -205,7 +205,7 @@ onUnmounted(() => {
   box-shadow: var(--sysinfo-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
 
   /* Typography */
-  color: var(--sysinfo-text-primary, #1c1c1e);
+  color: var(--text-color);
   font-family: var(--font-family, sans-serif);
 }
 
@@ -257,7 +257,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  color: var(--sysinfo-text-primary);
+  color: var(--text-color);
 }
 
 .sysinfo-main-text {
@@ -349,7 +349,7 @@ onUnmounted(() => {
   font-size: 14px;
   font-weight: 700;
   line-height: 1;
-  color: var(--sysinfo-text-primary);
+  color: var(--text-color);
 }
 
 .ring-unit {

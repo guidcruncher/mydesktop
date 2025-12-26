@@ -67,7 +67,7 @@ onUnmounted(() => {
     transform: translateX(-50%);
     font-weight: 600;
     font-size: 17px;
-    color: var(--ui-text-primary);
+    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

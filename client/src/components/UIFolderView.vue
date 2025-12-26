@@ -49,7 +49,7 @@ const props = defineProps({
 .folder-title {
   font-size: 32px;
   font-weight: 700;
-  color: var(--color-primary-text);
+  color: var(--text-color);
   padding: 10px 20px 10px 20px;
   text-align: left;
   flex-shrink: 0;

@@ -89,7 +89,7 @@ const handleClick = () => {
 
 .cell-label {
   font-size: 13px;
-  color: var(--color-primary-text);
+  color: var(--text-color);
   text-align: center;
   font-weight: 400;
   white-space: nowrap;

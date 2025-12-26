@@ -152,7 +152,7 @@ onUnmounted(() => {
   display: flex;
   position: relative;
   background-color: var(--imgbrws-app-bg);
-  color: var(--imgbrws-text-primary);
+  color: var(--text-color);
   transition:
     background-color 0.3s,
     color 0.3s;
@@ -238,7 +238,7 @@ onUnmounted(() => {
 .imgbrws-view-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--imgbrws-text-primary);
+  color: var(--text-color);
 }
 
 .imgbrws-icon-btn {

@@ -112,7 +112,7 @@ onMounted(() => {
   text-align: center;
   scroll-snap-align: center;
   font-size: 18px;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   cursor: pointer;
   user-select: none;
   transition:

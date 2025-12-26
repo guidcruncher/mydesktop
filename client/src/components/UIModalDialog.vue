@@ -265,7 +265,7 @@ onUnmounted(() => {
     var(--btn-primary-bg-start) 0%,
     var(--btn-primary-bg-end) 100%
   );
-  color: var(--btn-primary-color);
+  color: var(--text-color);
 }
 
 .modal-btn.primary:hover {

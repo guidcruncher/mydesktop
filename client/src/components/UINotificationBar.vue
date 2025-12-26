@@ -51,7 +51,7 @@ const closeNotification = () => {
 
   /* Solid Background */
   background-color: var(--notify-bg-color);
-  color: var(--notify-text-color-primary);
+  color: var(--text-color);
 
   border-radius: var(--radius-medium);
   border: 1px solid var(--notify-border-color);

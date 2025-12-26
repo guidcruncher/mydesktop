@@ -155,7 +155,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   /* Solid Background */
-  color: var(--todo-text-primary);
+  color: var(--text-color);
   border-radius: 24px;
   overflow: hidden;
   box-shadow: var(--shadow-default);
@@ -217,7 +217,7 @@ onMounted(() => {
 
 .todo-filter-btn.active {
   background: var(--todo-btn-bg);
-  color: var(--todo-text-primary);
+  color: var(--text-color);
 }
 
 /* Input Section - De-glassed */
@@ -261,7 +261,7 @@ onMounted(() => {
   outline: none;
   height: 40px;
   font-size: 16px;
-  color: var(--todo-text-primary);
+  color: var(--text-color);
   min-width: 0;
 }
 
@@ -357,7 +357,7 @@ onMounted(() => {
 .todo-text {
   flex: 1;
   font-size: 15px;
-  color: var(--todo-text-primary);
+  color: var(--text-color);
   transition: color 0.2s;
 }
 

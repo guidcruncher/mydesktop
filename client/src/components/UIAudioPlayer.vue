@@ -578,7 +578,7 @@ onUnmounted(() => {
   overflow: hidden;
 }
 .track-title {
-  color: var(--audio-text-primary, #2d3748);
+  color: var(--text-color, #2d3748);
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 5px;

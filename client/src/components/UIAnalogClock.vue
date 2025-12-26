@@ -50,7 +50,7 @@
             alignment-baseline="middle"
             font-size="8"
             font-weight="bold"
-            :fill="markerColor || 'var(--ui-text-primary, #000000'"
+            :fill="markerColor || 'var(--text-color, #000000'"
           >
             {{ h }}
           </text>

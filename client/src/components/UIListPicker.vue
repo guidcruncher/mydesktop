@@ -103,7 +103,7 @@ const handleIndexUpdate = (newIndex: number) => {
   // Custom styling for the list item label (passed via slot)
   :deep(.item > div) {
     font-size: 17px;
-    color: var(--ui-text-primary);
+    color: var(--text-color);
 
     &.selected {
       font-weight: 600;

@@ -62,7 +62,7 @@ watch(
     cursor: pointer;
 
     &.active {
-      background: var(--ui-text-primary);
+      background: var(--text-color);
       transform: scale(1.1);
     }
   }

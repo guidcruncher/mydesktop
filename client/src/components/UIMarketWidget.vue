@@ -349,7 +349,7 @@ onUnmounted(() => {
   letter-spacing: -0.5px;
   margin: 0;
   line-height: 1;
-  color: var(--stocks-text-primary);
+  color: var(--text-color);
 }
 
 .stocks-loader {
@@ -439,7 +439,7 @@ onUnmounted(() => {
 .stocks-symbol {
   font-size: 16px;
   font-weight: 600;
-  color: var(--stocks-text-primary);
+  color: var(--text-color);
 }
 
 .stocks-name {
@@ -478,7 +478,7 @@ onUnmounted(() => {
   font-size: 15px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: var(--stocks-text-primary);
+  color: var(--text-color);
 }
 
 .stocks-change-badge {

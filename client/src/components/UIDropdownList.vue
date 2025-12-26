@@ -277,7 +277,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   transition: background-color 0.1s;
 }
 .dropdown-item:last-child {

@@ -66,7 +66,7 @@ const clearInput = () => {
     border: none;
     background: transparent;
     font-size: 17px;
-    color: var(--ui-text-primary);
+    color: var(--text-color);
     outline: none;
     padding: 0;
     margin: 0;

@@ -55,7 +55,7 @@ onMounted(() => {
   border: none;
   background: transparent;
   font-size: 15px;
-  color: var(--ui-text-primary);
+  color: var(--text-color);
   appearance: none;
   cursor: pointer;
 }
