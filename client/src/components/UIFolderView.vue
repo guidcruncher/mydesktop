@@ -32,8 +32,6 @@ const props = defineProps({
   margin: 20px auto;
   padding: 10px 10px 20px 10px;
 
-  /* Solid Background */
-
   /* Standard Border & Shadow */
   border: var(--border-color-widget);
   box-shadow: var(--shadow-base);
