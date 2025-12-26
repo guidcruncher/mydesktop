@@ -1,6 +1,6 @@
 `
 <template>
-  <div class="analog-clock-wrapper surface">
+  <div class="analog-clock-wrapper">
     <div class="analog-clock" :style="clockPanelStyle" style="border: none">
       <svg :width="size" :height="size" viewBox="0 0 100 100">
         <circle

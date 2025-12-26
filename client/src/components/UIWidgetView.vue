@@ -21,29 +21,23 @@ import { ref } from 'vue'
 
 /* Widget */
 .ui-widget {
-  /* Removed Glassmorphism (backdrop-filter) */
-  border-radius: 28px;
   padding: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
 
-  /* Solid Background Variable */
-  box-shadow: var(--shadow-base);
-  border: var(--border-color-widget);
+  background: var(--surface-bg) !important;
+  backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate)) !important;
+  -webkit-backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  border: var(--surface-border);
+  border-radius: var(--surface-radius);
+  box-shadow: var(--surface-shadow);
+  color: var(--text-color);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
-/* Widget Interaction Styles */
-.ui-widget:hover {
-  transform: scale(1.02);
-  box-shadow: var(--shadow-hover);
-}
-
-.ui-widget:active {
-  transform: scale(0.98);
-}
 </style>
