@@ -1,42 +1,71 @@
+<script setup>
+/**
+ * UIWidgetView.vue
+ * A wrapper component that applies framework-adaptive glass/solid
+ * widget styling to any child component or control.
+ */
+const props = defineProps({
+  title: {
+    type: String,
+    default: '',
+  },
+})
+</script>
+
 <template>
-  <div class="widget-container">
-    <div class="ui-widget surface">
-      <slot></slot>
+  <div class="ui-widget surface">
+    <div v-if="title || $slots.title" class="ui-widget-header">
+      <div class="ui-widget-title">
+        <slot name="title">
+          {{ title }}
+        </slot>
+      </div>
+      <slot name="header-suffix" />
+    </div>
+
+    <div class="ui-widget-body">
+      <slot />
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-</script>
-
-<style lang="scss" scoped>
-.widget-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  transition: background-color 0.3s ease;
-}
-
-/* Widget */
+<style scoped>
 .ui-widget {
-  padding: 12px;
+  padding: 24px;
+  border-radius: var(--widget-radius, 20px);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  position: relative;
+  gap: 12px;
+  min-height: 160px;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  text-align: left;
+}
 
-  background: var(--surface-bg) !important;
-  backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
-  border: var(--surface-border);
-  border-radius: var(--surface-radius);
-  box-shadow: var(--surface-shadow);
-  color: var(--text-color);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
+.ui-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.ui-widget-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  font-family: var(--font-family, inherit);
+}
+
+.ui-widget-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure nested inputs or controls don't break the layout */
+.ui-widget-body :deep(> *) {
+  max-width: 100%;
 }
 </style>
