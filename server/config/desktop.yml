@@ -1,6 +1,6 @@
 
 desktop:
-  framework: fluent
+  framework: vision
   background:
     style: mesh
     colors:

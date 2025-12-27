@@ -1,12 +1,4 @@
-/* GOOGLE FONTS
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cantarell:wght@400;700&family=Inter:wght@400;700&family=Noto+Sans:wght@400;600&family=Open+Sans:wght@400;600&family=Poppins:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-*/
-
-/* ============================================================
-           1. THE THEME ENGINE (Variables)
-           ============================================================ */
+@import 'https://fonts.googleapis.com/css2?family=Cantarell:wght@400;700&family=Inter:wght@400;700&family=Noto+Sans:wght@400;600&family=Open+Sans:wght@400;600&family=Poppins:wght@400;700&family=Roboto:wght@400;500;700&display=swap';
 
 :root {
   --surface-blur: 12px;
@@ -21,12 +13,22 @@
   /* Default Typography */
   --font-family: 'Inter', sans-serif;
 
-  /* Default Button Vars */
+  /* Default Component Geometry */
   --btn-radius: 8px;
+  --icon-radius: 12px;
+  --folder-radius: 24px;
+  --modal-radius: 16px;
+  --widget-radius: 20px;
+
+  /* Default Button Vars */
   --btn-bg: var(--accent-color);
   --btn-text: #fff;
   --btn-border: none;
   --btn-hover-brightness: 1.1;
+
+  /* Overlay */
+  --overlay-bg: rgba(0, 0, 0, 0.65);
+  --overlay-blur: 5px;
 }
 
 /* --- Framework Definitions --- */
@@ -42,19 +44,23 @@
   --text-color: #000;
   --font-family: 'Inter', sans-serif;
   --btn-radius: 999px;
+  --icon-radius: 999px;
+  --folder-radius: 50px;
+  --modal-radius: 40px;
+  --widget-radius: 32px;
   --btn-bg: rgba(0, 0, 0, 0.05);
   --btn-text: #000;
-  --btn-border: 1px solid rgba(0, 0, 0, 0.1);
+  --overlay-blur: 20px;
+  --overlay-bg: rgba(0, 0, 0, 0.3);
 }
 .dark-mode[data-framework='vision'] {
   --surface-rgb: 25, 25, 25;
-  --surface-bg-opacity: 0.4;
   --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
   --text-color: #fff;
   --surface-border: 1px solid rgba(255, 255, 255, 0.15);
   --btn-bg: rgba(255, 255, 255, 0.15);
   --btn-text: #fff;
-  --btn-border: 1px solid rgba(255, 255, 255, 0.2);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
 }
 
 /* Fluent (Windows) */
@@ -68,16 +74,21 @@
   --text-color: #111;
   --font-family: 'Open Sans', sans-serif;
   --btn-radius: 4px;
+  --icon-radius: 8px;
+  --folder-radius: 8px;
+  --modal-radius: 8px;
+  --widget-radius: 8px;
   --btn-bg: #0078d4;
   --btn-text: #fff;
-  --btn-border: none;
+  --overlay-bg: rgba(0, 0, 0, 0.45);
+  --overlay-blur: 8px;
 }
 .dark-mode[data-framework='fluent'] {
   --surface-rgb: 32, 32, 32;
-  --surface-bg-opacity: 0.7;
   --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
   --text-color: #fff;
   --surface-border: 1px solid rgba(255, 255, 255, 0.1);
+  --overlay-bg: rgba(0, 0, 0, 0.7);
 }
 
 /* GNOME (Adwaita) */
@@ -91,18 +102,22 @@
   --text-color: #2e3436;
   --font-family: 'Cantarell', sans-serif;
   --btn-radius: 10px;
+  --icon-radius: 14px;
+  --folder-radius: 18px;
+  --modal-radius: 12px;
+  --widget-radius: 12px;
   --btn-bg: rgba(0, 0, 0, 0.05);
   --btn-text: #2e3436;
-  --btn-border: 1px solid rgba(0, 0, 0, 0.1);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-blur: 4px;
 }
 .dark-mode[data-framework='gnome'] {
   --surface-rgb: 40, 40, 40;
-  --surface-bg-opacity: 0.9;
   --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
   --text-color: #eee;
   --surface-border: 1px solid rgba(255, 255, 255, 0.05);
   --btn-bg: rgba(255, 255, 255, 0.1);
-  --btn-text: #eee;
+  --overlay-bg: rgba(0, 0, 0, 0.8);
 }
 
 /* KDE (Breeze) */
@@ -116,15 +131,20 @@
   --text-color: #232629;
   --font-family: 'Noto Sans', sans-serif;
   --btn-radius: 4px;
+  --icon-radius: 4px;
+  --folder-radius: 4px;
+  --modal-radius: 4px;
+  --widget-radius: 4px;
   --btn-bg: #3daee9;
   --btn-text: #fff;
-  --btn-border: 1px solid rgba(0, 0, 0, 0.1);
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --overlay-blur: 12px;
 }
 .dark-mode[data-framework='kde'] {
   --surface-rgb: 35, 38, 41;
-  --surface-bg-opacity: 0.8;
   --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
   --text-color: #eff0f1;
+  --overlay-bg: rgba(0, 0, 0, 0.6);
 }
 
 /* Android Material 3 (Google) */
@@ -138,44 +158,98 @@
   --text-color: #1c1b1f;
   --font-family: 'Roboto', sans-serif;
   --btn-radius: 20px;
+  --icon-radius: 16px;
+  --folder-radius: 28px;
+  --modal-radius: 28px;
+  --widget-radius: 24px;
   --btn-bg: #eaddff;
   --btn-text: #21005d;
-  --btn-border: none;
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --overlay-blur: 0px;
 }
 .dark-mode[data-framework='android'] {
   --surface-rgb: 30, 30, 30;
-  --surface-bg-opacity: 0.4;
   --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
   --text-color: #e6e1e5;
-  --surface-border: 1px solid rgba(255, 255, 255, 0.1);
   --btn-bg: #4f378b;
   --btn-text: #eaddff;
+  --overlay-bg: rgba(0, 0, 0, 0.6);
 }
 
-/* Glass (Modern Web) */
-[data-framework='glass'] {
-  --surface-rgb: 255, 255, 255;
-  --surface-bg-opacity: 0.15;
+/* NeXTSTEP (Classic Solid) */
+[data-framework='nextstep'] {
+  --surface-rgb: 195, 195, 195;
+  --surface-bg-opacity: 1;
   --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
-  --surface-blur: 12px;
-  --surface-radius: 24px;
-  --surface-border: 1px solid rgba(255, 255, 255, 0.3);
-  --text-color: #1e293b;
-  --font-family: 'Poppins', sans-serif;
-  --btn-radius: 12px;
-  --btn-bg: var(--accent-color);
-  --btn-text: #fff;
+  --surface-blur: 0px;
+  --surface-radius: 2px;
+  --surface-border: 1px solid #000;
+  --text-color: #000;
+  --font-family: 'Inter', sans-serif;
+  --btn-radius: 0px;
+  --icon-radius: 2px;
+  --folder-radius: 2px;
+  --modal-radius: 0px;
+  --widget-radius: 0px;
+  --btn-bg: #999;
+  --btn-text: #000;
+  --btn-border: 1px solid #000;
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  --overlay-blur: 0px;
 }
-.dark-mode[data-framework='glass'] {
-  --surface-rgb: 0, 0, 0;
-  --surface-bg-opacity: 0.35;
+.dark-mode[data-framework='nextstep'] {
+  --surface-rgb: 45, 45, 45;
   --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
   --text-color: #fff;
+  --surface-border: 1px solid #eee;
+  --btn-bg: #333;
+  --btn-text: #fff;
+  --btn-border: 1px solid #fff;
 }
 
-/* ============================================================
-           2. UNIVERSAL CLASSES
-           ============================================================ */
+/* RISC OS (Acorn Retro) */
+[data-framework='riscos'] {
+  --surface-rgb: 221, 221, 221;
+  --surface-bg-opacity: 1;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 0px;
+  --surface-radius: 0px;
+  --surface-border: 2px outset #ffffff;
+  --text-color: #000;
+  --font-family: 'Inter', sans-serif;
+  --btn-radius: 0px;
+  --icon-radius: 0px;
+  --folder-radius: 0px;
+  --modal-radius: 0px;
+  --widget-radius: 0px;
+  --btn-bg: #cccccc;
+  --btn-text: #000;
+  --btn-border: 2px outset #ffffff;
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-blur: 0px;
+}
+.dark-mode[data-framework='riscos'] {
+  --surface-rgb: 51, 51, 51;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --text-color: #fff;
+  --surface-border: 2px inset #111111;
+  --btn-bg: #333;
+  --btn-text: #fff;
+  --btn-border: 2px outset #666666;
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: var(--font-family);
+  color: var(--text-color);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  transition: all 0.5s ease;
+}
 
 .surface {
   background: var(--surface-bg);
@@ -185,33 +259,125 @@
   border-radius: var(--surface-radius);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   color: var(--text-color);
-  font-family: var(--font-family);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ADAPTIVE BUTTON UTILITY */
+/* UIAppIconButton */
+.ui-app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 80px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  user-select: none;
+}
+.ui-app-icon:hover {
+  transform: scale(1.05);
+}
+.ui-app-icon .icon-inner {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border-radius: var(--icon-radius);
+}
+.ui-app-icon .label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+/* UIFolderView */
+.ui-folder-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 20px;
+  padding: 24px;
+  border-radius: var(--folder-radius);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+/* UIWidget */
+.ui-widget {
+  padding: 24px;
+  border-radius: var(--widget-radius);
+}
+
+.ui-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ui-widget-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.ui-widget-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* UIModal */
+.ui-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay-bg);
+  backdrop-filter: blur(var(--overlay-blur));
+  -webkit-backdrop-filter: blur(var(--overlay-blur));
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ui-modal {
+  width: 90%;
+  max-width: 500px;
+  padding: 32px;
+  border-radius: var(--modal-radius);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transform: scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ui-modal.active {
+  transform: scale(1);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 24px;
+  padding: 10px 20px;
   font-family: var(--font-family);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   border-radius: var(--btn-radius);
   background: var(--btn-bg);
   color: var(--btn-text);
   border: var(--btn-border);
   transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.btn:hover {
-  filter: brightness(var(--btn-hover-brightness));
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.btn:active {
-  transform: scale(0.98);
 }

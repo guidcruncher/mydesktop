@@ -1,5 +1,4 @@
 // --- 1. Imports ---
-@import 'https://rsms.me/inter/inter.css';
 @import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css';
 
 // --- 2. Base Typography/Sizing Variables ---
@@ -16,24 +15,4 @@
   --radius-small: 8px;
   --radius-medium: 12px;
   --radius-large: 16px;
-}
-
-$font-family: 'Inter', sans-serif;
-
-@supports (font-variation-settings: normal) {
-  $font-family: InterVariable, sans-serif;
-}
-
-:root {
-  --font-family: #{$font-family};
-
-  font-family: var(--font-family);
-  font-feature-settings:
-    'liga' 1,
-    'calt' 1;
-}
-
-html,
-body {
-  color: var(--ui-text-primary);
 }
