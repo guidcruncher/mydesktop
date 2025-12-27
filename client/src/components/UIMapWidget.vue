@@ -73,12 +73,11 @@ const locationTitle = ref('Loading...')
 const locationSubtitle = ref('...')
 const mapContainer = ref(null)
 
-// Leaflet Instances
+// Leaflet
 let map = null
 let tileLayer = null
 let marker = null
 
-// Constants
 const expandedZoom = 16
 const initialZoom = 15
 const standardTiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -174,7 +173,6 @@ onMounted(() => initMap())
 </script>
 
 <style lang="scss">
-/* Global marker style */
 .map-custom-pin {
   background: var(--map-accent, #007aff);
   border: 2px solid white;
@@ -210,7 +208,6 @@ onMounted(() => initMap())
 
 <style lang="scss" scoped>
 .map-wrapper-outer {
-  /* Center the widget if it's in a flex container */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -218,8 +215,8 @@ onMounted(() => initMap())
   height: 100%;
 }
 
-/* FIXED DIMENSIONS
-   Restoring the original 300x300 size
+/* FIXED: Apply styles directly to the class. 
+  Since this class is passed to UIWidgetView, it becomes the root class of that component.
 */
 .map-widget-fixed {
   width: 300px;
@@ -227,23 +224,24 @@ onMounted(() => initMap())
   transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
   z-index: 10;
   cursor: pointer;
-  /* Ensure padding doesn't affect the size calculation if strict strictness is needed, 
-     but we remove padding via deep selector below anyway */
-  box-sizing: border-box;
+  
+  /* CRITICAL OVERRIDES for Edge-to-Edge Map */
+  padding: 0 !important;
+  gap: 0 !important;
+  display: block !important; /* Break flex layout to allow absolute positioning */
+  position: relative;
+  overflow: hidden;
 }
 
 .map-widget-fixed:hover {
   transform: translateY(-2px);
 }
 
-/* EXPANDED DIMENSIONS
-   Restoring original 90vw / 68vh expansion
-*/
 .map-expanded {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) !important; /* Override hover transform */
+  transform: translate(-50%, -50%) !important;
   width: 90vw;
   height: 68vh;
   z-index: 100;
@@ -251,34 +249,50 @@ onMounted(() => initMap())
   margin: 0;
 }
 
-/* DEEP OVERRIDES 
-   Remove the default padding from UIWidgetView so the map hits the edges
+/* DEEP SELECTORS for UIWidgetView Children
 */
-.map-widget-fixed :deep(.ui-widget-body) {
-  padding: 0;
-  /* Since UIWidgetView has gap: 12px, we just treat the map container as the flex child */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  /* Round the bottom corners to match the widget radius */
-  border-radius: 0 0 20px 20px;
+
+/* 1. Header: Float on top */
+.map-widget-fixed :deep(.ui-widget-header) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 16px 20px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
+  pointer-events: none;
 }
 
-/* Layout Internals */
+/* 2. Title: Ensure visibility */
+.map-widget-fixed :deep(.ui-widget-title) {
+  color: white !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 700;
+}
+
+/* 3. Body: Fill remaining space completely */
+.map-widget-fixed :deep(.ui-widget-body) {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  flex: none !important; /* Disable flex shrinking/growing */
+}
+
+/* Internals */
 .map-body-content {
-  flex: 1;
+  width: 100%;
+  height: 100%;
   position: relative;
-  overflow: hidden;
-  min-height: 150px;
 }
 
 #map {
   width: 100%;
   height: 100%;
   z-index: 1;
+  background: #eee;
 }
 
-/* Controls & Overlay */
 .map-backdrop {
   position: fixed;
   inset: 0;
@@ -297,48 +311,59 @@ onMounted(() => initMap())
 .map-header-controls {
   display: flex;
   gap: 8px;
+  pointer-events: auto;
 }
+
 .map-icon-btn {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.3);
   border: none;
-  color: var(--text-color);
+  color: white;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
 }
 .map-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .map-search-bar {
-  margin-bottom: 10px;
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  z-index: 50;
 }
 .map-search-bar input {
   width: 100%;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--ui-border, #ccc);
-  background: var(--ui-bg-input, #fff);
-  color: var(--text-color);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   font-family: inherit;
 }
 
 .map-info-footer {
   position: absolute;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
-  background: var(--map-overlay-bg, rgba(255, 255, 255, 0.9));
-  padding: 10px;
-  border-radius: 12px;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px;
+  border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 500;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
 }
 
 .location-text {
@@ -346,15 +371,17 @@ onMounted(() => initMap())
   flex-direction: column;
   font-size: 13px;
   overflow: hidden;
+  color: #333;
 }
 .location-text strong {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 14px;
 }
 .nav-icon {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   background: #007aff;
   border-radius: 50%;
   color: white;
@@ -363,10 +390,11 @@ onMounted(() => initMap())
   justify-content: center;
   flex-shrink: 0;
   margin-left: 10px;
+  box-shadow: 0 2px 6px rgba(0, 122, 255, 0.4);
 }
 .nav-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   transform: rotate(45deg);
 }
 </style>
