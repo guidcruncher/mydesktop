@@ -22,7 +22,7 @@
 
       <div class="sunmoon-data-grid" :class="{ opacity: loading }">
         <div class="sm-card">
-          <div class="sm-label">Sun</div>
+          <div class="sm-label">Sun Track</div>
           <div class="sm-viz-container">
             <svg viewBox="0 0 200 100" style="width: 100%; height: 100%;">
               <path d="M 20 90 A 80 80 0 0 1 180 90" fill="none" stroke="var(--ui-border)" stroke-width="3" stroke-dasharray="5,5" />
@@ -39,7 +39,7 @@
         </div>
 
         <div class="sm-card">
-          <div class="sm-label">Moon</div>
+          <div class="sm-label">Moon Phase</div>
           <div class="sm-viz-container moon-container">
             <MoonPhase width="60px" :latitude="lat" :illumination="moonIllumination" :phase="moonPhaseName" />
           </div>
@@ -160,7 +160,7 @@ onUnmounted(() => clearInterval(timer))
 .sm-search-bar { margin-bottom: 12px; }
 .sm-input { width: 100%; background: var(--ui-bg-input); border: 1px solid var(--ui-border); padding: 6px; border-radius: 6px; color: var(--text-color); }
 .sunmoon-data-grid { display: flex; gap: 12px; flex: 1; }
-.sm-card { flex: 1; background: var(--ui-bg-element, #f2f2f7); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+.sm-card { flex: 1; background: var(--system-gray3, #f2f2f7); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
 .sm-label { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--ui-text-secondary); width: 100%; text-align: left; }
 .sm-viz-container { width: 100%; height: 60px; margin-top: 10px; }
 .moon-container { display: flex; justify-content: center; align-items: center; }
