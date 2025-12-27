@@ -14,8 +14,6 @@ body {
 
 body {
   font-family: var(--font-family);
-  background-color: var(--ios-background);
-  color: var(--ios-text-primary);
 
   // Smooth transition between light and dark modes
   transition:
@@ -28,7 +26,7 @@ body {
   /*  padding-bottom: 120px; Space for fixed TabBar + Toolbar */
 
   background-color: var(--ios-background);
-  color: var(--ios-text-primary);
+  color: var(--text-color);
   transition:
     background-color 0.3s,
     color 0.3s;
@@ -62,7 +60,7 @@ body.dark-mode {
 input,
 textarea {
   font-family: inherit;
-  color: var(--ios-text-primary);
+  color: var(--text-color);
   background: var(--ios-field-bg);
   border: none;
   padding: 0;

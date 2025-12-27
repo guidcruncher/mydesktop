@@ -472,7 +472,7 @@ onUnmounted(() => {
 
 .sunmoon-card {
   flex: 1;
-  background: var(--sunmoon-card-bg);
+  background: var(--system-gray5);
   border-radius: 16px;
   padding: 16px;
   display: flex;
