@@ -1,0 +1,193 @@
+
+desktop:
+  framework: vision
+  background:
+    style: mesh
+    colors:
+      - "hsla(280, 80%, 70%, 1)"
+      - "hsla(200, 90%, 65%, 1)"
+      - "hsla(330, 80%, 75%, 1)"
+      - "hsla(40, 90%, 70%, 1)"
+    src: "https://sleepingbearhotels.com/wp-content/uploads/2025/05/Where-Is-Durdle-Door.webp"
+    color: "#d6d3ff"
+  foreground:
+    color: "#000000"
+
+layout:
+  columns: 12
+  components:
+    - name: Clock
+      type: widget
+      component: UIAnalogClockWidget
+      props:
+        timezone: "Europe/London"
+
+    - name: "GLiNet"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "GLiNet"
+        url: "https://192.168.1.1/#/login"
+        icon: "openwrt"
+
+    - name: "Github"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "Github"
+        url: "https://www.github.com"
+        icon: "github"
+
+    - name: "Docker"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "Docker Hub"
+        url: "https://hub.docker.com"
+        icon: "docker"
+
+    - name: "Webtop"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "Webtop"
+        url: "https://192.168.1.202:8086"
+        icon: "webtop"
+
+    - name: "Pi-Hole"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "Pi-Hole"
+        url: "http://192.168.1.202:3000/admin"
+        icon: "pi-hole"
+
+    - name: "File browser"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "File Browser"
+        url: "https://6d26316a6dcf.duckdns.org/login?redirect=/files/"
+        icon: "file-browser"
+
+    - name: "Jellyfin"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "Jellyfin"
+        url: "http://192.168.1.202:8096/"
+        icon: "jellyfin"
+
+    - name: "arr"
+      type: folder
+      props:
+        label: "Arrr"
+        icon: "file-explorer"
+      components:
+        - name: "Prowlarr"
+          type: app-icon
+          component: UIAppIconButton
+          props:
+            label: "Prowlarr"
+            url: "http://192.168.1.213:9696"
+            icon: "prowlarr"
+
+        - name: "Jellyseerr"
+          type: app-icon
+          component: UIAppIconButton
+          props:
+            label: "Jellyseerr"
+            url: "http://192.168.1.210:5055/login"
+            icon: "jellyseerr"
+
+        - name: "Radarr"
+          type: app-icon
+          component: UIAppIconButton
+          props:
+            label: "Radarr"
+            url: "http://192.168.1.214:7878"
+            icon: "radarr"
+
+        - name: "Lidarr"
+          type: app-icon
+          component: UIAppIconButton
+          props:
+            label: "Lidarr"
+            url: "http://192.168.1.212:8686"
+            icon: "lidarr"
+
+        - name: "QBittorrent"
+          type: app-icon
+          component: UIAppIconButton
+          props:
+            label: "QBittorrent"
+            url: "http://192.168.1.211:8080"
+            icon: "qbittorrent"
+
+    - name: "vopidy"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "Vopidy"
+        url: "https://0875ce890ad6.duckdns.org"
+        icon: "spotify"
+
+    - name: Weather
+      type: custom
+      component: UIWeatherWidget
+      props:
+        location: "current"
+
+    - name: News
+      type: custom
+      component: UINewsHeadlinesWidget
+      props:
+        rss: "https://feeds.bbci.co.uk/news/rss.xml"
+        size: "medium"
+
+    - name: Moon Phase
+      type: custom
+      component: UISunMoonPhaseWidget
+      props:
+        location: "current"
+
+    - name: SystemInfo
+      type: custom
+      component: UISystemInfoWidget
+      props:
+        location: "current"
+
+    - name: Map
+      type: custom
+      component: UIMapWidget
+      props:
+        location: "current"
+        apiUser: "rttapi_guidcruncher"
+        apiPass: "18162313ab1df4362155bd629633f33139bddb58"
+
+    - name: Calendar
+      type: custom
+      component: UICalendarWidget
+      props:
+        location: "current"
+
+    - name: GeoClock
+      type: custom
+      component: UIGeoclockWidget
+      props:
+        location: "current"
+
+    - name: UIGBRail
+      type: custom
+      component: UIGBRailStationWidget
+      props:
+        stationCode: "DID"
+        locationName: "Didcot Parkway"
+        apiUser: "rttapi_guidcruncher"
+        apiPass: "18162313ab1df4362155bd629633f33139bddb58"
+
+    - name: Clock
+      type: widget
+      component: UIFlipClockWidget
+      props:
+        timezone: "Europe/London"

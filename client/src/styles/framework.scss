@@ -1,0 +1,1137 @@
+/* =========================================
+   1. IMPORTED VARIABLES & FRAMEWORK CONFIG
+   ========================================= */
+@import 'https://fonts.googleapis.com/css2?family=Cantarell:wght@400;700&family=Inter:wght@400;700&family=Noto+Sans:wght@400;600&family=Open+Sans:wght@400;600&family=Poppins:wght@400;700&family=Roboto:wght@400;500;700&display=swap';
+@import 'https://rsms.me/inter/inter.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css';
+
+:root {
+  /* Global Defaults */
+  --surface-blur: 12px;
+  --surface-saturate: 100%;
+  --accent-color: #6366f1;
+
+  /* Default Base Color Components */
+  --surface-rgb: 255, 255, 255;
+  --surface-bg-opacity: 0.2;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+  /* Default Typography */
+  --font-family: 'Inter', sans-serif;
+  --text-color: #111;
+  --text-secondary: #666;
+  --text-tertiary: #999;
+
+  /* Default Component Geometry */
+  --btn-radius: 8px;
+  --icon-radius: 12px;
+  --folder-radius: 24px;
+  --modal-radius: 16px;
+  --widget-radius: 20px;
+
+  /* Default Button Vars */
+  --btn-bg: var(--accent-color);
+  --btn-text: #fff;
+  --btn-border: none;
+  --btn-hover-brightness: 1.1;
+
+  /* Overlay */
+  --overlay-bg: rgba(0, 0, 0, 0.65);
+  --overlay-blur: 5px;
+
+  /* Dropdown Specifics */
+  --dropdown-bg: var(--surface-bg);
+  --dropdown-border: var(--surface-border);
+  --dropdown-radius: var(--btn-radius);
+  --dropdown-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+
+  /* Widget Defaults */
+  --widget-bg: rgba(255, 255, 255, 0.5);
+  --widget-border: 1px solid rgba(255, 255, 255, 0.3);
+  --widget-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  /* --- GENERIC SYSTEM COLORS (Defaults) --- */
+  --sys-primary: #6366f1;
+  --sys-secondary: #ec4899;
+  --sys-success: #22c55e;
+  --sys-warning: #eab308;
+  --sys-danger: #ef4444;
+  --sys-info: #3b82f6;
+
+  /* Desktop Background Default */
+  --desktop-bg: #f3f4f6;
+}
+
+/* =========================================
+   2. FRAMEWORK DEFINITIONS
+   ========================================= */
+
+/* visionOS (Apple) */
+.framework-vision {
+  --surface-rgb: 255, 255, 255;
+  --surface-bg-opacity: 0.4;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 50px;
+  --surface-radius: 40px;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.5);
+
+  --text-color: #000;
+  --text-secondary: rgba(60, 60, 67, 0.6);
+  --text-tertiary: rgba(60, 60, 67, 0.3);
+
+  --font-family: 'Inter', sans-serif;
+  --btn-radius: 999px;
+  --icon-radius: 999px;
+  --folder-radius: 50px;
+  --modal-radius: 40px;
+  --widget-radius: 32px;
+  --btn-bg: rgba(0, 0, 0, 0.05);
+  --btn-text: #000;
+  --overlay-blur: 20px;
+  --overlay-bg: rgba(0, 0, 0, 0.3);
+
+  --dropdown-bg: rgba(255, 255, 255, 0.65);
+  --dropdown-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+  --dropdown-radius: 24px;
+
+  /* Vision Widget */
+  --widget-bg: rgba(255, 255, 255, 0.25);
+  --widget-border: 1px solid rgba(255, 255, 255, 0.4);
+  --widget-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+  --sys-primary: #007aff;
+  --sys-secondary: #5856d6;
+  --sys-success: #34c759;
+  --sys-warning: #ff9500;
+  --sys-danger: #ff3b30;
+  --sys-info: #64d2ff;
+
+  --desktop-bg: #f2f2f7;
+}
+
+/* Fluent (Windows) */
+.framework-fluent {
+  --surface-rgb: 255, 255, 255;
+  --surface-bg-opacity: 0.75;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 40px;
+  --surface-radius: 8px;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.4);
+
+  --text-color: #111;
+  --text-secondary: #616161;
+  --text-tertiary: #8f8f8f;
+
+  --font-family: 'Open Sans', sans-serif;
+  --btn-radius: 4px;
+  --icon-radius: 8px;
+  --folder-radius: 8px;
+  --modal-radius: 8px;
+  --widget-radius: 8px;
+  --btn-bg: #0078d4;
+  --btn-text: #fff;
+  --overlay-bg: rgba(0, 0, 0, 0.45);
+  --overlay-blur: 8px;
+
+  --dropdown-bg: rgba(255, 255, 255, 0.95);
+  --dropdown-radius: 6px;
+
+  /* Fluent Widget */
+  --widget-bg: rgba(255, 255, 255, 0.7);
+  --widget-border: 1px solid rgba(0, 0, 0, 0.05);
+  --widget-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  --sys-primary: #0078d4;
+  --sys-secondary: #605e5c;
+  --sys-success: #107c10;
+  --sys-warning: #ffb900;
+  --sys-danger: #d13438;
+  --sys-info: #0078d4;
+
+  --desktop-bg: #f3f3f3;
+}
+
+/* GNOME (Adwaita) */
+.framework-gnome {
+  --surface-rgb: 255, 255, 255;
+  --surface-bg-opacity: 0.9;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 24px;
+  --surface-radius: 12px;
+  --surface-border: 1px solid rgba(0, 0, 0, 0.1);
+
+  --text-color: #2e3436;
+  --text-secondary: #5e5c64;
+  --text-tertiary: #9a9996;
+
+  --font-family: 'Cantarell', sans-serif;
+  --btn-radius: 10px;
+  --icon-radius: 14px;
+  --folder-radius: 18px;
+  --modal-radius: 12px;
+  --widget-radius: 12px;
+  --btn-bg: rgba(0, 0, 0, 0.05);
+  --btn-text: #2e3436;
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-blur: 4px;
+
+  --dropdown-bg: #fff;
+
+  /* Gnome Widget */
+  --widget-bg: #ffffff;
+  --widget-border: 1px solid #dedede;
+  --widget-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+
+  --sys-primary: #3584e4;
+  --sys-secondary: #9141ac;
+  --sys-success: #26a269;
+  --sys-warning: #e66100;
+  --sys-danger: #c01c28;
+  --sys-info: #1c71d8;
+
+  --desktop-bg: #fafafa;
+}
+
+/* KDE (Breeze) */
+.framework-kde {
+  --surface-rgb: 252, 252, 252;
+  --surface-bg-opacity: 0.65;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 16px;
+  --surface-radius: 4px;
+  --surface-border: 1px solid #3daee9;
+
+  --text-color: #232629;
+  --text-secondary: #4d5057;
+  --text-tertiary: #707d8a;
+
+  --font-family: 'Noto Sans', sans-serif;
+  --btn-radius: 4px;
+  --icon-radius: 4px;
+  --folder-radius: 4px;
+  --modal-radius: 4px;
+  --widget-radius: 4px;
+  --btn-bg: #3daee9;
+  --btn-text: #fff;
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --overlay-blur: 12px;
+
+  --dropdown-bg: #fcfcfc;
+
+  /* KDE Widget */
+  --widget-bg: rgba(255, 255, 255, 0.9);
+  --widget-border: 1px solid #ccc;
+  --widget-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  --sys-primary: #3daee9;
+  --sys-secondary: #9b59b6;
+  --sys-success: #27ae60;
+  --sys-warning: #f67400;
+  --sys-danger: #da4453;
+  --sys-info: #2980b9;
+
+  --desktop-bg: #eff0f1;
+}
+
+/* Android Material 3 */
+.framework-android {
+  --surface-rgb: 255, 255, 255;
+  --surface-bg-opacity: 0.15;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 10px;
+  --surface-radius: 28px;
+  --surface-border: 1px solid rgba(0, 0, 0, 0.05);
+
+  --text-color: #1c1b1f;
+  --text-secondary: #49454f;
+  --text-tertiary: #79747e;
+
+  --font-family: 'Roboto', sans-serif;
+  --btn-radius: 20px;
+  --icon-radius: 16px;
+  --folder-radius: 28px;
+  --modal-radius: 28px;
+  --widget-radius: 24px;
+  --btn-bg: #eaddff;
+  --btn-text: #21005d;
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --overlay-blur: 0px;
+
+  --dropdown-bg: #f3edf7;
+  --dropdown-radius: 12px;
+
+  /* Android Widget */
+  --widget-bg: #f3edf7;
+  --widget-border: none;
+  --widget-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+
+  --sys-primary: #6750a4;
+  --sys-secondary: #625b71;
+  --sys-success: #465c04;
+  --sys-warning: #efb01c;
+  --sys-danger: #b3261e;
+  --sys-info: #4f378b;
+
+  --desktop-bg: #fffbfe;
+}
+
+/* NeXTSTEP */
+.framework-nextstep {
+  --surface-rgb: 195, 195, 195;
+  --surface-bg-opacity: 1;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 0px;
+  --surface-radius: 2px;
+  --surface-border: 1px solid #000;
+
+  --text-color: #000;
+  --text-secondary: #333333;
+  --text-tertiary: #555555;
+
+  --font-family: 'Inter', sans-serif;
+  --btn-radius: 0px;
+  --icon-radius: 2px;
+  --folder-radius: 2px;
+  --modal-radius: 0px;
+  --widget-radius: 0px;
+  --btn-bg: #999;
+  --btn-text: #000;
+  --btn-border: 1px solid #000;
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  --overlay-blur: 0px;
+
+  --dropdown-bg: #fff;
+  --dropdown-radius: 0px;
+  --dropdown-shadow: 4px 4px 0 rgba(0, 0, 0, 1);
+
+  /* NeXT Widget */
+  --widget-bg: #ffffff;
+  --widget-border: 1px solid #000;
+  --widget-shadow: 4px 4px 0 rgba(0, 0, 0, 1);
+
+  --sys-primary: #000000;
+  --sys-secondary: #555555;
+  --sys-success: #333333;
+  --sys-warning: #777777;
+  --sys-danger: #000000;
+  --sys-info: #999999;
+
+  --desktop-bg: #555555;
+}
+
+/* RISC OS */
+.framework-riscos {
+  --surface-rgb: 221, 221, 221;
+  --surface-bg-opacity: 1;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 0px;
+  --surface-radius: 0px;
+  --surface-border: 2px outset #ffffff;
+
+  --text-color: #000;
+  --text-secondary: #444444;
+  --text-tertiary: #777777;
+
+  --font-family: 'Inter', sans-serif;
+  --btn-radius: 0px;
+  --icon-radius: 0px;
+  --folder-radius: 0px;
+  --modal-radius: 0px;
+  --widget-radius: 0px;
+  --btn-bg: #cccccc;
+  --btn-text: #000;
+  --btn-border: 2px outset #ffffff;
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-blur: 0px;
+
+  --dropdown-bg: #ddd;
+  --dropdown-radius: 0px;
+  --dropdown-border: 2px outset #fff;
+  --dropdown-shadow: none;
+
+  /* RISC Widget */
+  --widget-bg: #dcdcdc;
+  --widget-border: 2px outset #fff;
+  --widget-shadow: none;
+
+  --sys-primary: #0000ff;
+  --sys-secondary: #777777;
+  --sys-success: #00ff00;
+  --sys-warning: #ffff00;
+  --sys-danger: #ff0000;
+  --sys-info: #00ffff;
+
+  --desktop-bg: #b0b0b0;
+}
+
+/* Dark mode */
+body.dark-mode {
+  /* =========================================
+   2. FRAMEWORK DEFINITIONS
+   ========================================= */
+
+  /* visionOS (Apple) */
+  &.framework-vision {
+    --surface-rgb: 25, 25, 25;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #fff;
+    --text-secondary: rgba(235, 235, 245, 0.6);
+    --text-tertiary: rgba(235, 235, 245, 0.3);
+
+    --surface-border: 1px solid rgba(255, 255, 255, 0.15);
+    --btn-bg: rgba(255, 255, 255, 0.15);
+    --btn-text: #fff;
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+    --dropdown-bg: rgba(40, 40, 40, 0.65);
+
+    --widget-bg: rgba(60, 60, 60, 0.3);
+    --widget-border: 1px solid rgba(255, 255, 255, 0.1);
+
+    --sys-primary: #0a84ff;
+    --sys-secondary: #5e5ce6;
+    --sys-success: #30d158;
+    --sys-warning: #ff9f0a;
+    --sys-danger: #ff453a;
+
+    --desktop-bg: #000000;
+  }
+
+  /* Fluent (Windows) */
+  &.framework-fluent {
+    --surface-rgb: 32, 32, 32;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #fff;
+    --text-secondary: #d1d1d1;
+    --text-tertiary: #9e9e9e;
+
+    --surface-border: 1px solid rgba(255, 255, 255, 0.1);
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+    --dropdown-bg: rgba(40, 40, 40, 0.95);
+
+    --widget-bg: rgba(45, 45, 45, 0.7);
+    --widget-border: 1px solid rgba(255, 255, 255, 0.08);
+
+    --sys-primary: #4cc2ff;
+    --sys-success: #6ccb5f;
+    --sys-warning: #fce100;
+    --sys-danger: #ff99a4;
+
+    --desktop-bg: #202020;
+  }
+
+  /* GNOME (Adwaita) */
+  &.framework-gnome {
+    --surface-rgb: 40, 40, 40;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #eee;
+    --text-secondary: #c0bfbc;
+    --text-tertiary: #77767b;
+
+    --surface-border: 1px solid rgba(255, 255, 255, 0.05);
+    --btn-bg: rgba(255, 255, 255, 0.1);
+    --overlay-bg: rgba(0, 0, 0, 0.8);
+    --dropdown-bg: #303030;
+
+    --widget-bg: #383838;
+    --widget-border: 1px solid rgba(0, 0, 0, 0.3);
+
+    --sys-primary: #62a0ea;
+    --sys-success: #2ec27e;
+    --sys-warning: #ffa348;
+    --sys-danger: #f66151;
+
+    --desktop-bg: #242424;
+  }
+
+  /* KDE (Breeze) */
+  &.framework-kde {
+    --surface-rgb: 35, 38, 41;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #eff0f1;
+    --text-secondary: #bdc3c7;
+    --text-tertiary: #7f8c8d;
+
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --dropdown-bg: #232629;
+
+    --widget-bg: rgba(49, 54, 59, 0.9);
+    --widget-border: 1px solid #616e79;
+
+    --desktop-bg: #232629;
+  }
+
+  /* Android Material 3 */
+  &.framework-android {
+    --surface-rgb: 30, 30, 30;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #e6e1e5;
+    --text-secondary: #cac4d0;
+    --text-tertiary: #938f99;
+
+    --btn-bg: #4f378b;
+    --btn-text: #eaddff;
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --dropdown-bg: #2b2930;
+
+    --widget-bg: #4a4458;
+    --widget-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+
+    --sys-primary: #d0bcff;
+    --sys-secondary: #ccc2dc;
+    --sys-success: #bbdd30;
+    --sys-warning: #ffd43a;
+    --sys-danger: #f2b8b5;
+
+    --desktop-bg: #1c1b1f;
+  }
+
+  /* NeXTSTEP */
+  &.framework-nextstep {
+    --surface-rgb: 45, 45, 45;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #fff;
+    --text-secondary: #cccccc;
+    --text-tertiary: #999999;
+
+    --surface-border: 1px solid #eee;
+    --btn-bg: #333;
+    --btn-text: #fff;
+    --btn-border: 1px solid #fff;
+    --dropdown-bg: #000;
+    --dropdown-shadow: 4px 4px 0 rgba(255, 255, 255, 1);
+
+    --widget-bg: #000000;
+    --widget-border: 1px solid #fff;
+    --widget-shadow: 4px 4px 0 rgba(255, 255, 255, 1);
+
+    --sys-primary: #ffffff;
+    --sys-secondary: #aaaaaa;
+
+    --desktop-bg: #000000;
+  }
+
+  /* RISC OS */
+  &.framework-riscos {
+    --surface-rgb: 51, 51, 51;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #fff;
+    --text-secondary: #dddddd;
+    --text-tertiary: #aaaaaa;
+
+    --surface-border: 2px inset #111111;
+    --btn-bg: #333;
+    --btn-text: #fff;
+    --btn-border: 2px outset #666666;
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+    --dropdown-bg: #333;
+    --dropdown-border: 2px outset #666;
+
+    --widget-bg: #333333;
+    --widget-border: 2px outset #666;
+
+    --sys-primary: #5555ff;
+
+    --desktop-bg: #333333;
+  }
+}
+
+/* =========================================
+   3. GLOBAL LAYOUT & UTILITIES
+   ========================================= */
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #111;
+
+  /* Background logic */
+  background-color: var(--desktop-bg, #f3f4f6);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  transition: all 0.5s ease;
+
+  &.dark-mode {
+    color: #fff;
+    /* Add dark overlay in dark mode */
+    --bg-overlay: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+    /* Set fallback background to dark */
+    --desktop-bg: #111;
+
+    .header-bar {
+      background: rgba(0, 0, 0, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+/* Header & Controls */
+.header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.8);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 32px;
+  padding: 100px 32px 32px 32px;
+}
+
+.framework-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.framework-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  margin-left: 8px;
+}
+
+/* =========================================
+   4. COMPONENT IMPLEMENTATIONS (GENERIC)
+   ========================================= */
+
+.surface {
+  background: var(--surface-bg);
+  -webkit-backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  border: var(--surface-border);
+  border-radius: var(--surface-radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --- UI WIDGET --- */
+.ui-widget {
+  background: var(--widget-bg);
+  border: var(--widget-border);
+  border-radius: var(--widget-radius);
+  box-shadow: var(--widget-shadow);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+}
+
+/* --- UI MODAL --- */
+.ui-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay-bg);
+  -webkit-backdrop-filter: blur(var(--overlay-blur));
+  backdrop-filter: blur(var(--overlay-blur));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+    .ui-modal {
+      transform: scale(1);
+    }
+  }
+}
+
+.ui-modal {
+  width: 90%;
+  max-width: 400px;
+  background: rgba(var(--surface-rgb), 0.85);
+  -webkit-backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  border: var(--surface-border);
+  color: var(--text-color);
+  border-radius: var(--modal-radius);
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  /* Specific framework overrides for Modal using nested selectors */
+  .framework-riscos & {
+    background: var(--surface-bg);
+    border: 2px outset #fff;
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .framework-nextstep & {
+    background: var(--surface-bg);
+    border: 1px solid #000;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 1);
+
+    body.dark-mode & {
+      box-shadow: 8px 8px 0 rgba(255, 255, 255, 1);
+    }
+  }
+}
+
+/* --- Typography & Elements --- */
+h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.25rem;
+  font-family: var(--font-family);
+  font-weight: 600;
+}
+p {
+  margin: 0 0 16px 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-family: var(--font-family);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--btn-radius);
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: var(--btn-border);
+  transition:
+    filter 0.2s ease,
+    transform 0.1s ease;
+  text-decoration: none;
+
+  &:hover {
+    filter: brightness(var(--btn-hover-brightness));
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  color: var(--text-color);
+  background: rgba(var(--surface-rgb), 0.1);
+  border: var(--surface-border);
+  border-radius: var(--btn-radius);
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: var(--sys-primary);
+    background: rgba(var(--surface-rgb), 0.2);
+    box-shadow: 0 0 0 1px var(--sys-primary);
+  }
+}
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* --- CUSTOM DROPDOWN (Replaces <select>) --- */
+.custom-select {
+  position: relative;
+  font-family: var(--font-family);
+  width: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.select-selected {
+  background: rgba(var(--surface-rgb), 0.1);
+  color: var(--text-color);
+  padding: 12px 16px;
+  border: var(--surface-border);
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: var(--text-color) transparent transparent transparent;
+    position: relative;
+    top: 3px;
+  }
+  &.select-arrow-active:after {
+    border-color: transparent transparent var(--text-color) transparent;
+    top: -3px;
+  }
+}
+
+.select-items {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  margin-top: 6px;
+  background: var(--dropdown-bg);
+  border-radius: var(--dropdown-radius);
+  border: var(--dropdown-border);
+  box-shadow: var(--dropdown-shadow);
+  -webkit-backdrop-filter: blur(var(--surface-blur));
+  backdrop-filter: blur(var(--surface-blur));
+  padding: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  pointer-events: all;
+
+  &.select-hide {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+  }
+
+  div {
+    color: var(--text-color);
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: calc(var(--dropdown-radius) * 0.75);
+    transition: background 0.15s;
+
+    &:hover {
+      background: rgba(var(--surface-rgb), 0.15);
+    }
+  }
+}
+
+.same-as-selected {
+  background: var(--sys-primary) !important;
+  color: #fff !important;
+}
+
+.framework-riscos {
+  .select-items div:hover {
+    border: 1px inset #fff;
+    background: #bbb;
+  }
+  .same-as-selected {
+    border: 1px inset #fff;
+  }
+}
+
+/* --- Switch / Toggle --- */
+.switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 28px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked + .slider {
+      background-color: var(--sys-primary);
+      &:before {
+        transform: translateX(20px);
+        background-color: #fff;
+      }
+    }
+  }
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(150, 150, 150, 0.3);
+  border: var(--surface-border);
+  transition: 0.4s;
+  border-radius: 999px;
+
+  &:before {
+    position: absolute;
+    content: '';
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 3px;
+    background-color: var(--text-color);
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+}
+
+/* --- Checkbox --- */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--text-color);
+  -webkit-user-select: none;
+  user-select: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+    &:checked ~ .checkmark {
+      background-color: var(--sys-primary);
+      border-color: transparent;
+      &:after {
+        display: block;
+      }
+    }
+  }
+
+  &:hover input ~ .checkmark {
+    background-color: rgba(var(--surface-rgb), 0.2);
+  }
+}
+.checkmark {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  background-color: rgba(var(--surface-rgb), 0.1);
+  border: var(--surface-border);
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+}
+
+/* --- Color Palette Swatches --- */
+.palette-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  .framework-riscos &,
+  .framework-nextstep & {
+    border-radius: 0px;
+    border: 1px solid #000;
+  }
+}
+
+/* --- App Icon --- */
+.ui-app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 80px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  color: var(--text-color);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .icon-inner {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border-radius: var(--icon-radius);
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: var(--btn-border);
+    font-weight: bold;
+  }
+
+  .label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-family: var(--font-family);
+  }
+}
+
+/* Default YAML Editor variables */
+.yaml-editor {
+  --ui-yaml-editor-bg: #ffffff;
+  --ui-yaml-editor-fg: #24292e;
+  --ui-yaml-editor-caret: #000000;
+  --ui-yaml-editor-selection: #b3d4fc;
+  --ui-yaml-editor-gutter-bg: #f6f8fa;
+  --ui-yaml-editor-gutter-fg: #bbb;
+  --ui-yaml-editor-border: #e1e4e8;
+  --ui-yaml-editor-status-ok-bg: #dafbe1;
+  --ui-yaml-editor-status-ok-fg: #1a7f37;
+  --ui-yaml-editor-status-err-bg: #ffebe9;
+  --ui-yaml-editor-status-err-fg: #cf222e;
+  --ui-yaml-editor-syntax-key: #22863a;
+  --ui-yaml-editor-syntax-string: #032f62;
+  --ui-yaml-editor-syntax-value: #005cc5;
+  --ui-yaml-editor-syntax-comment: #6a737d;
+  --ui-yaml-editor-syntax-keyword: #d73a49;
+  --ui-yaml-editor-syntax-meta: #6f42c1;
+  --ui-yaml-editor-toolbar-bg: #f6f8fa;
+  --ui-yaml-editor-toolbar-btn-bg: #ffffff;
+  --ui-yaml-editor-toolbar-btn-border: #d1d5da;
+  --ui-yaml-editor-toolbar-btn-hover: #f3f4f6;
+}
+
+.dark-mode .yaml-editor {
+  --ui-yaml-editor-bg: #1e1e1e;
+  --ui-yaml-editor-fg: #d4d4d4;
+  --ui-yaml-editor-caret: #ffffff;
+  --ui-yaml-editor-selection: #264f78;
+  --ui-yaml-editor-gutter-bg: #252526;
+  --ui-yaml-editor-gutter-fg: #6e7681;
+  --ui-yaml-editor-border: #30363d;
+  --ui-yaml-editor-status-ok-bg: #238636;
+  --ui-yaml-editor-status-ok-fg: #ffffff;
+  --ui-yaml-editor-status-err-bg: #8c1d18;
+  --ui-yaml-editor-status-err-fg: #ffffff;
+  --ui-yaml-editor-syntax-key: #7ee787;
+  --ui-yaml-editor-syntax-string: #a5d6ff;
+  --ui-yaml-editor-syntax-value: #79c0ff;
+  --ui-yaml-editor-syntax-comment: #8b949e;
+  --ui-yaml-editor-syntax-keyword: #ff7b72;
+  --ui-yaml-editor-syntax-meta: #d2a8ff;
+  --ui-yaml-editor-toolbar-bg: #0d1117;
+  --ui-yaml-editor-toolbar-btn-bg: #21262d;
+  --ui-yaml-editor-toolbar-btn-border: #30363d;
+  --ui-yaml-editor-toolbar-btn-hover: #30363d;
+}
+
+/* --- Layout Utility --- */
+.ui-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.divider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: 10px 0;
+  width: 100%;
+}
