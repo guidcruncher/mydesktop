@@ -448,7 +448,7 @@ onUnmounted(() => {
   transition: all 0.4s ease;
 
   .map-expanded & {
-    max-width: 400px;
+    max-width: 500px;
     left: 50%;
     transform: translateX(-50%);
     right: auto;
