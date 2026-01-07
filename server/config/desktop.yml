@@ -150,7 +150,7 @@ layout:
       type: custom
       component: UINewsHeadlinesWidget
       props:
-        rss: "https://feeds.bbci.co.uk/news/rss.xml"
+        rss: "https://www.oxfordmail.co.uk/news/rss/"
         size: "medium"
 
     - name: Moon Phase

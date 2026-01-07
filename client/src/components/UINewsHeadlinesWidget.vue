@@ -5,7 +5,7 @@
     :class="[`news-size-${size}`]"
     :backgroundImage="currentBgStyle"
     width="360px"
-    height="150px"
+    height="200px"
   >
     <template #header-suffix>
       <div class="news-pagination">

@@ -1,5 +1,5 @@
 <template>
-  <UIWidgetView :title="city" width="330px">
+  <UIWidgetView :title="city" width="330px" height="170px">
     <template #header-suffix>
       <div class="sunmoon-header-actions">
         <span class="sm-time">{{ formattedTime }}</span>
