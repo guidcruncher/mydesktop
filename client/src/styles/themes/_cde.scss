@@ -5,7 +5,7 @@
   --surface-bg: rgb(var(--surface-rgb));
   --surface-blur: 0px;
   --surface-radius: 0px;
-  
+
   /* The defining 3D Bevel Look */
   --surface-border: 2px outset #f0f0f0;
 
@@ -15,7 +15,7 @@
 
   /* Utilitarian Fonts */
   --font-family: 'Helvetica', 'Arial', sans-serif;
-  
+
   /* Geometry: Absolutely Square */
   --btn-radius: 0px;
   --icon-radius: 0px;
@@ -35,7 +35,7 @@
   --dropdown-bg: #dcdcdc;
   --dropdown-radius: 0px;
   --dropdown-border: 2px outset #fff;
-  --dropdown-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+  --dropdown-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
 
   /* CDE Widget (Front Panel style) */
   --widget-bg: #c0c0c0;
@@ -43,7 +43,7 @@
   --widget-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
 
   /* Classic 90s System Colors */
-  --sys-primary: #008080;   /* Teal */
+  --sys-primary: #008080; /* Teal */
   --sys-secondary: #b03060; /* Maroon (often used for active borders) */
   --sys-success: #008000;
   --sys-warning: #808000;
@@ -54,7 +54,7 @@
   --desktop-bg: #4a708b;
 
   /* --- CDE Specific Overrides --- */
-  
+
   /* Enforce bold headers */
   h2 {
     font-weight: bold;
@@ -69,7 +69,7 @@
   }
 
   /* Inputs should look recessed */
-  .form-control, 
+  .form-control,
   .select-selected {
     background: #fff;
     border: 2px inset #dcdcdc;
@@ -108,30 +108,30 @@
   body.dark-mode & {
     --surface-rgb: 40, 50, 60;
     --surface-bg: rgb(var(--surface-rgb));
-    
+
     --text-color: #fff;
     --text-secondary: #ccc;
-    
+
     --surface-border: 2px outset #506070;
-    
+
     --btn-bg: #304050;
     --btn-text: #fff;
     --btn-border: 2px outset #506070;
-    
+
     --dropdown-bg: #2a3a4a;
     --dropdown-border: 2px outset #506070;
-    --dropdown-shadow: 4px 4px 0 rgba(0,0,0,1);
+    --dropdown-shadow: 4px 4px 0 rgba(0, 0, 0, 1);
 
     --widget-bg: #28323c;
     --widget-border: 2px outset #4a5a6a;
-    
+
     --desktop-bg: #1a2a3a;
 
     h2 {
       text-shadow: 1px 1px 0 #000;
     }
 
-    .form-control, 
+    .form-control,
     .select-selected {
       background: #111;
       border: 2px inset #444;
