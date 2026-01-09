@@ -22,12 +22,18 @@ import UIImageBrowser from './UIImageBrowser.vue'
 import UIMapWidget from './UIMapWidget.vue'
 import UIModalDialog from './UIModalDialog.vue'
 import UINewsHeadlinesWidget from './UINewsHeadlinesWidget.vue'
+import UIProgressbar from './UIProgressbar.vue'
+import UISlider from './UISlider.vue'
+import UISparkline from './UISparkline.vue'
 import UISunMoonPhaseWidget from './UISunMoonPhaseWidget.vue'
 import UISurface from './UISurface.vue'
 import UISwitch from './UISwitch.vue'
 import UISystemInfoWidget from './UISystemInfoWidget.vue'
+import UITabContainer from './UITabContainer.vue'
+import UITabPanel from './UITabPanel.vue'
 import UITextBox from './UITextBox.vue'
 import UIThemeChooser from './UIThemeChooser.vue'
+import UIToast from './UIToast.vue'
 import UIWeatherWidget from './UIWeatherWidget.vue'
 import UIWidgetView from './UIWidgetView.vue'
 import YamlEditor from './YamlEditor.vue'
@@ -62,12 +68,18 @@ export const GlassComponents = {
   UIMapWidget,
   UIModalDialog,
   UINewsHeadlinesWidget,
+  UIProgressbar,
+  UISlider,
+  UISparkline,
   UISunMoonPhaseWidget,
   UISurface,
   UISwitch,
   UISystemInfoWidget,
+  UITabContainer,
+  UITabPanel,
   UITextBox,
   UIThemeChooser,
+  UIToast,
   UIWeatherWidget,
   UIWidgetView,
   YamlEditor,

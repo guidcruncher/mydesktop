@@ -1,0 +1,64 @@
+.framework-fluent {
+  --surface-rgb: 255, 255, 255;
+  --surface-bg-opacity: 0.75;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 40px;
+  --surface-radius: 8px;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.4);
+
+  --text-color: #111;
+  --text-secondary: #616161;
+  --text-tertiary: #8f8f8f;
+
+  --font-family: 'Open Sans', sans-serif;
+  --btn-radius: 4px;
+  --icon-radius: 8px;
+  --folder-radius: 8px;
+  --modal-radius: 8px;
+  --widget-radius: 8px;
+  --btn-bg: #0078d4;
+  --btn-text: #fff;
+  --overlay-bg: rgba(0, 0, 0, 0.45);
+  --overlay-blur: 8px;
+
+  --dropdown-bg: rgba(255, 255, 255, 0.95);
+  --dropdown-radius: 6px;
+
+  /* Fluent Widget */
+  --widget-bg: rgba(255, 255, 255, 0.7);
+  --widget-border: 1px solid rgba(0, 0, 0, 0.05);
+  --widget-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  --sys-primary: #0078d4;
+  --sys-secondary: #605e5c;
+  --sys-success: #107c10;
+  --sys-warning: #ffb900;
+  --sys-danger: #d13438;
+  --sys-info: #0078d4;
+
+  --desktop-bg: #f3f3f3;
+
+  /* Dark Mode Overrides */
+  &.dark-mode {
+    --surface-rgb: 32, 32, 32;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #fff;
+    --text-secondary: #d1d1d1;
+    --text-tertiary: #9e9e9e;
+
+    --surface-border: 1px solid rgba(255, 255, 255, 0.1);
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+    --dropdown-bg: rgba(40, 40, 40, 0.95);
+
+    --widget-bg: rgba(45, 45, 45, 0.7);
+    --widget-border: 1px solid rgba(255, 255, 255, 0.08);
+
+    --sys-primary: #4cc2ff;
+    --sys-success: #6ccb5f;
+    --sys-warning: #fce100;
+    --sys-danger: #ff99a4;
+
+    --desktop-bg: #202020;
+  }
+}

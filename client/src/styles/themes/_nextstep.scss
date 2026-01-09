@@ -1,0 +1,84 @@
+.framework-nextstep {
+  --surface-rgb: 195, 195, 195;
+  --surface-bg-opacity: 1;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 0px;
+  --surface-radius: 2px;
+  --surface-border: 1px solid #000;
+
+  --text-color: #000;
+  --text-secondary: #333333;
+  --text-tertiary: #555555;
+
+  --font-family: 'Inter', sans-serif;
+  --btn-radius: 0px;
+  --icon-radius: 2px;
+  --folder-radius: 2px;
+  --modal-radius: 0px;
+  --widget-radius: 0px;
+  --btn-bg: #999;
+  --btn-text: #000;
+  --btn-border: 1px solid #000;
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  --overlay-blur: 0px;
+
+  --dropdown-bg: #fff;
+  --dropdown-radius: 0px;
+  --dropdown-shadow: 4px 4px 0 rgba(0, 0, 0, 1);
+
+  /* NeXT Widget */
+  --widget-bg: #ffffff;
+  --widget-border: 1px solid #000;
+  --widget-shadow: 4px 4px 0 rgba(0, 0, 0, 1);
+
+  --sys-primary: #000000;
+  --sys-secondary: #555555;
+  --sys-success: #333333;
+  --sys-warning: #777777;
+  --sys-danger: #000000;
+  --sys-info: #999999;
+
+  --desktop-bg: #555555;
+
+  /* Component Overrides specific to NeXTSTEP */
+  .ui-modal {
+    background: var(--surface-bg);
+    border: 1px solid #000;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 1);
+  }
+
+  .swatch {
+    border-radius: 0px;
+    border: 1px solid #000;
+  }
+
+  /* Dark Mode Overrides */
+  &.dark-mode {
+    --surface-rgb: 45, 45, 45;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #fff;
+    --text-secondary: #cccccc;
+    --text-tertiary: #999999;
+
+    --surface-border: 1px solid #eee;
+    --btn-bg: #333;
+    --btn-text: #fff;
+    --btn-border: 1px solid #fff;
+    --dropdown-bg: #000;
+    --dropdown-shadow: 4px 4px 0 rgba(255, 255, 255, 1);
+
+    --widget-bg: #000000;
+    --widget-border: 1px solid #fff;
+    --widget-shadow: 4px 4px 0 rgba(255, 255, 255, 1);
+
+    --sys-primary: #ffffff;
+    --sys-secondary: #aaaaaa;
+
+    --desktop-bg: #000000;
+
+    .ui-modal {
+      box-shadow: 8px 8px 0 rgba(255, 255, 255, 1);
+    }
+  }
+}

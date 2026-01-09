@@ -1,0 +1,66 @@
+.framework-android {
+  --surface-rgb: 255, 255, 255;
+  --surface-bg-opacity: 0.15;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 10px;
+  --surface-radius: 28px;
+  --surface-border: 1px solid rgba(0, 0, 0, 0.05);
+
+  --text-color: #1c1b1f;
+  --text-secondary: #49454f;
+  --text-tertiary: #79747e;
+
+  --font-family: 'Roboto', sans-serif;
+  --btn-radius: 20px;
+  --icon-radius: 16px;
+  --folder-radius: 28px;
+  --modal-radius: 28px;
+  --widget-radius: 24px;
+  --btn-bg: #eaddff;
+  --btn-text: #21005d;
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --overlay-blur: 0px;
+
+  --dropdown-bg: #f3edf7;
+  --dropdown-radius: 12px;
+
+  /* Android Widget */
+  --widget-bg: #f3edf7;
+  --widget-border: none;
+  --widget-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+
+  --sys-primary: #6750a4;
+  --sys-secondary: #625b71;
+  --sys-success: #465c04;
+  --sys-warning: #efb01c;
+  --sys-danger: #b3261e;
+  --sys-info: #4f378b;
+
+  --desktop-bg: #fffbfe;
+
+  /* Dark Mode Overrides */
+  &.dark-mode {
+    --surface-rgb: 30, 30, 30;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #e6e1e5;
+    --text-secondary: #cac4d0;
+    --text-tertiary: #938f99;
+
+    --btn-bg: #4f378b;
+    --btn-text: #eaddff;
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --dropdown-bg: #2b2930;
+
+    --widget-bg: #4a4458;
+    --widget-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+
+    --sys-primary: #d0bcff;
+    --sys-secondary: #ccc2dc;
+    --sys-success: #bbdd30;
+    --sys-warning: #ffd43a;
+    --sys-danger: #f2b8b5;
+
+    --desktop-bg: #1c1b1f;
+  }
+}

@@ -1,0 +1,89 @@
+.framework-riscos {
+  --surface-rgb: 221, 221, 221;
+  --surface-bg-opacity: 1;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 0px;
+  --surface-radius: 0px;
+  --surface-border: 2px outset #ffffff;
+
+  --text-color: #000;
+  --text-secondary: #444444;
+  --text-tertiary: #777777;
+
+  --font-family: 'Inter', sans-serif;
+  --btn-radius: 0px;
+  --icon-radius: 0px;
+  --folder-radius: 0px;
+  --modal-radius: 0px;
+  --widget-radius: 0px;
+  --btn-bg: #cccccc;
+  --btn-text: #000;
+  --btn-border: 2px outset #ffffff;
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-blur: 0px;
+
+  --dropdown-bg: #ddd;
+  --dropdown-radius: 0px;
+  --dropdown-border: 2px outset #fff;
+  --dropdown-shadow: none;
+
+  /* RISC Widget */
+  --widget-bg: #dcdcdc;
+  --widget-border: 2px outset #fff;
+  --widget-shadow: none;
+
+  --sys-primary: #0000ff;
+  --sys-secondary: #777777;
+  --sys-success: #00ff00;
+  --sys-warning: #ffff00;
+  --sys-danger: #ff0000;
+  --sys-info: #00ffff;
+
+  --desktop-bg: #b0b0b0;
+
+  /* Component Overrides specific to RISC OS */
+  .ui-modal {
+    background: var(--surface-bg);
+    border: 2px outset #fff;
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .select-items div:hover {
+    border: 1px inset #fff;
+    background: #bbb;
+  }
+
+  .same-as-selected {
+    border: 1px inset #fff;
+  }
+
+  .swatch {
+    border-radius: 0px;
+    border: 1px solid #000;
+  }
+
+  /* Dark Mode Overrides */
+  &.dark-mode {
+    --surface-rgb: 51, 51, 51;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #fff;
+    --text-secondary: #dddddd;
+    --text-tertiary: #aaaaaa;
+
+    --surface-border: 2px inset #111111;
+    --btn-bg: #333;
+    --btn-text: #fff;
+    --btn-border: 2px outset #666666;
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+    --dropdown-bg: #333;
+    --dropdown-border: 2px outset #666;
+
+    --widget-bg: #333333;
+    --widget-border: 2px outset #666;
+
+    --sys-primary: #5555ff;
+
+    --desktop-bg: #333333;
+  }
+}

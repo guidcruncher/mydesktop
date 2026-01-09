@@ -1,0 +1,68 @@
+.framework-vision {
+  --surface-rgb: 255, 255, 255;
+  --surface-bg-opacity: 0.4;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 50px;
+  --surface-radius: 40px;
+  --surface-border: 1px solid rgba(255, 255, 255, 0.5);
+
+  --text-color: #000;
+  --text-secondary: rgba(60, 60, 67, 0.6);
+  --text-tertiary: rgba(60, 60, 67, 0.3);
+
+  --font-family: 'Inter', sans-serif;
+  --btn-radius: 999px;
+  --icon-radius: 999px;
+  --folder-radius: 50px;
+  --modal-radius: 40px;
+  --widget-radius: 32px;
+  --btn-bg: rgba(0, 0, 0, 0.05);
+  --btn-text: #000;
+  --overlay-blur: 20px;
+  --overlay-bg: rgba(0, 0, 0, 0.3);
+
+  --dropdown-bg: rgba(255, 255, 255, 0.65);
+  --dropdown-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+  --dropdown-radius: 24px;
+
+  /* Vision Widget */
+  --widget-bg: rgba(255, 255, 255, 0.25);
+  --widget-border: 1px solid rgba(255, 255, 255, 0.4);
+  --widget-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+  --sys-primary: #007aff;
+  --sys-secondary: #5856d6;
+  --sys-success: #34c759;
+  --sys-warning: #ff9500;
+  --sys-danger: #ff3b30;
+  --sys-info: #64d2ff;
+
+  --desktop-bg: #f2f2f7;
+
+  /* Dark Mode Overrides */
+  &.dark-mode {
+    --surface-rgb: 25, 25, 25;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #fff;
+    --text-secondary: rgba(235, 235, 245, 0.6);
+    --text-tertiary: rgba(235, 235, 245, 0.3);
+
+    --surface-border: 1px solid rgba(255, 255, 255, 0.15);
+    --btn-bg: rgba(255, 255, 255, 0.15);
+    --btn-text: #fff;
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+    --dropdown-bg: rgba(40, 40, 40, 0.65);
+
+    --widget-bg: rgba(60, 60, 60, 0.3);
+    --widget-border: 1px solid rgba(255, 255, 255, 0.1);
+
+    --sys-primary: #0a84ff;
+    --sys-secondary: #5e5ce6;
+    --sys-success: #30d158;
+    --sys-warning: #ff9f0a;
+    --sys-danger: #ff453a;
+
+    --desktop-bg: #000000;
+  }
+}

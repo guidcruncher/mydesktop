@@ -1,0 +1,57 @@
+.framework-kde {
+  --surface-rgb: 252, 252, 252;
+  --surface-bg-opacity: 0.65;
+  --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+  --surface-blur: 16px;
+  --surface-radius: 4px;
+  --surface-border: 1px solid #3daee9;
+
+  --text-color: #232629;
+  --text-secondary: #4d5057;
+  --text-tertiary: #707d8a;
+
+  --font-family: 'Noto Sans', sans-serif;
+  --btn-radius: 4px;
+  --icon-radius: 4px;
+  --folder-radius: 4px;
+  --modal-radius: 4px;
+  --widget-radius: 4px;
+  --btn-bg: #3daee9;
+  --btn-text: #fff;
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --overlay-blur: 12px;
+
+  --dropdown-bg: #fcfcfc;
+
+  /* KDE Widget */
+  --widget-bg: rgba(255, 255, 255, 0.9);
+  --widget-border: 1px solid #ccc;
+  --widget-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  --sys-primary: #3daee9;
+  --sys-secondary: #9b59b6;
+  --sys-success: #27ae60;
+  --sys-warning: #f67400;
+  --sys-danger: #da4453;
+  --sys-info: #2980b9;
+
+  --desktop-bg: #eff0f1;
+
+  /* Dark Mode Overrides */
+  &.dark-mode {
+    --surface-rgb: 35, 38, 41;
+    --surface-bg: rgba(var(--surface-rgb), var(--surface-bg-opacity));
+
+    --text-color: #eff0f1;
+    --text-secondary: #bdc3c7;
+    --text-tertiary: #7f8c8d;
+
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --dropdown-bg: #232629;
+
+    --widget-bg: rgba(49, 54, 59, 0.9);
+    --widget-border: 1px solid #616e79;
+
+    --desktop-bg: #232629;
+  }
+}

@@ -22,6 +22,7 @@ const frameworkOptions = [
   { label: 'Android', value: 'android' },
   { label: 'Breeze', value: 'kde' },
   { label: 'Fluent', value: 'fluent' },
+  { label: 'Motif', value: 'cde' },
   { label: 'NeXTSTEP', value: 'nextstep' },
   { label: 'RISC OS', value: 'riscos' },
   { label: 'VisionOS', value: 'vision' },
