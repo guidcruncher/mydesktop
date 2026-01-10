@@ -3,52 +3,31 @@
     <div class="demo-grid">
       <UISurface>
         <h2>Form Inputs</h2>
-        
+
         <div class="form-row">
           <div class="form-group" style="flex: 1">
             <label>Username</label>
-            <UITextBox 
-              v-model="formData.username" 
-              placeholder="Enter username..." 
-            />
+            <UITextBox v-model="formData.username" placeholder="Enter username..." />
           </div>
           <div class="form-group" style="flex: 1">
             <label>Password</label>
-            <UITextBox 
-              v-model="formData.password" 
-              type="password" 
-              placeholder="••••••" 
-            />
+            <UITextBox v-model="formData.password" type="password" placeholder="••••••" />
           </div>
         </div>
 
         <div class="form-group">
           <label>Role Selection</label>
-          <UIDropdownList 
-            v-model="formData.selectedRole" 
-            :options="roleOptions" 
-          />
+          <UIDropdownList v-model="formData.selectedRole" :options="roleOptions" />
         </div>
 
         <div class="form-group">
           <label>Volume: {{ formData.volume }}%</label>
-          <UISlider 
-            v-model="formData.volume" 
-            :min="0" 
-            :max="100" 
-            :step="5" 
-          />
+          <UISlider v-model="formData.volume" :min="0" :max="100" :step="5" />
         </div>
 
         <div class="toggle-group">
-          <UISwitch 
-            v-model="formData.darkMode" 
-            label="Dark Mode" 
-          />
-          <UICheckbox 
-            v-model="formData.notifications" 
-            label="Push Notifications" 
-          />
+          <UISwitch v-model="formData.darkMode" label="Dark Mode" />
+          <UICheckbox v-model="formData.notifications" label="Push Notifications" />
         </div>
       </UISurface>
 
@@ -97,29 +76,19 @@
 
       <section class="demo-card">
         <h2>Feedback</h2>
-        
-        <UIProgressbar 
-          :value="formData.volume" 
-          :max="100" 
-          label="System Load (Linked to Volume)" 
+
+        <UIProgressbar
+          :value="formData.volume"
+          :max="100"
+          label="System Load (Linked to Volume)"
           color="--sys-primary"
         />
-        
-        <UIProgressbar 
-          :value="75" 
-          :max="100" 
-          label="Processing..." 
-          striped 
-          color="--sys-success"
-        />
+
+        <UIProgressbar :value="75" :max="100" label="Processing..." striped color="--sys-success" />
 
         <div class="trigger-row">
-          <UIButton variant="secondary" @click="showModal = true">
-            Open Modal
-          </UIButton>
-          <UIButton variant="secondary" @click="addDemoToast">
-            Trigger Toast
-          </UIButton>
+          <UIButton variant="secondary" @click="showModal = true"> Open Modal </UIButton>
+          <UIButton variant="secondary" @click="addDemoToast"> Trigger Toast </UIButton>
         </div>
       </section>
 
@@ -137,7 +106,7 @@
           <label>Requests (Bar)</label>
           <UISparkline :data="chartData" type="bar" color="--sys-danger" :height="60" />
         </div>
-        <UIButton variant="icon" icon="fa-refresh" @click="randomizeData" style="margin-top:10px">
+        <UIButton variant="icon" icon="fa-refresh" @click="randomizeData" style="margin-top: 10px">
           Refresh Data
         </UIButton>
       </section>
@@ -146,21 +115,17 @@
         <h2>Dashboard Widgets</h2>
         <div class="gauge-row">
           <div class="gauge-item">
-            <UIGauge 
-              :modelValue="formData.volume" 
-              :readonly="true"
-              label="Audio Output"
-            >
+            <UIGauge :modelValue="formData.volume" :readonly="true" label="Audio Output">
               <template #default="{ value }">
-                {{ value }}<span style="font-size:0.6em">%</span>
+                {{ value }}<span style="font-size: 0.6em">%</span>
               </template>
             </UIGauge>
             <p class="caption">Linked to Volume Slider</p>
           </div>
 
           <div class="gauge-item">
-            <UIGauge 
-              v-model="pressure" 
+            <UIGauge
+              v-model="pressure"
               :readonly="false"
               label="Pressure Control"
               :bands="gaugeBands"
@@ -169,14 +134,13 @@
           </div>
         </div>
       </section>
-
     </div>
 
     <UIToast />
-    
-    <UIModalDialog 
-      :isOpen="showModal" 
-      title="Confirm Action" 
+
+    <UIModalDialog
+      :isOpen="showModal"
+      title="Confirm Action"
       :actions="modalActions"
       @close="showModal = false"
       @actionclick="handleModalAction"
@@ -204,8 +168,11 @@ import UITextBox from './UITextBox.vue'
 import UISwitch from './UISwitch.vue'
 import UISurface from './UISurface.vue'
 import UIGauge from './UIGauge.vue' // NEW IMPORT
+import { useToast } from '../composables/useToast'
 
 // --- State Management ---
+
+const toasts = useToast()
 
 const formData = reactive({
   username: '',
@@ -214,7 +181,7 @@ const formData = reactive({
   notifications: true,
   darkMode: false,
   wifi: true,
-  selectedRole: 'admin'
+  selectedRole: 'admin',
 })
 
 const activeTab = ref('dashboard')
@@ -226,7 +193,7 @@ const pressure = ref(50)
 const gaugeBands = [
   { from: 0, to: 40, color: 'var(--sys-success)' },
   { from: 41, to: 75, color: 'var(--sys-info)' },
-  { from: 76, to: 100, color: 'var(--sys-danger)' }
+  { from: 76, to: 100, color: 'var(--sys-danger)' },
 ]
 
 // --- Configuration Data ---
@@ -234,12 +201,12 @@ const gaugeBands = [
 const roleOptions = [
   { label: 'Administrator', value: 'admin' },
   { label: 'Editor', value: 'editor' },
-  { label: 'Viewer', value: 'viewer' }
+  { label: 'Viewer', value: 'viewer' },
 ]
 
 const modalActions = [
   { label: 'Cancel', id: 'cancel' },
-  { label: 'Confirm', id: 'confirm' }
+  { label: 'Confirm', id: 'confirm' },
 ]
 
 // --- Methods ---
@@ -255,6 +222,7 @@ const handleModalAction = (action) => {
 
 const addDemoToast = () => {
   console.log('Toast triggered')
+  toasts.showToast('Here is a toast message')
 }
 </script>
 
@@ -266,17 +234,17 @@ const addDemoToast = () => {
   --sys-success: #10b981;
   --sys-danger: #ef4444;
   --sys-info: #3b82f6;
-  
+
   --surface-rgb: 255, 255, 255;
   --surface-bg: rgba(255, 255, 255, 0.7);
   --surface-border: 1px solid #e5e7eb;
   --surface-blur: 10px;
   --surface-saturate: 180%;
   --surface-radius: 12px;
-  
+
   --text-color: #1f2937;
   --text-secondary: #6b7280;
-  
+
   --overlay-bg: rgba(0, 0, 0, 0.4);
   --overlay-blur: 4px;
 
@@ -304,8 +272,9 @@ const addDemoToast = () => {
   --modal-radius: 12px;
 
   /* Fonts */
-  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  
+  --font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
   /* Widget Background (For Gauge Inner Hole) */
   --widget-bg: var(--dropdown-bg);
 }
@@ -354,7 +323,7 @@ const addDemoToast = () => {
   padding: 24px;
   border-radius: 12px;
   border: var(--surface-border);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
 }

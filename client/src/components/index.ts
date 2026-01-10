@@ -18,6 +18,7 @@ import UIFlipClockWidget from './UIFlipClockWidget.vue'
 import UIFolderView from './UIFolderView.vue'
 import UIFolderViewWidget from './UIFolderViewWidget.vue'
 import UIGBRailStationWidget from './UIGBRailStationWidget.vue'
+import UIGauge from './UIGauge.vue'
 import UIGeoclockWidget from './UIGeoclockWidget.vue'
 import UIImageBrowser from './UIImageBrowser.vue'
 import UIMapWidget from './UIMapWidget.vue'
@@ -65,6 +66,7 @@ export const GlassComponents = {
   UIFolderView,
   UIFolderViewWidget,
   UIGBRailStationWidget,
+  UIGauge,
   UIGeoclockWidget,
   UIImageBrowser,
   UIMapWidget,
