@@ -132,12 +132,12 @@ layout:
             url: "http://192.168.1.211:8080"
             icon: "qbittorrent"
 
-    - name: "vopidy"
+    - name: "mopidy"
       type: app-icon
       component: UIAppIconButton
       props:
-        label: "Vopidy"
-        url: "https://0875ce890ad6.duckdns.org"
+        label: "Music"
+        url: "https://0875ce890ad6.duckdns.org/"
         icon: "spotify"
 
     - name: Weather

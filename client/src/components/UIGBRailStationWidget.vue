@@ -1,5 +1,5 @@
 <template>
-  <UIWidgetView class="rail-widget" width="330px">
+  <UIWidgetView class="rail-widget" :width="width" :height="height">
     <template #title>
       <span>{{ locationName }} ({{ stationCode }})</span>
     </template>
@@ -69,6 +69,8 @@ const props = defineProps({
   apiUser: { type: String, required: true },
   apiPass: { type: String, required: true },
   retro: { type: Boolean, default: false },
+  width: { type: String, default: '330px' },
+  height: { type: String, default: 'auto' },
 })
 
 // --- Logic ---
