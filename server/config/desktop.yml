@@ -8,7 +8,7 @@ desktop:
       - "hsla(200, 90%, 65%, 1)"
       - "hsla(330, 80%, 75%, 1)"
       - "hsla(40, 90%, 70%, 1)"
-    src: "https://sleepingbearhotels.com/wp-content/uploads/2025/05/Where-Is-Durdle-Door.webp"
+    src: "https://slepingbearhotels.com/wp-content/uploads/2025/05/Where-Is-Durdle-Door.webp"
     color: "#d6d3ff"
   foreground:
     color: "#000000"
@@ -21,6 +21,30 @@ layout:
       component: UIAnalogClockWidget
       props:
         timezone: "Europe/London"
+
+    - name: "AirplanesLive"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "Airplanes.live"
+        url: "https://airplanes.live/myfeed/"
+        icon: "flightradar24"
+
+    - name: "tar1090"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "Tar1090"
+        url: "http://192.168.1.201/tar1090/"
+        icon: "flightradar24"
+
+    - name: "adsbexchange"
+      type: app-icon
+      component: UIAppIconButton
+      props:
+        label: "ADSB-Exchange"
+        url: "https://globe.adsbexchange.com"
+        icon: "flightradar24"
 
     - name: "GLiNet"
       type: app-icon
@@ -51,7 +75,7 @@ layout:
       component: UIAppIconButton
       props:
         label: "Webtop"
-        url: "https://192.168.1.202:8086"
+        url: "https://webtop.lan:8086"
         icon: "webtop"
 
     - name: "Pi-Hole"
@@ -59,31 +83,23 @@ layout:
       component: UIAppIconButton
       props:
         label: "Pi-Hole"
-        url: "http://192.168.1.202:3000/admin"
+        url: "http://192.168.1.202:3080/admin"
         icon: "pi-hole"
 
-    - name: "technitium"
+    - name: "wud"
       type: app-icon
       component: UIAppIconButton
       props:
-        label: "Technitium"
-        url: "http://192.168.1.202:5380"
-        icon: "technitium"
-
-    - name: "File browser"
-      type: app-icon
-      component: UIAppIconButton
-      props:
-        label: "File Browser"
-        url: "https://6d26316a6dcf.duckdns.org/login?redirect=/files/"
-        icon: "file-browser"
+        label: "Wud"
+        url: "http://192.168.1.202:3000"
+        icon: "wud"
 
     - name: "Jellyfin"
       type: app-icon
       component: UIAppIconButton
       props:
         label: "Jellyfin"
-        url: "http://192.168.1.202:8096/"
+        url: "http://jellyfin.pi5.lan/"
         icon: "jellyfin"
 
     - name: "arr"
@@ -97,7 +113,7 @@ layout:
           component: UIAppIconButton
           props:
             label: "Prowlarr"
-            url: "http://192.168.1.213:9696"
+            url: "http://prowlarr.pi5.lan"
             icon: "prowlarr"
 
         - name: "Jellyseerr"
@@ -105,7 +121,7 @@ layout:
           component: UIAppIconButton
           props:
             label: "Jellyseerr"
-            url: "http://192.168.1.210:5055/login"
+            url: "http://jellyseerr.pi5.lan"
             icon: "jellyseerr"
 
         - name: "Radarr"
@@ -113,7 +129,7 @@ layout:
           component: UIAppIconButton
           props:
             label: "Radarr"
-            url: "http://192.168.1.214:7878"
+            url: "http://radarr.pi5.lan"
             icon: "radarr"
 
         - name: "Lidarr"
@@ -121,23 +137,31 @@ layout:
           component: UIAppIconButton
           props:
             label: "Lidarr"
-            url: "http://192.168.1.212:8686"
+            url: "http://lidarr.pi5.lan"
             icon: "lidarr"
 
-        - name: "QBittorrent"
+        - name: "Sonarr"
           type: app-icon
           component: UIAppIconButton
           props:
-            label: "QBittorrent"
-            url: "http://192.168.1.211:8080"
-            icon: "qbittorrent"
+            label: "Sonarr"
+            url: "http://sonarr.pi5.lan"
+            icon: "sonarr"
 
-    - name: "mopidy"
+        - name: "Transmission"
+          type: app-icon
+          component: UIAppIconButton
+          props:
+            label: "Transmission"
+            url: "http://transmission.pi5.lan"
+            icon: "transmission"
+
+    - name: "vopidy"
       type: app-icon
       component: UIAppIconButton
       props:
         label: "Music"
-        url: "https://0875ce890ad6.duckdns.org/"
+        url: "https://viox.lan"
         icon: "spotify"
 
     - name: Weather
